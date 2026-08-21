@@ -1,0 +1,81 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}HeroHealth | Nepal Triage & Mapping{% endblock %}</title>
+    
+    <!-- Meta Descriptions for SEO -->
+    <meta name="description" content="HeroHealth is Nepal's premium healthcare consultation, AI triage engine, and facility finder. Connect symptoms with local clinics and hospitals.">
+    
+    <!-- FontAwesome & Google Fonts -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <!-- Leaflet Map CSS/JS (Only loaded if mapping is used, but safe globally for simple inclusion) -->
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY=" crossorigin=""/>
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin=""></script>
+    
+    <!-- Stylesheets -->
+    <link rel="stylesheet" href="{% static 'css/style.css' %}">
+    <link rel="stylesheet" href="{% static 'css/responsive.css' %}">
+    
+    {% block extra_head %}{% endblock %}
+</head>
+<body>
+
+    <!-- Header Navigation -->
+    <nav class="navbar" id="mainNavbar">
+        <a href="{% url 'home' %}" class="nav-brand" id="brandLogo">
+            <i class="fa-solid fa-hand-holding-heart"></i> Hero<span>Health</span>
+        </a>
+        <ul class="nav-links">
+            <li><a href="{% url 'home' %}" class="nav-link {% if request.resolver_match.view_name == 'home' %}active{% endif %}" id="navHome">Home</a></li>
+            <li><a href="{% url 'consultation' %}" class="nav-link {% if request.resolver_match.view_name == 'consultation' or request.resolver_match.view_name == 'consultation_result' %}active{% endif %}" id="navTriage">AI Triage</a></li>
+            <li><a href="{% url 'facility_list' %}" class="nav-link {% if request.resolver_match.view_name == 'facility_list' or request.resolver_match.view_name == 'facility_detail' %}active{% endif %}" id="navFacilities">Find Facilities</a></li>
+            <li><a href="{% url 'map_view' %}" class="nav-link {% if request.resolver_match.view_name == 'map_view' %}active{% endif %}" id="navMap">Proximity Map</a></li>
+            <li><a href="{% url 'emergency' %}" class="nav-link {% if request.resolver_match.view_name == 'emergency' %}active{% endif %}" id="navEmergency">Emergency</a></li>
+            
+            {% if user.is_authenticated %}
+                <li><a href="{% url 'profile' %}" class="nav-link {% if request.resolver_match.view_name == 'profile' %}active{% endif %}" id="navProfile">Profile</a></li>
+                <li><a href="{% url 'logout' %}" class="nav-btn nav-btn-outline" id="navLogout">Logout</a></li>
+            {% else %}
+                <li><a href="{% url 'login' %}" class="nav-btn nav-btn-outline" id="navLogin">Login</a></li>
+                <li><a href="{% url 'register' %}" class="nav-btn nav-btn-primary" id="navRegister">Sign Up</a></li>
+            {% endif %}
+        </ul>
+    </nav>
+
+    <!-- Message Alerts Notifications -->
+    {% if messages %}
+    <div class="messages-container" id="alertsBox">
+        {% for message in messages %}
+        <div class="alert-message {{ message.tags }}" role="alert" id="alert-{{ forloop.counter }}">
+            <span><i class="fa-solid {% if message.tags == 'success' %}fa-circle-check{% elif message.tags == 'error' %}fa-circle-xmark{% else %}fa-circle-info{% endif %}"></i> {{ message }}</span>
+            <button class="alert-close" style="background:none; border:none; color:inherit; cursor:pointer;" id="closeAlert-{{ forloop.counter }}"><i class="fa-solid fa-xmark"></i></button>
+        </div>
+        {% endfor %}
+    </div>
+    {% endif %}
+
+    <!-- Main Content Area -->
+    <main style="min-height: 80vh;" id="mainContent">
+        {% block content %}{% endblock %}
+    </main>
+
+    <!-- Footer -->
+    <footer class="footer" id="siteFooter">
+        <ul class="footer-links">
+            <li><a href="{% url 'home' %}" class="footer-link">Home</a></li>
+            <li><a href="{% url 'consultation' %}" class="footer-link">AI Consultation</a></li>
+            <li><a href="{% url 'facility_list' %}" class="footer-link">Healthcare Finder</a></li>
+            <li><a href="{% url 'emergency' %}" class="footer-link">Emergency Help</a></li>
+        </ul>
+        <p id="copyrightText">&copy; 2026 HeroHealth Nepal. Empowering public health through smart diagnostics. Developed by Infonix.</p>
+    </footer>
+
+    <!-- Global Javascript -->
+    <script src="{% static 'js/main.js' %}"></script>
+    {% block extra_js %}{% endblock %}
+</body>
+</html>

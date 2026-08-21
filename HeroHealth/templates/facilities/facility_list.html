@@ -1,0 +1,96 @@
+{% extends 'base.html' %}
+
+{% block title %}HeroHealth | Find Healthcare Facilities in Nepal{% endblock %}
+
+{% block content %}
+<div style="max-width: 1200px; margin: 3rem auto; padding: 0 1.5rem;" id="facilitiesMainContainer">
+    
+    <div class="consultation-header">
+        <h2 class="consultation-title" style="font-size: 2.25rem;"><i class="fa-solid fa-hospital-user" style="color:var(--primary);"></i> Healthcare Directory</h2>
+        <p class="consultation-desc">Find verified hospitals, specialist clinics, and public health posts across Nepal</p>
+    </div>
+
+    <!-- Search / Filter panel -->
+    <div class="glass-card" style="margin-bottom: 2rem; padding: 1.5rem;" id="searchFilterCard">
+        <form method="GET" style="display: flex; gap: 1rem; flex-wrap: wrap;" id="searchFilterForm">
+            <!-- Search Text -->
+            <div style="flex: 2; min-width: 250px;" class="form-group" style="margin-bottom:0;">
+                <input type="text" name="q" value="{{ query }}" class="form-control" placeholder="Search by hospital name or address..." id="searchQueryInput">
+            </div>
+            
+            <!-- Type Filter -->
+            <div style="flex: 1; min-width: 150px;" class="form-group" style="margin-bottom:0;">
+                <select name="type" class="form-select" id="searchTypeSelect">
+                    <option value="">All Types</option>
+                    {% for t in types %}
+                    <option value="{{ t }}" {% if selected_type == t %}selected{% endif %}>{{ t }}</option>
+                    {% endfor %}
+                </select>
+            </div>
+
+            <!-- Specialty Filter -->
+            <div style="flex: 1; min-width: 150px;" class="form-group" style="margin-bottom:0;">
+                <select name="specialty" class="form-select" id="searchSpecialtySelect">
+                    <option value="">All Specialties</option>
+                    {% for s in specialties %}
+                    <option value="{{ s }}" {% if selected_specialty == s %}selected{% endif %}>{{ s }}</option>
+                    {% endfor %}
+                </select>
+            </div>
+
+            <button type="submit" class="btn-premium" style="padding: 0.75rem 1.5rem;" id="searchSubmitBtn">
+                Filter <i class="fa-solid fa-sliders"></i>
+            </button>
+            
+            {% if query or selected_type or selected_specialty %}
+                <a href="{% url 'facility_list' %}" class="nav-btn nav-btn-outline" style="display: inline-flex; align-items: center; justify-content: center;" id="searchClearBtn">Clear</a>
+            {% endif %}
+        </form>
+    </div>
+
+    <!-- List layout grid -->
+    {% if facilities %}
+        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: 1.5rem;" id="facilityGrid">
+            {% for f in facilities %}
+            <div class="glass-card" style="display: flex; flex-direction: column; height: 100%; border-color: rgba(255,255,255,0.04);" id="facilityCard-{{ f.id }}">
+                <div style="display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 0.75rem;">
+                    <span style="font-size: 0.8rem; background: rgba(255,255,255,0.05); padding: 2px 8px; border-radius: 4px; border: 1px solid rgba(255,255,255,0.1); font-weight:600;">
+                        {{ f.type }}
+                    </span>
+                    
+                    {% if f.status == 'Available' %}
+                        <span class="status-badge available" id="status-{{ f.id }}">Available</span>
+                    {% elif f.status == 'Busy' %}
+                        <span class="status-badge busy" id="status-{{ f.id }}">Busy</span>
+                    {% else %}
+                        <span class="status-badge emergency" id="status-{{ f.id }}">Emergency Only</span>
+                    {% endif %}
+                </div>
+
+                <h3 style="font-family: var(--font-heading); font-size: 1.25rem; font-weight: 700; margin-bottom: 0.5rem;" id="name-{{ f.id }}">{{ f.name }}</h3>
+                <p style="font-size: 0.85rem; color: var(--text-muted); margin-bottom: 0.75rem;"><i class="fa-solid fa-map-pin"></i> {{ f.address }}</p>
+                <p style="font-size: 0.85rem; color: var(--text-muted); margin-bottom: 1rem;"><i class="fa-solid fa-phone"></i> {{ f.phone|default:"N/A" }}</p>
+
+                <!-- Specialization Tags -->
+                <div style="flex-grow: 1; margin-bottom: 1.5rem;" id="specialties-{{ f.id }}">
+                    {% for spec in f.specializations_list %}
+                        <span class="specialty-tag" style="font-size:0.75rem; padding: 2px 8px; margin-right:4px; margin-bottom:4px;">{{ spec }}</span>
+                    {% endfor %}
+                </div>
+
+                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 0.75rem; border-top: 1px solid var(--border-glass); padding-top: 1rem;" id="actions-{{ f.id }}">
+                    <a href="{% url 'facility_detail' f.id %}" class="nav-btn nav-btn-outline" style="text-align: center; font-size:0.85rem;" id="btnDetail-{{ f.id }}">Details</a>
+                    <a href="{% url 'map_view' %}?specialty={{ f.specializations_list.0|urlencode }}" class="nav-btn nav-btn-primary" style="text-align: center; font-size:0.85rem;" id="btnMap-{{ f.id }}">Proximity Map</a>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+    {% else %}
+        <div style="text-align: center; padding: 5rem 1rem; color: var(--text-muted);" id="noFacilities">
+            <div style="font-size: 3rem; margin-bottom: 1.5rem; opacity: 0.3;"><i class="fa-solid fa-circle-exclamation"></i></div>
+            <p style="font-size: 1.2rem;">No healthcare facilities found matching your criteria.</p>
+        </div>
+    {% endif %}
+
+</div>
+{% endblock %}

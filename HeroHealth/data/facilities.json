@@ -1,0 +1,200 @@
+[
+  {
+    "name": "Tribhuvan University Teaching Hospital (TUTH)",
+    "type": "Hospital",
+    "address": "Maharajgunj, Kathmandu",
+    "phone": "+977-1-4412404",
+    "website": "https://www.tuth.org.np",
+    "specializations": ["General Medicine", "Pediatrics", "Cardiology", "Neurology", "Orthopedics", "Emergency"],
+    "latitude": 27.7366,
+    "longitude": 85.3302,
+    "status": "Available"
+  },
+  {
+    "name": "Bir Hospital",
+    "type": "Hospital",
+    "address": "Kantipath, Kathmandu",
+    "phone": "+977-1-4221119",
+    "website": "https://nams.org.np",
+    "specializations": ["General Surgery", "Oncology", "Gastroenterology", "Nephrology", "Dermatology", "Emergency"],
+    "latitude": 27.7058,
+    "longitude": 85.3142,
+    "status": "Available"
+  },
+  {
+    "name": "Patan Hospital",
+    "type": "Hospital",
+    "address": "Lagankhel, Lalitpur",
+    "phone": "+977-1-5522295",
+    "website": "https://www.pahs.edu.np",
+    "specializations": ["Pediatrics", "Gynecology & Obstetrics", "General Medicine", "Psychiatry", "Emergency"],
+    "latitude": 27.6685,
+    "longitude": 85.3218,
+    "status": "Available"
+  },
+  {
+    "name": "Grande International Hospital",
+    "type": "Hospital",
+    "address": "Dhapasi, Kathmandu",
+    "phone": "+977-1-5159266",
+    "website": "https://www.grandehospital.com",
+    "specializations": ["Cardiology", "Orthopedics", "Urology", "Pulmonology", "Radiology", "Emergency"],
+    "latitude": 27.7513,
+    "longitude": 85.3291,
+    "status": "Available"
+  },
+  {
+    "name": "Norvic International Hospital",
+    "type": "Hospital",
+    "address": "Thapathali, Kathmandu",
+    "phone": "+977-1-4258554",
+    "website": "https://www.norvichospital.com",
+    "specializations": ["Cardiology", "Gastroenterology", "Endocrinology", "Neurology", "Emergency"],
+    "latitude": 27.6934,
+    "longitude": 85.3195,
+    "status": "Available"
+  },
+  {
+    "name": "Kanti Children's Hospital",
+    "type": "Hospital",
+    "address": "Maharajgunj, Kathmandu",
+    "phone": "+977-1-4411550",
+    "website": "https://kantichildrenhospital.gov.np",
+    "specializations": ["Pediatrics", "Pediatric Surgery", "Neonatology", "Emergency"],
+    "latitude": 27.7371,
+    "longitude": 85.3325,
+    "status": "Available"
+  },
+  {
+    "name": "Shahid Gangalal National Heart Center",
+    "type": "Hospital",
+    "address": "Bansbari, Kathmandu",
+    "phone": "+977-1-4371322",
+    "website": "https://sgnhc.org.np",
+    "specializations": ["Cardiology", "Cardiac Surgery", "Pediatric Cardiology", "Emergency"],
+    "latitude": 27.7397,
+    "longitude": 85.3392,
+    "status": "Available"
+  },
+  {
+    "name": "Patan Health Clinic",
+    "type": "Clinic",
+    "address": "Jawalakhel, Lalitpur",
+    "phone": "+977-1-5544332",
+    "website": "",
+    "specializations": ["General Practice", "Dentistry", "Ophthalmology", "Physiotherapy"],
+    "latitude": 27.6742,
+    "longitude": 85.3129,
+    "status": "Available"
+  },
+  {
+    "name": "Lalitpur Dental Care",
+    "type": "Clinic",
+    "address": "Gwarko, Lalitpur",
+    "phone": "+977-1-5533112",
+    "website": "",
+    "specializations": ["Dentistry", "Orthodontics"],
+    "latitude": 27.6669,
+    "longitude": 85.3341,
+    "status": "Available"
+  },
+  {
+    "name": "HAMS Hospital",
+    "type": "Hospital",
+    "address": "Dhumbarahi, Kathmandu",
+    "phone": "+977-1-4377404",
+    "website": "https://www.hamshospital.com",
+    "specializations": ["General Medicine", "Pulmonology", "Critical Care", "Neurology", "Emergency"],
+    "latitude": 27.7285,
+    "longitude": 85.3481,
+    "status": "Available"
+  },
+  {
+    "name": "B&B Hospital",
+    "type": "Hospital",
+    "address": "Gwarko, Lalitpur",
+    "phone": "+977-1-5546600",
+    "website": "https://www.bbhospital.com.np",
+    "specializations": ["Orthopedics", "General Surgery", "Physiotherapy", "Plastic Surgery", "Emergency"],
+    "latitude": 27.6657,
+    "longitude": 85.3328,
+    "status": "Available"
+  },
+  {
+    "name": "Nepal Medical College",
+    "type": "Hospital",
+    "address": "Jorpati, Kathmandu",
+    "phone": "+977-1-4911008",
+    "website": "https://nmcth.edu",
+    "specializations": ["General Medicine", "General Surgery", "Gynecology & Obstetrics", "Ophthalmology", "Emergency"],
+    "latitude": 27.7228,
+    "longitude": 85.3905,
+    "status": "Available"
+  },
+  {
+    "name": "Alka Hospital",
+    "type": "Hospital",
+    "address": "Jawalakhel, Lalitpur",
+    "phone": "+977-1-5555555",
+    "website": "https://alkahospital.com",
+    "specializations": ["General Medicine", "Nephrology", "Urology", "Pediatrics", "Emergency"],
+    "latitude": 27.6749,
+    "longitude": 85.3162,
+    "status": "Available"
+  },
+  {
+    "name": "Dhulikhel Hospital",
+    "type": "Hospital",
+    "address": "Dhulikhel, Kavre",
+    "phone": "+977-11-490497",
+    "website": "https://dhulikhelhospital.org",
+    "specializations": ["General Medicine", "Community Health", "Orthopedics", "Gynecology & Obstetrics", "Emergency"],
+    "latitude": 27.6189,
+    "longitude": 85.5539,
+    "status": "Available"
+  },
+  {
+    "name": "Manipal Teaching Hospital",
+    "type": "Hospital",
+    "address": "Phulbari, Pokhara",
+    "phone": "+977-61-526416",
+    "website": "https://www.manipal.edu.np",
+    "specializations": ["General Medicine", "Orthopedics", "Pediatrics", "Gynecology & Obstetrics", "Cardiology", "Emergency"],
+    "latitude": 28.2321,
+    "longitude": 83.9968,
+    "status": "Available"
+  },
+  {
+    "name": "BP Koirala Institute of Health Sciences (BPKIHS)",
+    "type": "Hospital",
+    "address": "Dharan, Sunsari",
+    "phone": "+977-25-525555",
+    "website": "https://bpkihs.edu",
+    "specializations": ["General Medicine", "General Surgery", "Cardiology", "Oncology", "Psychiatry", "Emergency"],
+    "latitude": 26.8122,
+    "longitude": 87.2831,
+    "status": "Available"
+  },
+  {
+    "name": "Lumbini Provincial Hospital",
+    "type": "Hospital",
+    "address": "Butwal, Rupandehi",
+    "phone": "+977-71-540114",
+    "website": "https://lumbinihospital.gov.np",
+    "specializations": ["General Medicine", "Pediatrics", "General Surgery", "Emergency"],
+    "latitude": 27.7025,
+    "longitude": 83.4542,
+    "status": "Available"
+  },
+  {
+    "name": "Bheri Hospital",
+    "type": "Hospital",
+    "address": "Nepalgunj, Banke",
+    "phone": "+977-81-520120",
+    "website": "https://bherihospital.gov.np",
+    "specializations": ["General Medicine", "Gynecology & Obstetrics", "Orthopedics", "Emergency"],
+    "latitude": 28.0531,
+    "longitude": 81.6189,
+    "status": "Available"
+  }
+]

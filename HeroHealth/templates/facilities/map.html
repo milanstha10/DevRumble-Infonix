@@ -1,0 +1,51 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}HeroHealth | Proximity Map Search{% endblock %}
+
+{% block content %}
+<div style="max-width: 1200px; margin: 3rem auto; padding: 0 1.5rem;" id="mapSearchContainer">
+    
+    <div class="consultation-header">
+        <h2 class="consultation-title" style="font-size: 2.25rem;"><i class="fa-solid fa-map-location-dot" style="color:var(--primary);"></i> Proximity Map Finder</h2>
+        <p class="consultation-desc">Find closest hospitals and specialist clinics using your current location coordinates</p>
+    </div>
+
+    <!-- Specialty filter row on map page -->
+    <div class="glass-card" style="margin-bottom: 1.5rem; padding: 1rem;" id="mapFilterCard">
+        <form method="GET" style="display: flex; gap: 1rem; align-items: center; justify-content: space-between; flex-wrap: wrap;" id="mapFilterForm">
+            <div>
+                <span style="font-weight: 600; color:var(--text-primary);"><i class="fa-solid fa-filter" style="color:var(--primary); margin-right:5px;"></i> Filter hospitals by Specialty:</span>
+            </div>
+            
+            <div style="display: flex; gap: 1rem; align-items: center;" id="mapFilterControls">
+                <select name="specialty" class="form-select" style="min-width: 250px;" id="mapSpecialtySelect">
+                    <option value="">All Specialties</option>
+                    {% for s in specialties %}
+                    <option value="{{ s }}" {% if selected_specialty == s %}selected{% endif %}>{{ s }}</option>
+                    {% endfor %}
+                </select>
+                
+                <button type="submit" class="btn-premium" style="padding: 0.6rem 1.5rem;" id="mapFilterSubmit">Filter Map</button>
+            </div>
+        </form>
+    </div>
+
+    <!-- Main search map container -->
+    <div class="glass-card" style="padding: 0.5rem;" id="mapWrapper">
+        <div id="searchMap" class="map-container" style="height: 550px;" data-specialty="{{ selected_specialty }}"></div>
+    </div>
+    
+    <div class="glass-card" style="margin-top: 1.5rem; display: flex; align-items: center; gap: 1rem; border-color: rgba(0, 242, 254, 0.2);" id="mapInstructionBox">
+        <div style="font-size: 1.5rem; color:var(--accent);"><i class="fa-solid fa-circle-info"></i></div>
+        <p style="font-size: 0.9rem; color: var(--text-muted); line-height:1.5;">
+            Allow location permissions when prompted to automatically pinpoint your device on the map. HeroHealth will calculate and display your exact straight-line distance in kilometers to each nearby healthcare provider.
+        </p>
+    </div>
+
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<script src="{% static 'js/map.js' %}"></script>
+{% endblock %}

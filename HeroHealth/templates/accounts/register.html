@@ -1,0 +1,101 @@
+{% extends 'base.html' %}
+
+{% block title %}HeroHealth | Register{% endblock %}
+
+{% block content %}
+<div class="consultation-container" id="registerContainer">
+    <div class="glass-card" id="registerCard">
+        <div class="consultation-header">
+            <h2 class="consultation-title">Create Account</h2>
+            <p class="consultation-desc">Join HeroHealth to save your consultation reports and sync contact data</p>
+        </div>
+        
+        <form method="POST" id="registerForm">
+            {% csrf_token %}
+            
+            <h3 style="font-family: var(--font-heading); margin-bottom:1rem; border-bottom:1px solid var(--border-glass); padding-bottom:0.5rem; font-size:1.15rem; color:var(--primary);" id="authInfoTitle">Account Credentials</h3>
+            
+            <div class="form-group">
+                <label class="form-label" for="id_username">Username</label>
+                {{ form.username }}
+                {% if form.username.errors %}
+                <small style="color: var(--danger);">{{ form.username.errors.0 }}</small>
+                {% endif %}
+            </div>
+            
+            <div class="form-group">
+                <label class="form-label" for="id_email">Email</label>
+                {{ form.email }}
+                {% if form.email.errors %}
+                <small style="color: var(--danger);">{{ form.email.errors.0 }}</small>
+                {% endif %}
+            </div>
+
+            <div style="display: grid; grid-template-columns: 1fr 1fr; gap:1rem;" id="nameGroup">
+                <div class="form-group">
+                    <label class="form-label" for="id_first_name">First Name</label>
+                    {{ form.first_name }}
+                </div>
+                <div class="form-group">
+                    <label class="form-label" for="id_last_name">Last Name</label>
+                    {{ form.last_name }}
+                </div>
+            </div>
+
+            <div style="display: grid; grid-template-columns: 1fr 1fr; gap:1rem;" id="passwordGroup">
+                <div class="form-group">
+                    <label class="form-label" for="id_password">Password</label>
+                    {{ form.password }}
+                </div>
+                <div class="form-group">
+                    <label class="form-label" for="id_confirm_password">Confirm Password</label>
+                    {{ form.confirm_password }}
+                </div>
+            </div>
+
+            <h3 style="font-family: var(--font-heading); margin-top:1.5rem; margin-bottom:1rem; border-bottom:1px solid var(--border-glass); padding-bottom:0.5rem; font-size:1.15rem; color:var(--primary);" id="profileInfoTitle">Medical & Profile Information</h3>
+            
+            <div style="display: grid; grid-template-columns: 1fr 1fr; gap:1rem;" id="profileGridRow1">
+                <div class="form-group">
+                    <label class="form-label" for="id_phone">Phone Number</label>
+                    {{ form.phone }}
+                </div>
+                <div class="form-group">
+                    <label class="form-label" for="id_age">Age</label>
+                    {{ form.age }}
+                </div>
+            </div>
+
+            <div style="display: grid; grid-template-columns: 1fr 1fr; gap:1rem;" id="profileGridRow2">
+                <div class="form-group">
+                    <label class="form-label" for="id_gender">Gender</label>
+                    {{ form.gender }}
+                </div>
+                <div class="form-group">
+                    <label class="form-label" for="id_blood_group">Blood Group</label>
+                    {{ form.blood_group }}
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label class="form-label" for="id_address">Home Address</label>
+                {{ form.address }}
+            </div>
+
+            <div class="form-group">
+                <label class="form-label" for="id_emergency_contact">Emergency Contact Info</label>
+                {{ form.emergency_contact }}
+            </div>
+            
+            <button type="submit" class="btn-premium" style="width: 100%; margin-top: 1rem;" id="submitRegister">
+                Register & Login <i class="fa-solid fa-user-plus"></i>
+            </button>
+        </form>
+        
+        <div style="text-align: center; margin-top: 1.5rem;" id="registerFooter">
+            <span style="color: var(--text-muted);">Already have an account? </span>
+            <a href="{% url 'login' %}" style="color: var(--primary); text-decoration: none; font-weight:600;">Log In</a>
+        </div>
+    </div>
+</div>
+{% endblock %}
