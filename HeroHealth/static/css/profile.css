@@ -1,0 +1,561 @@
+/* =========================================================
+   HEROHEALTH - PROFILE PAGE
+   ========================================================= */
+
+
+/* ---------------------------------------------------------
+   Main Layout
+   --------------------------------------------------------- */
+
+.profile-main-container {
+    width: 100%;
+    max-width: 1200px;
+    margin: 3rem auto;
+    padding: 0 1.5rem;
+}
+
+.profile-grid {
+    display: grid;
+    grid-template-columns: minmax(280px, 1fr) minmax(0, 2fr);
+    gap: 2rem;
+    align-items: start;
+}
+
+
+/* ---------------------------------------------------------
+   Profile Settings Panel
+   --------------------------------------------------------- */
+
+.profile-settings-panel {
+    height: fit-content;
+    padding: 1.75rem;
+}
+
+.history-panel {
+    padding: 1.75rem;
+}
+
+
+/* ---------------------------------------------------------
+   Panel Header
+   --------------------------------------------------------- */
+
+.profile-panel-header {
+    display: flex;
+    align-items: center;
+    gap: 0.9rem;
+    margin-bottom: 1.75rem;
+}
+
+.profile-panel-icon {
+    width: 44px;
+    height: 44px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    flex-shrink: 0;
+
+    color: var(--primary);
+
+    background: rgba(0, 242, 254, 0.08);
+    border: 1px solid rgba(0, 242, 254, 0.15);
+
+    border-radius: 10px;
+
+    font-size: 1.1rem;
+
+    box-shadow:
+        0 0 20px rgba(0, 242, 254, 0.05);
+}
+
+.profile-panel-header h2 {
+    margin: 0;
+
+    font-family: var(--font-heading);
+    font-size: 1.5rem;
+    font-weight: 700;
+
+    color: var(--primary);
+
+    line-height: 1.2;
+}
+
+.profile-panel-header p {
+    margin: 0.3rem 0 0;
+
+    color: var(--text-muted);
+    font-size: 0.78rem;
+    line-height: 1.4;
+}
+
+
+/* ---------------------------------------------------------
+   Form Sections
+   --------------------------------------------------------- */
+
+.profile-form-section {
+    margin-bottom: 1.5rem;
+}
+
+.profile-section-heading {
+    display: flex;
+    align-items: center;
+    gap: 0.55rem;
+
+    margin-bottom: 1rem;
+    padding-bottom: 0.65rem;
+
+    border-bottom: 1px solid var(--border-glass);
+}
+
+.profile-section-heading i {
+    color: var(--primary);
+    font-size: 0.9rem;
+}
+
+.profile-section-heading h3 {
+    margin: 0;
+
+    font-family: var(--font-heading);
+    font-size: 1rem;
+    font-weight: 600;
+
+    color: var(--text-muted);
+}
+
+.medical-profile-section {
+    margin-top: 1.5rem;
+}
+
+
+/* ---------------------------------------------------------
+   Form Groups
+   --------------------------------------------------------- */
+
+.profile-form-group {
+    margin-bottom: 1rem;
+}
+
+.profile-form-group:last-child {
+    margin-bottom: 0;
+}
+
+.profile-form-group .form-label {
+    display: block;
+    margin-bottom: 0.45rem;
+}
+
+
+/* ---------------------------------------------------------
+   Field Errors
+   --------------------------------------------------------- */
+
+.profile-field-error {
+    margin-top: 0.3rem;
+
+    color: var(--danger);
+    font-size: 0.78rem;
+    line-height: 1.4;
+}
+
+
+/* ---------------------------------------------------------
+   Save Button
+   --------------------------------------------------------- */
+
+.profile-save-btn {
+    width: 100%;
+    margin-top: 0.5rem;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.55rem;
+}
+
+.profile-save-btn i {
+    font-size: 0.9rem;
+}
+
+
+/* ---------------------------------------------------------
+   History List
+   --------------------------------------------------------- */
+
+.history-list {
+    display: grid;
+    gap: 1rem;
+}
+
+
+/* ---------------------------------------------------------
+   History Item
+   --------------------------------------------------------- */
+
+.history-item {
+    padding: 1.25rem;
+
+    border-color: rgba(255, 255, 255, 0.04);
+
+    transition:
+        border-color 0.25s ease,
+        transform 0.25s ease,
+        box-shadow 0.25s ease;
+}
+
+.history-item:hover {
+    border-color: rgba(0, 242, 254, 0.14);
+
+    transform: translateY(-2px);
+
+    box-shadow:
+        0 12px 35px rgba(0, 0, 0, 0.18),
+        0 0 25px rgba(0, 242, 254, 0.025);
+}
+
+
+/* ---------------------------------------------------------
+   History Top Row
+   --------------------------------------------------------- */
+
+.history-item-top {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+
+    gap: 1rem;
+
+    margin-bottom: 0.85rem;
+}
+
+.history-date {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.4rem;
+
+    color: var(--text-muted);
+    font-size: 0.82rem;
+}
+
+.history-date i {
+    color: var(--primary);
+}
+
+
+/* ---------------------------------------------------------
+   History Severity
+   --------------------------------------------------------- */
+
+.history-severity {
+    padding: 3px 10px;
+
+    font-size: 0.68rem;
+
+    white-space: nowrap;
+}
+
+.history-severity i {
+    font-size: 0.65rem;
+}
+
+
+/* ---------------------------------------------------------
+   Symptoms
+   --------------------------------------------------------- */
+
+.history-symptoms {
+    margin-bottom: 0.8rem;
+}
+
+.history-label {
+    display: block;
+
+    margin-bottom: 0.3rem;
+
+    color: var(--text-muted);
+
+    font-size: 0.7rem;
+    font-weight: 600;
+
+    text-transform: uppercase;
+    letter-spacing: 0.07em;
+}
+
+.symptom-preview {
+    margin: 0;
+
+    color: var(--text-primary);
+
+    font-size: 0.98rem;
+    font-weight: 600;
+    line-height: 1.55;
+}
+
+
+/* ---------------------------------------------------------
+   Specialty Tag
+   --------------------------------------------------------- */
+
+.history-specialty {
+    margin-bottom: 0.9rem;
+}
+
+.specialty-history-tag {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.4rem;
+
+    padding: 4px 9px;
+
+    color: var(--primary);
+
+    background: rgba(0, 242, 254, 0.08);
+
+    border: 1px solid rgba(0, 242, 254, 0.13);
+    border-radius: 5px;
+
+    font-size: 0.76rem;
+    font-weight: 500;
+}
+
+.specialty-history-tag i {
+    font-size: 0.7rem;
+}
+
+
+/* ---------------------------------------------------------
+   History Footer
+   --------------------------------------------------------- */
+
+.history-item-footer {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+
+    gap: 1rem;
+
+    padding-top: 0.85rem;
+
+    border-top: 1px solid var(--border-glass);
+}
+
+.view-report-link {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.4rem;
+
+    color: var(--primary);
+
+    text-decoration: none;
+
+    font-size: 0.85rem;
+    font-weight: 600;
+
+    transition:
+        color 0.2s ease,
+        gap 0.2s ease;
+}
+
+.view-report-link:hover {
+    color: var(--accent);
+    gap: 0.55rem;
+}
+
+.view-report-link i {
+    font-size: 0.7rem;
+}
+
+.attachment-indicator {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.35rem;
+
+    color: var(--accent);
+
+    font-size: 0.76rem;
+    white-space: nowrap;
+}
+
+
+/* ---------------------------------------------------------
+   Empty History
+   --------------------------------------------------------- */
+
+.no-history {
+    min-height: 350px;
+
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+
+    padding: 3rem 1rem;
+
+    text-align: center;
+    color: var(--text-muted);
+}
+
+.no-history-icon {
+    width: 75px;
+    height: 75px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    margin-bottom: 1.25rem;
+
+    color: var(--primary);
+
+    background: rgba(0, 242, 254, 0.05);
+
+    border: 1px solid rgba(0, 242, 254, 0.1);
+
+    border-radius: 50%;
+
+    font-size: 2rem;
+
+    opacity: 0.55;
+}
+
+.no-history h3 {
+    margin: 0 0 0.5rem;
+
+    font-family: var(--font-heading);
+
+    color: var(--text-primary);
+
+    font-size: 1.1rem;
+}
+
+.no-history p {
+    max-width: 420px;
+
+    margin: 0 0 1.5rem;
+
+    font-size: 0.88rem;
+    line-height: 1.6;
+}
+
+.history-start-btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+}
+
+
+/* ---------------------------------------------------------
+   Responsive - Tablet
+   --------------------------------------------------------- */
+
+@media (max-width: 900px) {
+
+    .profile-main-container {
+        margin: 2rem auto;
+    }
+
+    .profile-grid {
+        grid-template-columns: 1fr;
+        gap: 1.5rem;
+    }
+
+    .profile-settings-panel,
+    .history-panel {
+        padding: 1.5rem;
+    }
+
+}
+
+
+/* ---------------------------------------------------------
+   Responsive - Mobile
+   --------------------------------------------------------- */
+
+@media (max-width: 600px) {
+
+    .profile-main-container {
+        margin: 1.25rem auto;
+        padding: 0 1rem;
+    }
+
+    .profile-settings-panel,
+    .history-panel {
+        padding: 1.15rem;
+    }
+
+    .profile-panel-header {
+        align-items: flex-start;
+    }
+
+    .profile-panel-icon {
+        width: 40px;
+        height: 40px;
+        font-size: 1rem;
+    }
+
+    .profile-panel-header h2 {
+        font-size: 1.25rem;
+    }
+
+    .profile-panel-header p {
+        font-size: 0.72rem;
+    }
+
+    .history-item {
+        padding: 1rem;
+    }
+
+    .history-item-top {
+        align-items: flex-start;
+        flex-direction: column;
+        gap: 0.55rem;
+    }
+
+    .history-item-footer {
+        align-items: flex-start;
+        flex-direction: column;
+    }
+
+    .attachment-indicator {
+        align-self: flex-start;
+    }
+
+}
+
+
+/* ---------------------------------------------------------
+   Small Mobile
+   --------------------------------------------------------- */
+
+@media (max-width: 400px) {
+
+    .profile-main-container {
+        padding: 0 0.75rem;
+    }
+
+    .profile-settings-panel,
+    .history-panel {
+        padding: 1rem;
+    }
+
+    .profile-panel-header {
+        gap: 0.65rem;
+    }
+
+    .profile-panel-icon {
+        width: 36px;
+        height: 36px;
+    }
+
+    .profile-panel-header h2 {
+        font-size: 1.15rem;
+    }
+
+    .symptom-preview {
+        font-size: 0.9rem;
+    }
+
+}

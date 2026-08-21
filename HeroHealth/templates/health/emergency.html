@@ -1,67 +1,111 @@
 {% extends 'base.html' %}
+{% load static %}
 
 {% block title %}HeroHealth | Nepal Emergency Helplines & Resources{% endblock %}
 
+{% block extra_head %}
+<link rel="stylesheet" href="{% static 'css/emergency.css' %}">
+{% endblock %}
+
 {% block content %}
-<div class="consultation-container" style="max-width: 1000px;" id="emergencyContainer">
-    
-    <div class="consultation-header">
-        <h2 class="consultation-title" style="color:var(--danger); font-size:2.5rem;"><i class="fa-solid fa-truck-medical"></i> Emergency Response Directory</h2>
-        <p class="consultation-desc">Immediate telephone lines and triage resources for healthcare emergencies in Nepal</p>
+<div class="emergency-container" id="emergencyContainer">
+
+    <div class="emergency-header">
+        <h2 class="emergency-title">
+            <i class="fa-solid fa-truck-medical"></i>
+            Emergency Response Directory
+        </h2>
+
+        <p class="emergency-description">
+            Immediate telephone lines and triage resources for healthcare emergencies in Nepal
+        </p>
     </div>
 
-    <!-- Triage Status Actions Card -->
-    <div class="glass-card" style="margin-bottom: 2rem; border-color: rgba(239, 68, 68, 0.2);" id="emergencyTriageCard">
-        <h3 style="font-family: var(--font-heading); margin-bottom: 1rem; color:var(--primary); font-size:1.35rem;">Emergency First-Aid Triage Guide</h3>
-        
-        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 1.5rem;" id="triageGuideGrid">
-            
-            <div style="background: rgba(239, 68, 68, 0.05); border-left: 4px solid var(--danger); padding:1rem; border-radius: 4px;" id="guideRed">
-                <h4 style="color:#f87171; font-weight:700; margin-bottom:0.5rem;"><span style="background:var(--danger); color:#fff; padding:2px 8px; border-radius:3px; font-size:0.75rem; margin-right:5px;">RED</span> Critical Alert</h4>
-                <p style="font-size:0.85rem; color:var(--text-muted); line-height:1.5;">
+    <div class="glass-card emergency-triage-card" id="emergencyTriageCard">
+        <h3 class="emergency-section-title">
+            Emergency First-Aid Triage Guide
+        </h3>
+
+        <div class="triage-guide-grid" id="triageGuideGrid">
+
+            <div class="triage-guide triage-guide-red" id="guideRed">
+                <h4>
+                    <span class="triage-badge triage-badge-red">RED</span>
+                    Critical Alert
+                </h4>
+
+                <p>
                     Chest pain, unconsciousness, massive bleeding, severe difficulty breathing, sudden stroke-like symptoms.
                 </p>
-                <p style="font-size:0.85rem; font-weight:700; margin-top:0.5rem; color:#f87171;">➔ CALL 102 / 100 IMMEDIATELY</p>
+
+                <p class="triage-guide-action">
+                    ➔ CALL 102 / 100 IMMEDIATELY
+                </p>
             </div>
 
-            <div style="background: rgba(245, 158, 11, 0.05); border-left: 4px solid var(--warning); padding:1rem; border-radius: 4px;" id="guideYellow">
-                <h4 style="color:#fbbf24; font-weight:700; margin-bottom:0.5rem;"><span style="background:var(--warning); color:#fff; padding:2px 8px; border-radius:3px; font-size:0.75rem; margin-right:5px;">YELLOW</span> High Priority</h4>
-                <p style="font-size:0.85rem; color:var(--text-muted); line-height:1.5;">
+            <div class="triage-guide triage-guide-yellow" id="guideYellow">
+                <h4>
+                    <span class="triage-badge triage-badge-yellow">YELLOW</span>
+                    High Priority
+                </h4>
+
+                <p>
                     Severe abdominal pain, fracture without visible bone, high fever (>103°F) unresponsive to medicine, persistent vomiting.
                 </p>
-                <p style="font-size:0.85rem; font-weight:700; margin-top:0.5rem; color:#fbbf24;">➔ Head to nearest emergency clinic</p>
+
+                <p class="triage-guide-action">
+                    ➔ Head to nearest emergency clinic
+                </p>
             </div>
 
-            <div style="background: rgba(16, 185, 129, 0.05); border-left: 4px solid var(--success); padding:1rem; border-radius: 4px;" id="guideGreen">
-                <h4 style="color:#34d399; font-weight:700; margin-bottom:0.5rem;"><span style="background:var(--success); color:#fff; padding:2px 8px; border-radius:3px; font-size:0.75rem; margin-right:5px;">GREEN</span> Low Priority</h4>
-                <p style="font-size:0.85rem; color:var(--text-muted); line-height:1.5;">
+            <div class="triage-guide triage-guide-green" id="guideGreen">
+                <h4>
+                    <span class="triage-badge triage-badge-green">GREEN</span>
+                    Low Priority
+                </h4>
+
+                <p>
                     Minor cuts, mild cold/cough, muscle aches, mild skin allergies.
                 </p>
-                <p style="font-size:0.85rem; font-weight:700; margin-top:0.5rem; color:#34d399;">➔ Schedule GP visit or home rest</p>
+
+                <p class="triage-guide-action">
+                    ➔ Schedule GP visit or home rest
+                </p>
             </div>
 
         </div>
     </div>
 
-    <!-- Helpline Table Grid -->
-    <div class="glass-card" id="helplinePanel">
-        <h3 style="font-family: var(--font-heading); margin-bottom: 1.5rem; color:var(--primary); font-size:1.35rem;">National Helpline Directory</h3>
-        
-        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 1.25rem;" id="helplineGrid">
+    <div class="glass-card helpline-panel" id="helplinePanel">
+        <h3 class="emergency-section-title">
+            National Helpline Directory
+        </h3>
+
+        <div class="helpline-grid" id="helplineGrid">
             {% for line in helplines %}
-            <div class="glass-card" style="padding: 1.25rem; display: flex; justify-content: space-between; align-items: center; border-color: rgba(255,255,255,0.05);" id="lineItem-{{ forloop.counter }}">
-                <div style="max-width:70%;">
-                    <h4 style="font-weight: 700; font-size: 1.05rem; margin-bottom:0.25rem;">{{ line.name }}</h4>
-                    <p style="font-size:0.8rem; color:var(--text-muted);">{{ line.desc }}</p>
+            <div class="glass-card helpline-item" id="lineItem-{{ forloop.counter }}">
+
+                <div class="helpline-info">
+                    <h4 class="helpline-name">
+                        {{ line.name }}
+                    </h4>
+
+                    <p class="helpline-description">
+                        {{ line.desc }}
+                    </p>
                 </div>
-                <div style="text-align: right;">
-                    <a href="tel:{{ line.number }}" style="background: rgba(239, 68, 68, 0.15); color: #f87171; border: 1px solid rgba(239, 68, 68, 0.3); padding: 0.5rem 1rem; border-radius: 8px; text-decoration: none; font-weight: 700; display: inline-block; font-size: 1rem; font-family: var(--font-heading);" class="call-btn" id="call-{{ forloop.counter }}">
-                        <i class="fa-solid fa-phone"></i> {{ line.number }}
+
+                <div class="helpline-action">
+                    <a href="tel:{{ line.number }}" class="call-btn" id="call-{{ forloop.counter }}">
+                        <i class="fa-solid fa-phone"></i>
+                        {{ line.number }}
                     </a>
                 </div>
+
             </div>
             {% endfor %}
         </div>
     </div>
+
 </div>
 {% endblock %}

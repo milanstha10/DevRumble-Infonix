@@ -3,81 +3,240 @@
 
 {% block title %}HeroHealth | {{ facility.name }}{% endblock %}
 
+{% block extra_head %}
+<link rel="stylesheet" href="{% static 'css/facility-detail.css' %}">
+{% endblock %}
+
 {% block content %}
-<div style="max-width: 1200px; margin: 3rem auto; padding: 0 1.5rem;" id="facilityDetailContainer">
-    
-    <a href="{% url 'facility_list' %}" style="text-decoration:none; color:var(--primary); font-weight:600; display:inline-flex; align-items:center; gap:0.5rem; margin-bottom:1.5rem;" id="backToDirectory">
-        <i class="fa-solid fa-arrow-left"></i> Back to Directory
+
+<div class="facility-detail-container" id="facilityDetailContainer">
+
+    <!-- Back to Directory -->
+    <a href="{% url 'facility_list' %}"
+       class="facility-back-link"
+       id="backToDirectory">
+        <i class="fa-solid fa-arrow-left" aria-hidden="true"></i>
+        <span>Back to Directory</span>
     </a>
 
-    <div class="glass-card" id="detailCard">
+    <div class="glass-card facility-detail-card" id="detailCard">
+
         <div class="facility-details-grid" id="detailGrid">
-            
-            <!-- Left Panel: Info and Services -->
-            <div id="infoPanel">
-                <div style="display: flex; gap: 1rem; align-items: center; margin-bottom: 1rem;" id="detailHeaderRow">
-                    <span style="font-size: 0.85rem; background: rgba(0, 242, 254, 0.08); color: var(--primary); padding: 4px 12px; border-radius: 4px; border: 1px solid rgba(0,242,254,0.15); font-weight:600;">
+
+            <!-- =====================================================
+                 LEFT PANEL — FACILITY INFORMATION
+            ====================================================== -->
+            <div class="facility-info-panel" id="infoPanel">
+
+                <!-- Facility type + status -->
+                <div class="facility-meta-row" id="detailHeaderRow">
+
+                    <span class="facility-type-badge">
                         {{ facility.type }}
                     </span>
+
                     {% if facility.status == 'Available' %}
-                        <span class="status-badge available" id="detailStatus">Available</span>
+                        <span class="status-badge available" id="detailStatus">
+                            Available
+                        </span>
                     {% elif facility.status == 'Busy' %}
-                        <span class="status-badge busy" id="detailStatus">Busy</span>
+                        <span class="status-badge busy" id="detailStatus">
+                            Busy
+                        </span>
                     {% else %}
-                        <span class="status-badge emergency" id="detailStatus">Emergency Only</span>
+                        <span class="status-badge emergency" id="detailStatus">
+                            Emergency Only
+                        </span>
                     {% endif %}
+
                 </div>
 
-                <h1 style="font-family: var(--font-heading); font-size: 2.25rem; font-weight: 800; margin-bottom: 1.5rem; line-height:1.2;" id="facilityName">{{ facility.name }}</h1>
-                
-                <div style="margin-bottom: 2.5rem;" id="contactDetails">
-                    <p style="font-size: 1.05rem; margin-bottom: 0.75rem;"><i class="fa-solid fa-map-location-dot" style="color:var(--primary); margin-right:10px;"></i> {{ facility.address }}</p>
-                    <p style="font-size: 1.05rem; margin-bottom: 0.75rem;"><i class="fa-solid fa-phone" style="color:var(--primary); margin-right:10px;"></i> {{ facility.phone|default:"Not Available" }}</p>
-                    {% if facility.website %}
-                        <p style="font-size: 1.05rem; margin-bottom: 0.75rem;">
-                            <i class="fa-solid fa-globe" style="color:var(--primary); margin-right:10px;"></i> 
-                            <a href="{{ facility.website }}" target="_blank" style="color: var(--primary); text-decoration:none;">{{ facility.website }}</a>
-                        </p>
-                    {% endif %}
-                </div>
+                <!-- Facility name -->
+                <h1 class="facility-detail-name" id="facilityName">
+                    {{ facility.name }}
+                </h1>
 
-                <hr style="border: 0; border-top: 1px solid var(--border-glass); margin: 2rem 0;">
+                <!-- Contact information -->
+                <div class="facility-contact-details" id="contactDetails">
 
-                <div id="facilityServices">
-                    <h3 style="font-family: var(--font-heading); font-size:1.35rem; margin-bottom:1rem; color:var(--primary);"><i class="fa-solid fa-notes-medical"></i> Services & Specializations Available</h3>
-                    <div id="detailSpecialtiesList">
-                        {% for spec in facility.specializations_list %}
-                            <span class="specialty-tag" style="font-size:0.9rem; padding: 6px 16px; margin-right:8px; margin-bottom:8px;">{{ spec }}</span>
-                        {% endfor %}
+                    <div class="contact-item">
+                        <span class="contact-icon">
+                            <i class="fa-solid fa-map-location-dot"
+                               aria-hidden="true"></i>
+                        </span>
+
+                        <div>
+                            <span class="contact-label">Address</span>
+                            <p>{{ facility.address }}</p>
+                        </div>
                     </div>
+
+                    <div class="contact-item">
+                        <span class="contact-icon">
+                            <i class="fa-solid fa-phone"
+                               aria-hidden="true"></i>
+                        </span>
+
+                        <div>
+                            <span class="contact-label">Phone</span>
+                            <p>
+                                {{ facility.phone|default:"Not Available" }}
+                            </p>
+                        </div>
+                    </div>
+
+                    {% if facility.website %}
+                        <div class="contact-item">
+                            <span class="contact-icon">
+                                <i class="fa-solid fa-globe"
+                                   aria-hidden="true"></i>
+                            </span>
+
+                            <div>
+                                <span class="contact-label">Website</span>
+
+                                <p>
+                                    <a href="{{ facility.website }}"
+                                       target="_blank"
+                                       rel="noopener noreferrer"
+                                       class="facility-website">
+                                        {{ facility.website }}
+                                        <i class="fa-solid fa-arrow-up-right-from-square"
+                                           aria-hidden="true"></i>
+                                    </a>
+                                </p>
+                            </div>
+                        </div>
+                    {% endif %}
+
                 </div>
+
+                <!-- Divider -->
+                <div class="facility-divider"></div>
+
+                <!-- Services -->
+                <section class="facility-services" id="facilityServices">
+
+                    <div class="section-heading-row">
+                        <div class="section-heading-icon">
+                            <i class="fa-solid fa-notes-medical"
+                               aria-hidden="true"></i>
+                        </div>
+
+                        <div>
+                            <h2>
+                                Services &amp; Specializations
+                            </h2>
+
+                            <p>
+                                Medical services available at this facility
+                            </p>
+                        </div>
+                    </div>
+
+                    {% if facility.specializations_list %}
+                        <div class="detail-specialties-list"
+                             id="detailSpecialtiesList">
+
+                            {% for spec in facility.specializations_list %}
+                                <span class="specialty-tag facility-specialty-tag">
+                                    {{ spec }}
+                                </span>
+                            {% endfor %}
+
+                        </div>
+                    {% else %}
+                        <div class="no-specialties">
+                            <i class="fa-solid fa-circle-info"
+                               aria-hidden="true"></i>
+
+                            <span>
+                                No specialization information available.
+                            </span>
+                        </div>
+                    {% endif %}
+
+                </section>
+
             </div>
 
-            <!-- Right Panel: Micro-Map -->
-            <div id="mapPanel">
-                <h3 style="font-family: var(--font-heading); font-size:1.2rem; margin-bottom:1rem;"><i class="fa-solid fa-location-crosshairs" style="color:var(--primary);"></i> Map Coordinates</h3>
-                
-                <!-- Dataset variables passed into static map JS -->
-                <div id="facilityDetailMap" class="map-container" style="height: 350px;"
-                     data-lat="{{ facility.latitude }}" 
-                     data-lon="{{ facility.longitude }}" 
-                     data-name="{{ facility.name }}" 
+
+            <!-- =====================================================
+                 RIGHT PANEL — MAP
+            ====================================================== -->
+            <div class="facility-map-panel" id="mapPanel">
+
+                <div class="map-panel-header">
+
+                    <div>
+                        <h2>
+                            <i class="fa-solid fa-location-crosshairs"
+                               aria-hidden="true"></i>
+
+                            Location
+                        </h2>
+
+                        <p>
+                            Facility location and navigation
+                        </p>
+                    </div>
+
+                </div>
+
+                <!-- Map -->
+                <div id="facilityDetailMap"
+                     class="map-container facility-detail-map"
+                     data-lat="{{ facility.latitude }}"
+                     data-lon="{{ facility.longitude }}"
+                     data-name="{{ facility.name }}"
                      data-address="{{ facility.address }}">
                 </div>
-                
-                <div style="margin-top: 1.5rem; text-align: center;" id="mapActionsRow">
-                    <a href="https://www.google.com/maps/dir/?api=1&destination={{ facility.latitude }},{{ facility.longitude }}" 
-                       target="_blank" class="btn-premium" style="width: 100%;" id="googleDirectionsLink">
-                        Get Navigation Directions <i class="fa-solid fa-diamond-turn-right"></i>
-                    </a>
+
+                <!-- Coordinates -->
+                <div class="coordinates-info">
+
+                    <div class="coordinate-item">
+                        <span class="coordinate-label">Latitude</span>
+                        <strong>{{ facility.latitude }}</strong>
+                    </div>
+
+                    <div class="coordinate-divider"></div>
+
+                    <div class="coordinate-item">
+                        <span class="coordinate-label">Longitude</span>
+                        <strong>{{ facility.longitude }}</strong>
+                    </div>
+
                 </div>
+
+                <!-- Navigation -->
+                <div class="map-actions-row" id="mapActionsRow">
+
+                    <a href="https://www.google.com/maps/dir/?api=1&destination={{ facility.latitude }},{{ facility.longitude }}"
+                       target="_blank"
+                       rel="noopener noreferrer"
+                       class="btn-premium facility-navigation-btn"
+                       id="googleDirectionsLink">
+
+                        <i class="fa-solid fa-diamond-turn-right"
+                           aria-hidden="true"></i>
+
+                        <span>Get Navigation Directions</span>
+
+                    </a>
+
+                </div>
+
             </div>
 
         </div>
+
     </div>
 
 </div>
+
 {% endblock %}
+
 
 {% block extra_js %}
 <script src="{% static 'js/map.js' %}"></script>

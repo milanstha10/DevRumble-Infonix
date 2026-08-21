@@ -3,6 +3,10 @@
 
 {% block title %}HeroHealth | Nepal's AI-Powered Smart Triage & Clinic Finder{% endblock %}
 
+{% block extra_head %}
+<link rel="stylesheet" href="{% static 'css/home.css' %}">
+{% endblock %}
+
 {% block content %}
 
 <section class="hero-section" id="heroBlock">
@@ -29,7 +33,6 @@
 </section>
 
 <section class="feature-grid" id="featuresSection">
-
     <article class="glass-card feature-card" id="featTriage">
         <div class="feature-icon" aria-hidden="true">
             <i class="fa-solid fa-robot"></i>
@@ -87,12 +90,10 @@
             View Nearby Maps
         </a>
     </article>
-
 </section>
 
 <section class="stats-section" id="statsBlock">
     <div class="glass-card stats-card">
-
         <div class="stat-item" id="statHospitals">
             <h2 class="stat-value stat-primary">
                 18+
@@ -163,7 +164,6 @@
                 Emergency Information
             </p>
         </div>
-
     </div>
 </section>
 
@@ -180,8 +180,4 @@
     </div>
 </section>
 
-{% endblock %}
-
-{% block extra_js %}
-<script src="{% static 'js/dot-bg.js' %}"></script>
 {% endblock %}

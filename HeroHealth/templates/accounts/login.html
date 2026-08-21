@@ -1,48 +1,86 @@
 {% extends 'base.html' %}
+{% load static %}
 
 {% block title %}HeroHealth | Login{% endblock %}
 
+{% block extra_head %}
+<link rel="stylesheet" href="{% static 'css/login.css' %}">
+{% endblock %}
+
 {% block content %}
-<div class="consultation-container" id="loginContainer">
-    <div class="glass-card" id="loginCard">
-        <div class="consultation-header">
-            <h2 class="consultation-title">Welcome Back</h2>
-            <p class="consultation-desc">Log in to view your consultation history and manage your profile</p>
+
+<div class="login-page" id="loginContainer">
+
+    <div class="login-card glass-card" id="loginCard">
+
+        <!-- Header -->
+        <div class="login-header">
+
+            <div class="login-icon" aria-hidden="true">
+                <i class="fa-solid fa-shield-heart"></i>
+            </div>
+
+            <h1 class="login-title">
+                Welcome Back
+            </h1>
+
+            <p class="login-description">
+                Log in to view your consultation history and manage your profile.
+            </p>
+
         </div>
-        
-        <form method="POST" id="loginForm">
+
+
+        <!-- Login Form -->
+        <form method="POST" class="login-form" id="loginForm">
+
             {% csrf_token %}
+
+            {% if form.non_field_errors %}
+                <div class="login-error-box" role="alert">
+
+                    <i class="fa-solid fa-circle-exclamation"></i>
+
+                    <div>
+                        {% for error in form.non_field_errors %}
+                            <p>{{ error }}</p>
+                        {% endfor %}
+                    </div>
+
+                </div>
+            {% endif %}
+
+
             {% for field in form %}
             <div class="form-group">
-                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.5rem;">
-                    <label class="form-label" for="{{ field.id_for_label }}" style="margin-bottom: 0;">{{ field.label }}</label>
-                    {% if field.name == 'password' %}
-                    <a href="{% url 'password_reset' %}" style="color: var(--primary); text-decoration: none; font-size: 0.85rem; font-weight: 500;">Forgot Password?</a>
-                    {% endif %}
-                </div>
+                <label class="form-label" for="{{ field.id_for_label }}">{{ field.label }}</label>
                 {{ field }}
                 {% if field.errors %}
                 <small style="color: var(--danger); display:block; margin-top:0.25rem;">{{ field.errors.0 }}</small>
                 {% endif %}
             </div>
             {% endfor %}
-            
-            <button type="submit" class="btn-premium" style="width: 100%; margin-top: 1rem;" id="submitLogin">
-                Log In <i class="fa-solid fa-arrow-right-to-bracket"></i>
+
+
+            <!-- Submit Button -->
+            <button
+                type="submit"
+                class="login-submit btn-premium"
+                id="submitLogin"
+            >
+                <span>Log In</span>
+                <i class="fa-solid fa-arrow-right-to-bracket"></i>
             </button>
+
         </form>
-        
-        <div style="margin-top: 1.5rem; text-align: center;" id="googleLoginSection">
-            <p style="color: var(--text-muted); margin-bottom: 1rem; font-size: 0.9rem;">— OR —</p>
-            <a href="{% url 'google_login' %}" class="btn-premium btn-premium-accent" style="width: 100%; text-decoration: none; gap: 0.75rem; display: flex; align-items: center; justify-content: center;" id="btnGoogleLogin">
-                <i class="fa-brands fa-google"></i> Continue with Google
-            </a>
-        </div>
         
         <div style="text-align: center; margin-top: 1.5rem;" id="loginFooter">
             <span style="color: var(--text-muted);">Don't have an account? </span>
             <a href="{% url 'register' %}" style="color: var(--primary); text-decoration: none; font-weight:600;">Sign Up</a>
         </div>
+
     </div>
+
 </div>
+
 {% endblock %}

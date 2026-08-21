@@ -1,248 +1,27 @@
-/* HeroHealth Responsive Styles */
-
-@media (max-width: 1200px) {
-    .navbar {
-        padding-left: 1.5rem;
-        padding-right: 1.5rem;
-    }
-
-    .nav-links {
-        gap: 1.1rem;
-    }
-
-    .feature-grid {
-        padding-left: 1.5rem;
-        padding-right: 1.5rem;
-    }
-}
-
-@media (max-width: 1050px) {
-    .navbar {
-        gap: 1rem;
-    }
-
-    .nav-links {
-        gap: 0.8rem;
-    }
-
-    .nav-link {
-        font-size: 0.88rem;
-    }
-
-    .nav-btn {
-        padding-left: 0.9rem;
-        padding-right: 0.9rem;
-    }
-}
+/* HeroHealth CSS - Responsive Styles */
 
 @media (max-width: 992px) {
-    .navbar {
-        padding-top: 0.9rem;
-        padding-bottom: 0.9rem;
-    }
-
-    .nav-links {
-        gap: 0.75rem;
-    }
-
-    .nav-link {
-        font-size: 0.86rem;
-    }
-
-    .nav-btn {
-        min-height: 36px;
-        padding: 0.45rem 0.9rem;
-        font-size: 0.85rem;
-    }
-
-    .hero-section {
-        padding-top: 4rem;
-        padding-bottom: 4rem;
-    }
-
     .hero-title {
         font-size: 2.75rem;
     }
-
-    .hero-subtitle {
-        font-size: 1.15rem;
-    }
-
-    .feature-grid {
-        gap: 1.5rem;
-    }
-
+    
     .facility-details-grid {
         grid-template-columns: 1fr;
-    }
-
-    .consultation-container {
-        max-width: 760px;
     }
 }
 
 @media (max-width: 768px) {
     .navbar {
-        position: sticky;
-        top: 0;
-
         flex-direction: column;
-        align-items: stretch;
-
         gap: 1rem;
         padding: 1rem;
-
-        background: rgba(7, 11, 19, 0.94);
     }
-
-    .nav-brand {
-        justify-content: center;
-        font-size: 1.4rem;
-    }
-
+    
     .nav-links {
         width: 100%;
-
-        display: flex;
-        align-items: center;
         justify-content: center;
         flex-wrap: wrap;
-
-        gap: 0.7rem 0.9rem;
-
-        padding: 0;
-    }
-
-    .nav-link {
-        font-size: 0.88rem;
-    }
-
-    .nav-btn {
-        min-height: 36px;
-        padding: 0.45rem 0.9rem;
-        font-size: 0.84rem;
-    }
-
-    #mainContent {
-        min-height: 75vh;
-    }
-
-    .hero-section {
-        max-width: 100%;
-        padding: 3.5rem 1rem;
-    }
-
-    .hero-title {
-        font-size: 2.25rem;
-        line-height: 1.18;
-    }
-
-    .hero-subtitle {
-        max-width: 650px;
-        margin-bottom: 2rem;
-        font-size: 1.1rem;
-    }
-
-    .hero-section .btn-premium {
-        min-width: 210px;
-    }
-
-    .feature-grid {
-        grid-template-columns: 1fr;
-        gap: 1.25rem;
-
-        padding: 1rem;
-    }
-
-    .glass-card {
-        padding: 1.5rem;
-    }
-
-    .feature-card {
-        min-height: 0;
-    }
-
-    .consultation-container {
-        width: 100%;
-        margin-top: 2rem;
-        margin-bottom: 2rem;
-        padding: 0 1rem;
-    }
-
-    .consultation-title {
-        font-size: 1.75rem;
-    }
-
-    .upload-zone {
-        padding: 1.5rem 1rem;
-    }
-
-    .result-header-panel {
-        flex-direction: column;
-        align-items: flex-start;
         gap: 1rem;
-    }
-
-    .severity-indicator {
-        align-self: flex-start;
-    }
-
-    .diagnosis-item {
-        flex-direction: column;
-        align-items: flex-start;
-        gap: 1rem;
-    }
-
-    .diagnosis-info {
-        width: 100%;
-        max-width: 100%;
-    }
-
-    .likelihood-badge {
-        align-self: flex-start;
-    }
-
-    .facility-details-grid {
-        grid-template-columns: 1fr;
-        gap: 1.25rem;
-    }
-
-    .map-container {
-        height: 450px;
-        min-height: 350px;
-    }
-
-    .footer {
-        margin-top: 3rem;
-        padding: 2rem 1rem;
-    }
-
-    .footer-links {
-        gap: 1rem 1.5rem;
-    }
-}
-
-@media (max-width: 576px) {
-    .navbar {
-        padding: 0.85rem;
-    }
-
-    .nav-brand {
-        font-size: 1.3rem;
-    }
-
-    .nav-links {
-        gap: 0.6rem 0.75rem;
-    }
-
-    .nav-link {
-        font-size: 0.8rem;
-    }
-
-    .nav-btn {
-        min-height: 34px;
-        padding: 0.4rem 0.75rem;
-        font-size: 0.78rem;
     }
 
     .hero-section {
@@ -250,249 +29,57 @@
     }
 
     .hero-title {
-        font-size: 2rem;
-        line-height: 1.15;
+        font-size: 2.25rem;
     }
 
     .hero-subtitle {
-        font-size: 1rem;
-        line-height: 1.6;
-    }
-
-    .hero-section .btn-premium {
-        width: 100%;
-        min-width: 0;
-    }
-
-    .feature-grid {
-        padding: 0.75rem;
-    }
-
-    .feature-icon {
-        font-size: 2.2rem;
-    }
-
-    .feature-title {
-        font-size: 1.2rem;
-    }
-
-    .feature-desc {
-        font-size: 0.9rem;
-    }
-
-    .consultation-container {
-        padding: 0 0.75rem;
-    }
-
-    .consultation-header {
-        margin-bottom: 1.5rem;
-    }
-
-    .consultation-title {
-        font-size: 1.6rem;
-    }
-
-    .consultation-desc {
-        font-size: 0.9rem;
-    }
-
-    .glass-card {
-        padding: 1.25rem;
-        border-radius: var(--radius-lg);
-    }
-
-    .form-group {
-        margin-bottom: 1.25rem;
-    }
-
-    .form-label {
-        font-size: 0.9rem;
-    }
-
-    .form-control,
-    .form-select {
-        min-height: 44px;
-        font-size: 0.95rem;
-    }
-
-    .btn-premium {
-        width: 100%;
-        min-height: 46px;
-    }
-
-    .messages-container {
-        padding: 0 0.75rem;
-    }
-
-    .alert-message {
-        align-items: flex-start;
-        padding: 0.85rem;
-    }
-
-    .alert-message>span {
-        align-items: flex-start;
-    }
-
-    .alert-close {
-        width: 28px;
-        height: 28px;
-    }
-
-    .result-section-title {
         font-size: 1.1rem;
     }
 
-    .diagnosis-item {
+    .feature-grid {
+        grid-template-columns: 1fr;
         padding: 1rem;
     }
 
-    .diagnosis-name {
-        font-size: 1rem;
-    }
-
-    .diagnosis-desc {
-        font-size: 0.85rem;
-    }
-
-    .disclaimer-box {
-        padding: 1rem;
-        font-size: 0.85rem;
-    }
-
-    .map-container {
-        height: 380px;
-        min-height: 300px;
-    }
-
-    .footer {
-        margin-top: 2.5rem;
-        padding: 1.75rem 1rem;
-        font-size: 0.8rem;
-    }
-
-    .footer-links {
+    .result-header-panel {
         flex-direction: column;
-        gap: 0.75rem;
+        align-items: flex-start;
+        gap: 1rem;
     }
-
-    #copyrightText {
-        line-height: 1.7;
+    
+    .diagnosis-item {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 1rem;
+    }
+    
+    .diagnosis-info {
+        max-width: 100%;
     }
 }
 
-@media (max-width: 400px) {
+@media (max-width: 480px) {
     .navbar {
         padding: 0.75rem;
     }
-
+    
     .nav-brand {
-        font-size: 1.2rem;
+        font-size: 1.25rem;
     }
-
+    
     .nav-links {
-        gap: 0.5rem;
-    }
-
-    .nav-link {
-        font-size: 0.75rem;
-    }
-
-    .nav-btn {
-        min-height: 32px;
-        padding: 0.35rem 0.6rem;
-        font-size: 0.72rem;
-    }
-
-    .hero-section {
-        padding: 2.5rem 0.85rem;
-    }
-
-    .hero-title {
-        font-size: 1.75rem;
-    }
-
-    .hero-subtitle {
-        font-size: 0.92rem;
-    }
-
-    .feature-grid {
-        padding: 0.6rem;
-    }
-
-    .glass-card {
-        padding: 1rem;
-    }
-
-    .feature-icon {
-        font-size: 2rem;
-        margin-bottom: 1rem;
-    }
-
-    .feature-title {
-        font-size: 1.1rem;
-    }
-
-    .feature-desc {
         font-size: 0.85rem;
     }
-
-    .consultation-title {
-        font-size: 1.45rem;
-    }
-
-    .consultation-desc {
-        font-size: 0.85rem;
-    }
-
-    .form-control,
-    .form-select {
-        min-height: 42px;
-        font-size: 0.9rem;
-    }
-
-    .btn-premium {
-        min-height: 44px;
-        padding: 0.7rem 1rem;
-        font-size: 0.9rem;
-    }
-
-    .map-container {
-        height: 330px;
-        min-height: 280px;
-    }
-
-    .footer {
-        padding: 1.5rem 0.75rem;
-    }
-}
-
-@media (max-width: 340px) {
-    .nav-links {
-        gap: 0.4rem;
-    }
-
-    .nav-link {
-        font-size: 0.7rem;
-    }
-
-    .nav-btn {
-        padding: 0.35rem 0.5rem;
-        font-size: 0.68rem;
-    }
-
+    
     .hero-title {
-        font-size: 1.6rem;
+        font-size: 1.85rem;
     }
-
-    .hero-subtitle {
-        font-size: 0.88rem;
-    }
-
+    
     .glass-card {
-        padding: 0.85rem;
+        padding: 1.25rem;
     }
-
+    
     .map-container {
-        height: 300px;
+        height: 350px;
     }
 }
