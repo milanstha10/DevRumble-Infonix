@@ -15,26 +15,27 @@ SUPPORTED_LANGUAGES = {"en", "ne"}
 
 SYSTEM_PROMPT = """
 You are Hero AI, the health education and guidance assistant inside HeroHealth.
-Provide concise, empathetic, practical general health information. You are not
-a doctor and do not replace emergency or professional medical care.
+Provide concise, empathetic, practical, and highly reasoned general health information.
 
-Never diagnose, identify, confirm, rank, or rule out a disease. Never prescribe
-medicines, provide doses, recommend starting/stopping prescription medicines,
-or advise dangerous combinations. Do not claim to have examined the user or to
-know their health records. Explain that several causes can be possible and that
-a qualified clinician must evaluate the cause when relevant.
+To help the user navigate HeroHealth, actively direct them to relevant pages within our platform by using relative HTML links:
+1. For symptom checking, severity analysis, and personalized triage reports, direct them to the **[AI Symptom Triage](/consultation/)**.
+2. For verified lists of hospitals, clinics, and doctors in Kathmandu and other cities, direct them to the **[Nepal Clinic Finder](/facilities/)**.
+3. To view nearby health services and emergency clinics on an interactive map, direct them to the **[Proximity Mapping](/facilities/map/)**.
+4. For urgent services, ambulance line directories, and emergency help, direct them to the **[Emergency Directory](/emergency/)** (Nepal ambulance number is 102).
 
-You may explain symptoms at a high level, prevention, nutrition, exercise,
-general first aid, medication safety principles, terminology, and questions to
-ask a clinician. Offer safe next steps and concise warning signs. If the user
-describes a potentially urgent problem, direct them to immediate emergency care
-instead of continuing a detailed conversation. For Nepal, the ambulance number
-is 102. Do not invent phone numbers.
+Structure your answers using clear reasoning:
+- Empathy: Validate their concern first.
+- Reasoning: Explain the potential physiological context of their symptoms or questions in a logical, step-by-step manner.
+- Actionable Guidance: Give clear, structured checklists and next steps.
+- Active Directing: Suggest clicking the appropriate link (e.g. `[AI Symptom Triage](/consultation/)`) to help them get targeted care.
 
-Reply in the requested language. For Nepali, use natural, understandable
-Devanagari and retain an English medical term in parentheses when helpful.
-Keep the response under 220 words unless the user specifically needs a short
-checklist. Do not repeat a disclaimer in every sentence.
+Rules:
+- Never diagnose, confirm, or rule out a disease.
+- Never prescribe medicines or specify doses.
+- Do not claim to have examined the user or know their history.
+- State clearly that multiple causes are possible and a clinician must evaluate them.
+- Reply in Devanagari Nepali if they ask in Nepali (keep English terms in parentheses, e.g., 'फिभर (Fever)').
+- Keep responses concise, under 220 words.
 """
 
 EMERGENCY_TERMS = (
@@ -86,7 +87,7 @@ def _context_for_model(history):
     return "\n".join(context)
 
 
-def generate_health_guidance(message, language, history):
+def generate_health_guidance(message, language, history, interaction_id=None):
     """Generate server-side guidance, falling back safely when Gemini is unavailable."""
     if is_emergency_message(message):
         return {"reply": emergency_reply(language), "is_emergency": True}
@@ -96,18 +97,84 @@ def generate_health_guidance(message, language, history):
         return {"reply": fallback_reply(language), "is_emergency": False}
 
     try:
-        genai.configure(api_key=api_key)
-        model = genai.GenerativeModel("gemini-2.5-flash")
-        prompt = (
-            f"{SYSTEM_PROMPT}\n\nRequested response language: {'Nepali' if language == 'ne' else 'English'}\n"
-            f"Recent conversation (may be empty):\n{_context_for_model(history)}\n\n"
-            f"Current user message: {message}"
+        from google import genai
+        client = genai.Client(api_key=api_key)
+
+        # Merge system prompts
+        unified_system_instruction = (
+            "A cautious medical information assistant that helps users understand health-related questions, "
+            "asks appropriate clarifying questions, communicates uncertainty, identifies potentially urgent symptoms, "
+            "provides evidence-based general information, protects privacy, and directs users to qualified healthcare professionals "
+            "when clinical evaluation is required.\n\n"
+            f"{SYSTEM_PROMPT}\n\n"
+            f"Requested response language: {'Nepali' if language == 'ne' else 'English'}."
         )
-        response = model.generate_content(prompt, request_options={"timeout": 15})
-        reply = str(getattr(response, "text", "")).strip()
+
+        kwargs = {
+            "model": "models/gemini-3-flash-preview",
+            "input": message,
+            "system_instruction": unified_system_instruction,
+            "tools": [{"type": "google_search"}],
+            "generation_config": {
+                "temperature": 1,
+                "max_output_tokens": 65536,
+                "top_p": 0.95,
+                "thinking_level": "high",
+            },
+        }
+
+        if interaction_id:
+            kwargs["previous_interaction_id"] = interaction_id
+
+        try:
+            interaction = client.interactions.create(**kwargs)
+        except Exception as exc:
+            logger.warning(
+                "Interactions API call failed with previous_interaction_id: %s. Retrying without it. Error: %s",
+                interaction_id, exc
+            )
+            # Fall back to creating a new interaction with historical context appended
+            if "previous_interaction_id" in kwargs:
+                del kwargs["previous_interaction_id"]
+            # Append context to input if starting a new interaction
+            if history:
+                kwargs["input"] = (
+                    f"Recent conversation context:\n{_context_for_model(history)}\n\n"
+                    f"Current user message: {message}"
+                )
+            try:
+                interaction = client.interactions.create(**kwargs)
+            except Exception as exc2:
+                logger.warning("Interactions API retry failed: %s. Falling back to gemini-2.5-flash.", exc2)
+                # Switch to stable gemini-3.6-flash which has higher rate limits and no thinking budget overhead
+                kwargs["model"] = "gemini-3.6-flash"
+                if "generation_config" in kwargs and "thinking_level" in kwargs["generation_config"]:
+                    kwargs["generation_config"] = kwargs["generation_config"].copy()
+                    kwargs["generation_config"].pop("thinking_level", None)
+                interaction = client.interactions.create(**kwargs)
+
+        # Extract reply safely
+        reply = ""
+        if hasattr(interaction, "output_text") and interaction.output_text:
+            reply = interaction.output_text
+        elif hasattr(interaction, "steps") and interaction.steps:
+            last_step = interaction.steps[-1]
+            if hasattr(last_step, "content") and last_step.content:
+                parts = []
+                for part in last_step.content:
+                    if hasattr(part, "text") and part.text:
+                        parts.append(part.text)
+                reply = "".join(parts)
+
+        reply = reply.strip()
         if not reply:
             raise ValueError("Empty Gemini response")
-        return {"reply": reply[:MAX_REPLY_LENGTH], "is_emergency": False}
+
+        return {
+            "reply": reply[:MAX_REPLY_LENGTH],
+            "is_emergency": False,
+            "interaction_id": getattr(interaction, "id", None)
+        }
     except Exception:
         logger.exception("Hero AI generation failed")
         return {"reply": fallback_reply(language), "is_emergency": False}

@@ -1421,3 +1421,225 @@ main {
     scroll-behavior: auto !important;
   }
 }
+
+/* =========================================
+   FLOATING CHATBOT WIDGET
+   ========================================= */
+.hero-chat-widget {
+    position: fixed;
+    bottom: 2rem;
+    right: 2rem;
+    z-index: 1001;
+    font-family: var(--font-body);
+}
+
+.chat-trigger-btn {
+    width: 60px;
+    height: 60px;
+    border-radius: 50%;
+    background: var(--primary-grad);
+    border: none;
+    color: var(--bg-dark);
+    font-size: 1.5rem;
+    cursor: pointer;
+    box-shadow: 0 8px 32px rgba(0, 242, 254, 0.35);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: var(--transition-smooth);
+}
+
+.chat-trigger-btn:hover {
+    transform: scale(1.1) rotate(5deg);
+    box-shadow: 0 12px 40px rgba(0, 242, 254, 0.5);
+}
+
+.chat-window {
+    position: absolute;
+    bottom: 5rem;
+    right: 0;
+    width: 380px;
+    height: 480px;
+    display: flex;
+    flex-direction: column;
+    padding: 1.25rem !important;
+    transition: var(--transition-smooth);
+    transform-origin: bottom right;
+}
+
+.chat-window-hidden {
+    opacity: 0;
+    transform: scale(0.8);
+    pointer-events: none;
+}
+
+.chat-window .hero-chat-header {
+    border-bottom: 1px solid var(--border-glass);
+    padding-bottom: 0.5rem;
+    margin-bottom: 0.5rem;
+}
+
+.chat-window .hero-chat-messages {
+    flex-grow: 1;
+    overflow-y: auto;
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+    margin-bottom: 0.5rem;
+    padding-right: 0.25rem;
+}
+
+.chat-window .hero-chat-messages::-webkit-scrollbar {
+    width: 4px;
+}
+.chat-window .hero-chat-messages::-webkit-scrollbar-track {
+    background: transparent;
+}
+.chat-window .hero-chat-messages::-webkit-scrollbar-thumb {
+    background: var(--border-glass);
+    border-radius: 2px;
+}
+
+.chat-window .hero-quick-prompts {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.4rem;
+    margin-bottom: 0.5rem;
+}
+
+.chat-window .hero-quick-prompts button {
+    background: rgba(255, 255, 255, 0.05);
+    border: 1px solid var(--border-glass);
+    color: var(--text-primary);
+    padding: 0.25rem 0.5rem;
+    border-radius: 50px;
+    font-size: 0.75rem;
+    cursor: pointer;
+    transition: var(--transition-smooth);
+}
+
+.chat-window .hero-quick-prompts button:hover {
+    background: rgba(0, 242, 254, 0.1);
+    border-color: var(--primary);
+}
+
+.chat-window .hero-chat-composer {
+    background: rgba(255, 255, 255, 0.03);
+    border: 1px solid var(--border-glass);
+    border-radius: 8px;
+    padding: 0.5rem;
+}
+
+.chat-window .hero-chat-composer textarea {
+    width: 100%;
+    background: transparent;
+    border: none;
+    color: var(--text-primary);
+    font-family: var(--font-body);
+    font-size: 0.85rem;
+    resize: none;
+    outline: none;
+}
+
+.chat-window .hero-composer-footer {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-top: 1px solid rgba(255, 255, 255, 0.05);
+    padding-top: 0.25rem;
+    margin-top: 0.25rem;
+}
+
+.chat-window .hero-composer-actions {
+    display: flex;
+    align-items: center;
+    gap: 0.4rem;
+}
+
+.chat-window .hero-message {
+    display: flex;
+    width: 100%;
+    margin-bottom: 0.25rem;
+}
+.chat-window .hero-message--user {
+    justify-content: flex-end;
+}
+.chat-window .hero-message--assistant {
+    justify-content: flex-start;
+}
+
+.chat-window .hero-message-bubble {
+    max-width: 85%;
+    padding: 0.6rem 0.8rem;
+    border-radius: 12px;
+    font-size: 0.85rem;
+    line-height: 1.4;
+}
+
+.chat-window .hero-message--user .hero-message-bubble {
+    background: var(--primary-grad);
+    color: var(--bg-dark);
+    border-bottom-right-radius: 2px;
+}
+
+.chat-window .hero-message--assistant .hero-message-bubble {
+    background: rgba(255, 255, 255, 0.06);
+    color: var(--text-primary);
+    border: 1px solid var(--border-glass);
+    border-bottom-left-radius: 2px;
+}
+
+.chat-window .hero-message--emergency .hero-message-bubble {
+    border-color: var(--danger);
+    background: rgba(239, 68, 68, 0.1);
+    color: #fca5a5;
+}
+
+.chat-window .hero-message-actions {
+    display: flex;
+    gap: 0.5rem;
+    margin-top: 0.4rem;
+    border-top: 1px solid rgba(255, 255, 255, 0.05);
+    padding-top: 0.3rem;
+}
+
+.chat-window .hero-message-action {
+    background: none;
+    border: none;
+    color: var(--text-muted);
+    cursor: pointer;
+    font-size: 0.75rem;
+    transition: var(--transition-smooth);
+}
+
+.chat-window .hero-message-action:hover {
+    color: var(--primary);
+}
+
+.chat-link {
+    color: var(--primary);
+    text-decoration: underline;
+    font-weight: 600;
+    transition: var(--transition-smooth);
+}
+
+.chat-link:hover {
+    color: var(--accent);
+}
+
+@media (max-width: 480px) {
+    .hero-chat-widget {
+        bottom: 1rem;
+        right: 1rem;
+        left: 1rem;
+        display: flex;
+        justify-content: flex-end;
+    }
+    .chat-window {
+        width: calc(100vw - 2rem);
+        height: 400px;
+        bottom: 4.5rem;
+        right: 0;
+    }
+}
+
