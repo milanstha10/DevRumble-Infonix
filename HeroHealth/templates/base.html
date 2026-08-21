@@ -114,12 +114,11 @@
         <a
             href="{% url 'home' %}"
             class="nav-brand"
-            id="brandLogo"
-            aria-label="HeroHealth Home"
+            id="logoHome"
         >
 
             <i
-                class="fa-solid fa-hand-holding-heart"
+                class="fa-solid fa-shield-heart"
                 aria-hidden="true"
             ></i>
 
@@ -128,7 +127,6 @@
             </span>
 
         </a>
-
 
         <ul class="nav-links">
 
@@ -358,7 +356,6 @@
             {% endif %}
 
         </ul>
-
     </nav>
 
 
@@ -651,7 +648,6 @@
     <!-- =========================================================
          PAGE-SPECIFIC JAVASCRIPT
          ========================================================= -->
-
     {% if user.is_authenticated %}
     <script src="{% static 'js/chatbot.js' %}" defer></script>
     {% endif %}
