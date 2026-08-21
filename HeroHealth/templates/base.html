@@ -1,260 +1,563 @@
 {% load static %}
-<!doctype html>
+
+<!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
 
     <title>
-      {% block title %}HeroHealth | Nepal Triage & Mapping{% endblock %}
+        {% block title %}
+            HeroHealth | Nepal Triage & Mapping
+        {% endblock %}
     </title>
 
     <meta
-      name="description"
-      content="HeroHealth is Nepal's healthcare consultation, AI triage engine, and facility finder. Connect symptoms with local clinics and hospitals."
-    />
+        name="description"
+        content="HeroHealth is Nepal's healthcare consultation, AI triage engine, emergency resource directory, and healthcare facility finder."
+    >
+
+    <meta
+        name="theme-color"
+        content="#070b13"
+    >
+
+    <!-- =========================================================
+         GOOGLE FONTS
+         ========================================================= -->
 
     <link
-      rel="stylesheet"
-      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
-    />
+        rel="preconnect"
+        href="https://fonts.googleapis.com"
+    >
 
-    <link rel="stylesheet" href="{% static 'css/style.css' %}" />
+    <link
+        rel="preconnect"
+        href="https://fonts.gstatic.com"
+        crossorigin
+    >
 
-    <link rel="stylesheet" href="{% static 'css/responsive.css' %}" />
+    <link
+        href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Outfit:wght@400;500;600;700;800&display=swap"
+        rel="stylesheet"
+    >
+
+
+    <!-- =========================================================
+         FONT AWESOME
+         ========================================================= -->
+
+    <link
+        rel="stylesheet"
+        href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
+    >
+
+
+    <!-- =========================================================
+         LEAFLET CSS
+         
+         IMPORTANT:
+         No integrity attribute is used here.
+
+         Your previous SHA-256 integrity value was invalid,
+         which caused the browser to BLOCK Leaflet CSS.
+         ========================================================= -->
+
+    <link
+        rel="stylesheet"
+        href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
+    >
+
+
+    <!-- =========================================================
+         HEROHEALTH GLOBAL CSS
+         ========================================================= -->
+
+    <link
+        rel="stylesheet"
+        href="{% static 'css/style.css' %}"
+    >
+
+    <link
+        rel="stylesheet"
+        href="{% static 'css/responsive.css' %}"
+    >
+
+
+    <!-- =========================================================
+         PAGE-SPECIFIC HEAD CONTENT
+         ========================================================= -->
 
     {% block extra_head %}{% endblock %}
-  </head>
 
-  <body>
-    <nav class="navbar" id="mainNavbar">
-      <a
-        href="{% url 'home' %}"
-        class="nav-brand"
-        id="brandLogo"
-        aria-label="HeroHealth home"
-      >
-        <i class="fa-solid fa-hand-holding-heart" aria-hidden="true"></i>
-        Hero<span>Health</span>
-      </a>
+</head>
 
-      <ul class="nav-links">
-        <li>
-          <a
+
+<body>
+
+
+    <!-- =========================================================
+         NAVIGATION
+         ========================================================= -->
+
+    <nav
+        class="navbar"
+        id="mainNavbar"
+    >
+
+        <a
             href="{% url 'home' %}"
-            class="nav-link {% if request.resolver_match.view_name == 'home' %}active{% endif %}"
-            id="navHome"
-            {%
-            if
-            request.resolver_match.view_name=""
-            ="home"
-            %}aria-current="page"
-            {%
-            endif
-            %}
-          >
-            Home
-          </a>
-        </li>
+            class="nav-brand"
+            id="brandLogo"
+            aria-label="HeroHealth Home"
+        >
 
-        <li>
-          <a
-            href="{% url 'consultation' %}"
-            class="nav-link {% if request.resolver_match.view_name == 'consultation' or request.resolver_match.view_name == 'consultation_result' %}active{% endif %}"
-            id="navTriage"
-            {%
-            if
-            request.resolver_match.view_name=""
-            ="consultation"
-            or
-            request.resolver_match.view_name=""
-            ="consultation_result"
-            %}aria-current="page"
-            {%
-            endif
-            %}
-          >
-            Hero AI
-          </a>
-        </li>
+            <i
+                class="fa-solid fa-hand-holding-heart"
+                aria-hidden="true"
+            ></i>
 
-        <li>
-          <a
-            href="{% url 'facility_list' %}"
-            class="nav-link {% if request.resolver_match.view_name == 'facility_list' or request.resolver_match.view_name == 'facility_detail' %}active{% endif %}"
-            id="navFacilities"
-            {%
-            if
-            request.resolver_match.view_name=""
-            ="facility_list"
-            or
-            request.resolver_match.view_name=""
-            ="facility_detail"
-            %}aria-current="page"
-            {%
-            endif
-            %}
-          >
-            Find Facilities
-          </a>
-        </li>
+            <span>
+                HeroHealth
+            </span>
 
-        <li>
-          <a
-            href="{% url 'map_view' %}"
-            class="nav-link {% if request.resolver_match.view_name == 'map_view' %}active{% endif %}"
-            id="navMap"
-            {%
-            if
-            request.resolver_match.view_name=""
-            ="map_view"
-            %}aria-current="page"
-            {%
-            endif
-            %}
-          >
-            Proximity Map
-          </a>
-        </li>
+        </a>
 
-        <li>
-          <a
-            href="{% url 'emergency' %}"
-            class="nav-link {% if request.resolver_match.view_name == 'emergency' %}active{% endif %}"
-            id="navEmergency"
-            {%
-            if
-            request.resolver_match.view_name=""
-            ="emergency"
-            %}aria-current="page"
-            {%
-            endif
-            %}
-          >
-            Emergency
-          </a>
-        </li>
 
-        {% if user.is_authenticated %}
-        <li>
-          <a
-            href="{% url 'profile' %}"
-            class="nav-link {% if request.resolver_match.view_name == 'profile' %}active{% endif %}"
-            id="navProfile"
-            {%
-            if
-            request.resolver_match.view_name=""
-            ="profile"
-            %}aria-current="page"
-            {%
-            endif
-            %}
-          >
-            Profile
-          </a>
-        </li>
+        <ul class="nav-links">
 
-        <li>
-          <a
-            href="{% url 'logout' %}"
-            class="nav-btn nav-btn-outline"
-            id="navLogout"
-          >
-            Logout
-          </a>
-        </li>
-        {% else %}
-        <li>
-          <a
-            href="{% url 'login' %}"
-            class="nav-btn nav-btn-outline"
-            id="navLogin"
-          >
-            Login
-          </a>
-        </li>
 
-        <li>
-          <a
-            href="{% url 'register' %}"
-            class="nav-btn nav-btn-primary"
-            id="navRegister"
-          >
-            Sign Up
-          </a>
-        </li>
-        {% endif %}
-      </ul>
+            <!-- HOME -->
+
+            <li>
+
+                <a
+                    href="{% url 'home' %}"
+                    class="nav-link {% if request.resolver_match.view_name == 'home' %}active{% endif %}"
+                    id="navHome"
+                >
+
+                    <i
+                        class="fa-solid fa-house"
+                        aria-hidden="true"
+                    ></i>
+
+                    <span>
+                        Home
+                    </span>
+
+                </a>
+
+            </li>
+
+
+            <!-- AI TRIAGE -->
+
+            <li>
+
+                <a
+                    href="{% url 'consultation' %}"
+                    class="nav-link {% if request.resolver_match.view_name == 'consultation' or request.resolver_match.view_name == 'consultation_result' %}active{% endif %}"
+                    id="navTriage"
+                >
+
+                    <i
+                        class="fa-solid fa-robot"
+                        aria-hidden="true"
+                    ></i>
+
+                    <span>
+                        AI Triage
+                    </span>
+
+                </a>
+
+            </li>
+
+
+            <!-- FACILITIES -->
+
+            <li>
+
+                <a
+                    href="{% url 'facility_list' %}"
+                    class="nav-link {% if request.resolver_match.view_name == 'facility_list' or request.resolver_match.view_name == 'facility_detail' %}active{% endif %}"
+                    id="navFacilities"
+                >
+
+                    <i
+                        class="fa-solid fa-hospital"
+                        aria-hidden="true"
+                    ></i>
+
+                    <span>
+                        Facilities
+                    </span>
+
+                </a>
+
+            </li>
+
+
+            <!-- MAP -->
+
+            <li>
+
+                <a
+                    href="{% url 'map_view' %}"
+                    class="nav-link {% if request.resolver_match.view_name == 'map_view' %}active{% endif %}"
+                    id="navMap"
+                >
+
+                    <i
+                        class="fa-solid fa-map-location-dot"
+                        aria-hidden="true"
+                    ></i>
+
+                    <span>
+                        Map
+                    </span>
+
+                </a>
+
+            </li>
+
+
+            <!-- EMERGENCY -->
+
+            <li>
+
+                <a
+                    href="{% url 'emergency' %}"
+                    class="nav-link {% if request.resolver_match.view_name == 'emergency' %}active{% endif %}"
+                    id="navEmergency"
+                >
+
+                    <i
+                        class="fa-solid fa-truck-medical"
+                        aria-hidden="true"
+                    ></i>
+
+                    <span>
+                        Emergency
+                    </span>
+
+                </a>
+
+            </li>
+
+
+            {% if user.is_authenticated %}
+
+
+                <!-- PROFILE -->
+
+                <li>
+
+                    <a
+                        href="{% url 'profile' %}"
+                        class="nav-link {% if request.resolver_match.view_name == 'profile' %}active{% endif %}"
+                        id="navProfile"
+                    >
+
+                        <i
+                            class="fa-solid fa-user"
+                            aria-hidden="true"
+                        ></i>
+
+                        <span>
+                            Profile
+                        </span>
+
+                    </a>
+
+                </li>
+
+
+                <!-- LOGOUT -->
+
+                <li>
+
+                    <a
+                        href="{% url 'logout' %}"
+                        class="nav-btn nav-btn-outline"
+                        id="navLogout"
+                    >
+
+                        <i
+                            class="fa-solid fa-right-from-bracket"
+                            aria-hidden="true"
+                        ></i>
+
+                        <span>
+                            Logout
+                        </span>
+
+                    </a>
+
+                </li>
+
+
+            {% else %}
+
+
+                <!-- LOGIN -->
+
+                <li>
+
+                    <a
+                        href="{% url 'login' %}"
+                        class="nav-btn nav-btn-outline"
+                        id="navLogin"
+                    >
+
+                        <i
+                            class="fa-solid fa-right-to-bracket"
+                            aria-hidden="true"
+                        ></i>
+
+                        <span>
+                            Login
+                        </span>
+
+                    </a>
+
+                </li>
+
+
+                <!-- REGISTER -->
+
+                <li>
+
+                    <a
+                        href="{% url 'register' %}"
+                        class="nav-btn nav-btn-primary"
+                        id="navRegister"
+                    >
+
+                        <i
+                            class="fa-solid fa-user-plus"
+                            aria-hidden="true"
+                        ></i>
+
+                        <span>
+                            Sign Up
+                        </span>
+
+                    </a>
+
+                </li>
+
+
+            {% endif %}
+
+        </ul>
+
     </nav>
 
-    {% if messages %}
-    <div class="messages-container" id="alertsBox" aria-live="polite">
-      {% for message in messages %}
-      <div
-        class="alert-message {{ message.tags }}"
-        role="alert"
-        id="alert-{{ forloop.counter }}"
-      >
-        <span>
-          <i
-            class="fa-solid {% if message.tags == 'success' %}fa-circle-check{% elif message.tags == 'error' %}fa-circle-xmark{% else %}fa-circle-info{% endif %}"
-            aria-hidden="true"
-          ></i>
-          {{ message }}
-        </span>
 
-        <button
-          type="button"
-          class="alert-close"
-          id="closeAlert-{{ forloop.counter }}"
-          aria-label="Close notification"
+    <!-- =========================================================
+         DJANGO MESSAGES
+         ========================================================= -->
+
+    {% if messages %}
+
+        <div
+            class="messages-container"
+            id="alertsBox"
+            aria-live="polite"
+            aria-atomic="true"
         >
-          <i class="fa-solid fa-xmark" aria-hidden="true"></i>
-        </button>
-      </div>
-      {% endfor %}
-    </div>
+
+            {% for message in messages %}
+
+                <div
+                    class="alert-message {{ message.tags }}"
+                    role="alert"
+                    id="alert-{{ forloop.counter }}"
+                >
+
+                    <span>
+
+                        {% if message.tags == 'success' %}
+
+                            <i
+                                class="fa-solid fa-circle-check"
+                                aria-hidden="true"
+                            ></i>
+
+                        {% elif message.tags == 'error' or message.tags == 'danger' %}
+
+                            <i
+                                class="fa-solid fa-circle-xmark"
+                                aria-hidden="true"
+                            ></i>
+
+                        {% elif message.tags == 'warning' %}
+
+                            <i
+                                class="fa-solid fa-triangle-exclamation"
+                                aria-hidden="true"
+                            ></i>
+
+                        {% else %}
+
+                            <i
+                                class="fa-solid fa-circle-info"
+                                aria-hidden="true"
+                            ></i>
+
+                        {% endif %}
+
+
+                        <span>
+                            {{ message }}
+                        </span>
+
+                    </span>
+
+
+                    <button
+                        type="button"
+                        class="alert-close"
+                        id="closeAlert-{{ forloop.counter }}"
+                        aria-label="Close notification"
+                    >
+
+                        <i
+                            class="fa-solid fa-xmark"
+                            aria-hidden="true"
+                        ></i>
+
+                    </button>
+
+                </div>
+
+            {% endfor %}
+
+        </div>
+
     {% endif %}
 
-    <main id="mainContent">{% block content %}{% endblock %}</main>
 
-    <footer class="footer" id="siteFooter">
-      <ul class="footer-links">
-        <li>
-          <a href="{% url 'home' %}" class="footer-link"> Home </a>
-        </li>
+    <!-- =========================================================
+         MAIN CONTENT
+         ========================================================= -->
 
-        <li>
-          <a href="{% url 'consultation' %}" class="footer-link">
-            AI Consultation
-          </a>
-        </li>
+    <main id="mainContent">
 
-        {% if user.is_authenticated %}
-        <li>
-          <a href="{% url 'chatbot' %}" class="footer-link"
-            >Chat with Hero AI</a
-          >
-        </li>
-        {% endif %}
+        {% block content %}{% endblock %}
 
-        <li>
-          <a href="{% url 'facility_list' %}" class="footer-link">
-            Healthcare Finder
-          </a>
-        </li>
+    </main>
 
-        <li>
-          <a href="{% url 'emergency' %}" class="footer-link">
-            Emergency Help
-          </a>
-        </li>
-      </ul>
 
-      <p id="copyrightText">
-        &copy; 2026 HeroHealth Nepal. Empowering public health through smart
-        diagnostics. Developed by Infonix.
-      </p>
+    <!-- =========================================================
+         FOOTER
+         ========================================================= -->
+
+    <footer
+        class="footer"
+        id="siteFooter"
+    >
+
+        <ul class="footer-links">
+
+
+            <li>
+
+                <a
+                    href="{% url 'home' %}"
+                    class="footer-link"
+                >
+                    Home
+                </a>
+
+            </li>
+
+
+            <li>
+
+                <a
+                    href="{% url 'consultation' %}"
+                    class="footer-link"
+                >
+                    AI Consultation
+                </a>
+
+            </li>
+
+
+            <li>
+
+                <a
+                    href="{% url 'facility_list' %}"
+                    class="footer-link"
+                >
+                    Healthcare Finder
+                </a>
+
+            </li>
+
+
+            <li>
+
+                <a
+                    href="{% url 'map_view' %}"
+                    class="footer-link"
+                >
+                    Proximity Map
+                </a>
+
+            </li>
+
+
+            <li>
+
+                <a
+                    href="{% url 'emergency' %}"
+                    class="footer-link"
+                >
+                    Emergency Help
+                </a>
+
+            </li>
+
+
+            {% if user.is_authenticated %}
+
+                <li>
+
+                    <a
+                        href="{% url 'profile' %}"
+                        class="footer-link"
+                    >
+                        My Profile
+                    </a>
+
+                </li>
+
+            {% endif %}
+
+        </ul>
+
+
+        <p id="copyrightText">
+
+            &copy; 2026 HeroHealth Nepal.
+
+            Empowering public health through smart healthcare
+            technology.
+
+            Developed by Infonix.
+
+        </p>
+
     </footer>
 
     <!-- Floating Chatbot Widget -->
@@ -321,11 +624,41 @@
     </div>
     {% endif %}
 
-    <script src="{% static 'js/main.js' %}" defer></script>
+    <!-- =========================================================
+         MAIN JAVASCRIPT
+         ========================================================= -->
+
+    <script
+        src="{% static 'js/main.js' %}"
+    ></script>
+
+
+    <!-- =========================================================
+         LEAFLET JAVASCRIPT
+         
+         IMPORTANT:
+         Leaflet MUST load before map.js.
+
+         No integrity attribute is used because the previous
+         integrity configuration was causing resource failures.
+         ========================================================= -->
+
+    <script
+        src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"
+    ></script>
+
+
+    <!-- =========================================================
+         PAGE-SPECIFIC JAVASCRIPT
+         ========================================================= -->
+
     {% if user.is_authenticated %}
     <script src="{% static 'js/chatbot.js' %}" defer></script>
     {% endif %}
 
     {% block extra_js %}{% endblock %}
-  </body>
+
+
+</body>
+
 </html>

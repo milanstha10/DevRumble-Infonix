@@ -1,91 +1,271 @@
 {% extends 'base.html' %}
+{% load static %}
 
 {% block title %}HeroHealth | My Profile{% endblock %}
 
+{% block extra_head %}
+<link rel="stylesheet" href="{% static 'css/profile.css' %}">
+{% endblock %}
+
 {% block content %}
-<div style="max-width: 1200px; margin: 3rem auto; padding: 0 1.5rem;" id="profileMainContainer">
-    <div style="display: grid; grid-template-columns: 1fr 2fr; gap: 2rem;" id="profileGrid">
-        
-        <!-- Left: Edit profile form -->
-        <div class="glass-card" style="height: fit-content;" id="profileSettingsPanel">
-            <h2 style="font-family: var(--font-heading); margin-bottom: 1.5rem; color:var(--primary); font-size:1.5rem;">Profile Settings</h2>
-            
+<div class="profile-main-container" id="profileMainContainer">
+
+    <div class="profile-grid" id="profileGrid">
+
+        <!-- Left: Profile Settings -->
+        <div class="glass-card profile-settings-panel" id="profileSettingsPanel">
+
+            <div class="profile-panel-header">
+                <div class="profile-panel-icon">
+                    <i class="fa-solid fa-user-gear"></i>
+                </div>
+
+                <div>
+                    <h2>Profile Settings</h2>
+                    <p>Manage your personal and medical information</p>
+                </div>
+            </div>
+
             <form method="POST" id="profileUpdateForm">
                 {% csrf_token %}
-                
-                <h3 style="font-family: var(--font-heading); margin-bottom: 0.75rem; font-size: 1rem; color: var(--text-muted);">Personal Information</h3>
-                {% for field in u_form %}
-                <div class="form-group">
-                    <label class="form-label">{{ field.label }}</label>
-                    {{ field }}
-                </div>
-                {% endfor %}
-                
-                <h3 style="font-family: var(--font-heading); margin-top: 1.5rem; margin-bottom: 0.75rem; font-size: 1rem; color: var(--text-muted);">Medical Profile</h3>
-                {% for field in p_form %}
-                <div class="form-group">
-                    <label class="form-label">{{ field.label }}</label>
-                    {{ field }}
-                </div>
-                {% endfor %}
-                
-                <button type="submit" class="btn-premium" style="width: 100%; margin-top: 1rem;" id="saveProfileBtn">
-                    Save Changes <i class="fa-solid fa-floppy-disk"></i>
-                </button>
-            </form>
-        </div>
-        
-        <!-- Right: Consultation History -->
-        <div class="glass-card" id="historyPanel">
-            <h2 style="font-family: var(--font-heading); margin-bottom: 1.5rem; color:var(--primary); font-size:1.5rem;">Consultation History</h2>
-            
-            {% if user.consultations.all %}
-                <div style="display: grid; gap: 1rem;" id="historyList">
-                    {% for item in user.consultations.all|dictsortreversed:"created_at" %}
-                    <div class="glass-card" style="padding: 1.25rem; border-color: rgba(255,255,255,0.04);" id="historyItem-{{ item.id }}">
-                        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.75rem;">
-                            <span style="color: var(--text-muted); font-size: 0.85rem;"><i class="fa-regular fa-clock"></i> {{ item.created_at|date:"M d, Y h:i A" }}</span>
-                            
-                            <!-- Severity tag -->
-                            {% if item.result_json.severity == 'Urgent' %}
-                                <span class="severity-indicator urgent" style="padding: 2px 10px; font-size:0.7rem;">Urgent</span>
-                            {% elif item.result_json.severity == 'Medium' %}
-                                <span class="severity-indicator medium" style="padding: 2px 10px; font-size:0.7rem;">Medium</span>
-                            {% else %}
-                                <span class="severity-indicator low" style="padding: 2px 10px; font-size:0.7rem;">Low</span>
-                            {% endif %}
+
+                <!-- Personal Information -->
+                <div class="profile-form-section">
+
+                    <div class="profile-section-heading">
+                        <i class="fa-solid fa-user"></i>
+                        <h3>Personal Information</h3>
+                    </div>
+
+                    {% for field in u_form %}
+                    <div class="form-group profile-form-group">
+
+                        <label
+                            class="form-label"
+                            for="{{ field.id_for_label }}"
+                        >
+                            {{ field.label }}
+                        </label>
+
+                        {{ field }}
+
+                        {% if field.errors %}
+                        <div class="profile-field-error">
+                            {{ field.errors.0 }}
                         </div>
-                        
-                        <p style="font-weight:600; margin-bottom:0.5rem; font-size:1.05rem;" class="symptom-preview">{{ item.symptoms|truncatechars:100 }}</p>
-                        
-                        {% if item.result_json.suggested_specialty %}
-                            <div style="margin-bottom: 0.75rem;">
-                                <span style="font-size: 0.8rem; background: rgba(0, 242, 254, 0.08); color: var(--primary); padding: 2px 8px; border-radius: 4px; font-weight: 500;">
-                                    Specialty: {{ item.result_json.suggested_specialty }}
-                                </span>
-                            </div>
                         {% endif %}
-                        
-                        <div style="display: flex; justify-content: space-between; align-items: center;">
-                            <a href="{% url 'consultation_result' item.id %}" style="color: var(--primary); text-decoration: none; font-size: 0.9rem; font-weight: 600;" id="viewReport-{{ item.id }}">
-                                View Triage Report <i class="fa-solid fa-arrow-up-right-from-square" style="font-size: 0.75rem;"></i>
-                            </a>
-                            {% if item.image %}
-                                <span style="font-size:0.8rem; color: var(--accent);"><i class="fa-regular fa-image"></i> Attachment</span>
-                            {% endif %}
-                        </div>
+
                     </div>
                     {% endfor %}
+
                 </div>
-            {% else %}
-                <div style="text-align: center; padding: 4rem 1rem; color: var(--text-muted);" id="noHistory">
-                    <div style="font-size: 3rem; margin-bottom: 1.5rem; opacity: 0.3;"><i class="fa-solid fa-notes-medical"></i></div>
-                    <p style="font-size: 1.1rem; margin-bottom: 1.5rem;">No consultations found.</p>
-                    <a href="{% url 'consultation' %}" class="btn-premium" id="historyStartBtn">Start Triage Consultation</a>
+
+                <!-- Medical Profile -->
+                <div class="profile-form-section medical-profile-section">
+
+                    <div class="profile-section-heading">
+                        <i class="fa-solid fa-heart-pulse"></i>
+                        <h3>Medical Profile</h3>
+                    </div>
+
+                    {% for field in p_form %}
+                    <div class="form-group profile-form-group">
+
+                        <label
+                            class="form-label"
+                            for="{{ field.id_for_label }}"
+                        >
+                            {{ field.label }}
+                        </label>
+
+                        {{ field }}
+
+                        {% if field.errors %}
+                        <div class="profile-field-error">
+                            {{ field.errors.0 }}
+                        </div>
+                        {% endif %}
+
+                    </div>
+                    {% endfor %}
+
                 </div>
-            {% endif %}
+
+                <button
+                    type="submit"
+                    class="btn-premium profile-save-btn"
+                    id="saveProfileBtn"
+                >
+                    <span>Save Changes</span>
+                    <i class="fa-solid fa-floppy-disk"></i>
+                </button>
+
+            </form>
         </div>
-        
+
+
+        <!-- Right: Consultation History -->
+        <div class="glass-card history-panel" id="historyPanel">
+
+            <div class="profile-panel-header history-header">
+                <div class="profile-panel-icon">
+                    <i class="fa-solid fa-clock-rotate-left"></i>
+                </div>
+
+                <div>
+                    <h2>Consultation History</h2>
+                    <p>Your previous AI triage reports</p>
+                </div>
+            </div>
+
+
+            {% if user.consultations.all %}
+
+                <div class="history-list" id="historyList">
+
+                    {% for item in user.consultations.all|dictsortreversed:"created_at" %}
+
+                    <article
+                        class="glass-card history-item"
+                        id="historyItem-{{ item.id }}"
+                    >
+
+                        <!-- History top row -->
+                        <div class="history-item-top">
+
+                            <span class="history-date">
+                                <i class="fa-regular fa-clock"></i>
+                                {{ item.created_at|date:"M d, Y h:i A" }}
+                            </span>
+
+                            <!-- Severity -->
+                            {% if item.result_json.severity == 'Urgent' %}
+
+                                <span
+                                    class="severity-indicator urgent history-severity"
+                                >
+                                    <i class="fa-solid fa-triangle-exclamation"></i>
+                                    Urgent
+                                </span>
+
+                            {% elif item.result_json.severity == 'Medium' %}
+
+                                <span
+                                    class="severity-indicator medium history-severity"
+                                >
+                                    <i class="fa-solid fa-circle-exclamation"></i>
+                                    Medium
+                                </span>
+
+                            {% else %}
+
+                                <span
+                                    class="severity-indicator low history-severity"
+                                >
+                                    <i class="fa-solid fa-circle-check"></i>
+                                    Low
+                                </span>
+
+                            {% endif %}
+
+                        </div>
+
+
+                        <!-- Symptoms -->
+                        <div class="history-symptoms">
+
+                            <span class="history-label">
+                                Symptoms
+                            </span>
+
+                            <p class="symptom-preview">
+                                {{ item.symptoms|truncatechars:100 }}
+                            </p>
+
+                        </div>
+
+
+                        <!-- Specialty -->
+                        {% if item.result_json.suggested_specialty %}
+
+                        <div class="history-specialty">
+
+                            <span class="specialty-history-tag">
+                                <i class="fa-solid fa-user-doctor"></i>
+                                Specialty:
+                                {{ item.result_json.suggested_specialty }}
+                            </span>
+
+                        </div>
+
+                        {% endif %}
+
+
+                        <!-- Bottom actions -->
+                        <div class="history-item-footer">
+
+                            <a
+                                href="{% url 'consultation_result' item.id %}"
+                                class="view-report-link"
+                                id="viewReport-{{ item.id }}"
+                            >
+                                View Triage Report
+                                <i class="fa-solid fa-arrow-up-right-from-square"></i>
+                            </a>
+
+                            {% if item.image %}
+
+                            <span class="attachment-indicator">
+                                <i class="fa-regular fa-image"></i>
+                                Attachment
+                            </span>
+
+                            {% endif %}
+
+                        </div>
+
+                    </article>
+
+                    {% endfor %}
+
+                </div>
+
+
+            {% else %}
+
+                <!-- Empty history -->
+                <div
+                    class="no-history"
+                    id="noHistory"
+                >
+
+                    <div class="no-history-icon">
+                        <i class="fa-solid fa-notes-medical"></i>
+                    </div>
+
+                    <h3>No consultations found</h3>
+
+                    <p>
+                        Your AI triage consultation reports will appear here
+                        after you complete a consultation.
+                    </p>
+
+                    <a
+                        href="{% url 'consultation' %}"
+                        class="btn-premium history-start-btn"
+                        id="historyStartBtn"
+                    >
+                        Start Triage Consultation
+                        <i class="fa-solid fa-arrow-right"></i>
+                    </a>
+
+                </div>
+
+            {% endif %}
+
+        </div>
+
     </div>
+
 </div>
 {% endblock %}
