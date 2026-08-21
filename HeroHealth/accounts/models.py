@@ -33,14 +33,12 @@ class UserProfile(models.Model):
     def __str__(self):
         return f"{self.user.username}'s Profile"
 
-@receiver(post_save, sender=User)
-def create_user_profile(sender, instance, created, **kwargs):
-    if created:
-        UserProfile.objects.create(user=instance)
+
+def ensure_user_profile(user):
+    profile, _ = UserProfile.objects.get_or_create(user=user)
+    return profile
+
 
 @receiver(post_save, sender=User)
-def save_user_profile(sender, instance, **kwargs):
-    try:
-        instance.profile.save()
-    except UserProfile.DoesNotExist:
-        UserProfile.objects.create(user=instance)
+def ensure_user_profile_on_user_save(sender, instance, **kwargs):
+    ensure_user_profile(instance)

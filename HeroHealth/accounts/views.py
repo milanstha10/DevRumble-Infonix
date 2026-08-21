@@ -1,3 +1,5 @@
+import logging
+
 from django.shortcuts import render, redirect
 from django.contrib.auth import login, logout, authenticate
 from django.contrib.auth.decorators import login_required
@@ -8,6 +10,10 @@ from django.core.mail import send_mail
 from django.utils.http import urlsafe_base64_encode, urlsafe_base64_decode
 from django.utils.encoding import force_bytes, force_str
 from django.contrib.auth.tokens import default_token_generator
+from django.db import transaction
+from .models import ensure_user_profile
+
+logger = logging.getLogger(__name__)
 
 def register_view(request):
     if request.user.is_authenticated:
@@ -22,7 +28,7 @@ def register_view(request):
             user.save()
             
             # Update created profile
-            profile = user.profile
+            profile = ensure_user_profile(user)
             profile.phone = form.cleaned_data['phone']
             profile.age = form.cleaned_data['age']
             profile.gender = form.cleaned_data['gender']
@@ -81,10 +87,7 @@ def login_view(request):
             user = authenticate(username=username, password=password)
             if user is not None:
                 # Check email verification (bypass for admin/staff)
-                try:
-                    is_verified = user.profile.email_verified
-                except AttributeError:
-                    is_verified = False
+                is_verified = ensure_user_profile(user).email_verified
                     
                 if not is_verified and not user.is_superuser and not user.is_staff:
                     messages.error(request, "Please verify your email first. A verification link was sent to your email.")
@@ -108,7 +111,7 @@ def logout_view(request):
 def profile_view(request):
     if request.method == 'POST':
         u_form = UserUpdateForm(request.POST, instance=request.user)
-        p_form = UserProfileForm(request.POST, instance=request.user.profile)
+        p_form = UserProfileForm(request.POST, instance=ensure_user_profile(request.user))
         if u_form.is_valid() and p_form.is_valid():
             u_form.save()
             p_form.save()
@@ -116,7 +119,7 @@ def profile_view(request):
             return redirect('profile')
     else:
         u_form = UserUpdateForm(instance=request.user)
-        p_form = UserProfileForm(instance=request.user.profile)
+        p_form = UserProfileForm(instance=ensure_user_profile(request.user))
         
     context = {
         'u_form': u_form,
@@ -210,7 +213,7 @@ def google_callback(request):
         
         if user:
             # Google log ins are auto-verified
-            profile = user.profile
+            profile = ensure_user_profile(user)
             if not profile.email_verified:
                 profile.email_verified = True
                 profile.save()
@@ -231,25 +234,31 @@ def google_callback(request):
             while User.objects.filter(username=username).exists():
                 username = f"{username_base}_{get_random_string(4).lower()}"
                 
-            user = User.objects.create_user(
-                username=username,
-                email=email,
-                password=get_random_string(32), # Random unusable password
-                first_name=first_name,
-                last_name=last_name
-            )
-            # Auto-verify Google user profile
-            profile = user.profile
-            profile.email_verified = True
-            profile.save()
+            with transaction.atomic():
+                user = User.objects.create_user(
+                    username=username,
+                    email=email,
+                    password=get_random_string(32), # Random unusable password
+                    first_name=first_name,
+                    last_name=last_name
+                )
+                # Auto-verify Google user profile
+                profile = ensure_user_profile(user)
+                profile.email_verified = True
+                profile.save()
             
             login(request, user, backend='django.contrib.auth.backends.ModelBackend')
             messages.success(request, f"Successfully registered and logged in as {username} (via Google)!")
             
         return redirect('home')
         
-    except requests.RequestException as e:
-        messages.error(request, f"Google OAuth communication failed: {str(e)}")
+    except requests.RequestException:
+        logger.exception("Google OAuth communication failed")
+        messages.error(request, "Google sign-in could not be completed. Please try again.")
+        return redirect('login')
+    except Exception:
+        logger.exception("Google OAuth callback failed")
+        messages.error(request, "We could not finish setting up your account. Please try again.")
         return redirect('login')
 
 
@@ -261,7 +270,7 @@ def verify_email(request, uidb64, token):
         user = None
         
     if user is not None and default_token_generator.check_token(user, token):
-        profile = user.profile
+        profile = ensure_user_profile(user)
         profile.email_verified = True
         profile.save()
         messages.success(request, "Your email has been verified! You can now log in.")
