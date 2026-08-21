@@ -81,3 +81,123 @@ def profile_view(request):
         'p_form': p_form
     }
     return render(request, 'accounts/profile.html', context)
+
+
+import os
+import requests
+import uuid
+from urllib.parse import urlencode
+from django.conf import settings
+from django.urls import reverse
+from django.contrib.auth.models import User
+from django.utils.crypto import get_random_string
+
+def google_login(request):
+    # State token to prevent CSRF
+    state = uuid.uuid4().hex
+    request.session['google_oauth_state'] = state
+    
+    # Construct the callback URI dynamically based on current host
+    redirect_uri = request.build_absolute_uri(reverse('google_callback'))
+    
+    params = {
+        'client_id': settings.GOOGLE_OAUTH_CLIENT_ID,
+        'redirect_uri': redirect_uri,
+        'response_type': 'code',
+        'scope': 'openid email profile',
+        'state': state,
+        'access_type': 'offline',
+        'prompt': 'select_account'
+    }
+    
+    authorization_url = f"https://accounts.google.com/o/oauth2/v2/auth?{urlencode(params)}"
+    return redirect(authorization_url)
+
+def google_callback(request):
+    # Verify state parameter to prevent CSRF
+    state = request.GET.get('state')
+    session_state = request.session.pop('google_oauth_state', None)
+    
+    if not state or state != session_state:
+        messages.error(request, "Authentication failed: Invalid state parameter.")
+        return redirect('login')
+        
+    code = request.GET.get('code')
+    error = request.GET.get('error')
+    
+    if error or not code:
+        messages.error(request, f"Authentication failed: {error or 'No code provided.'}")
+        return redirect('login')
+        
+    redirect_uri = request.build_absolute_uri(reverse('google_callback'))
+    
+    # Exchange auth code for token
+    token_url = "https://oauth2.googleapis.com/token"
+    token_data = {
+        'code': code,
+        'client_id': settings.GOOGLE_OAUTH_CLIENT_ID,
+        'client_secret': settings.GOOGLE_OAUTH_CLIENT_SECRET,
+        'redirect_uri': redirect_uri,
+        'grant_type': 'authorization_code'
+    }
+    
+    try:
+        token_response = requests.post(token_url, data=token_data, timeout=10)
+        token_response.raise_for_status()
+        token_json = token_response.json()
+        access_token = token_json.get('access_token')
+        
+        if not access_token:
+            messages.error(request, "Failed to retrieve access token from Google.")
+            return redirect('login')
+            
+        # Get user info
+        user_info_url = "https://www.googleapis.com/oauth2/v3/userinfo"
+        headers = {'Authorization': f"Bearer {access_token}"}
+        user_info_response = requests.get(user_info_url, headers=headers, timeout=10)
+        user_info_response.raise_for_status()
+        user_info = user_info_response.json()
+        
+        email = user_info.get('email')
+        if not email:
+            messages.error(request, "Failed to retrieve email from Google user profile.")
+            return redirect('login')
+            
+        # Check if user already exists
+        user = User.objects.filter(email=email).first()
+        
+        if user:
+            # Existing user - log them in
+            login(request, user, backend='django.contrib.auth.backends.ModelBackend')
+            messages.success(request, f"Welcome back, {user.username} (via Google)!")
+        else:
+            # New user - create them
+            first_name = user_info.get('given_name', '')
+            last_name = user_info.get('family_name', '')
+            
+            # Generate a unique username based on email
+            username_base = email.split('@')[0]
+            # Replace dots/special chars which might not be allowed in Django username
+            username_base = "".join(c for c in username_base if c.isalnum() or c in ['_', '-'])
+            
+            username = username_base
+            while User.objects.filter(username=username).exists():
+                username = f"{username_base}_{get_random_string(4).lower()}"
+                
+            user = User.objects.create_user(
+                username=username,
+                email=email,
+                password=get_random_string(32), # Random unusable password
+                first_name=first_name,
+                last_name=last_name
+            )
+            
+            login(request, user, backend='django.contrib.auth.backends.ModelBackend')
+            messages.success(request, f"Successfully registered and logged in as {username} (via Google)!")
+            
+        return redirect('home')
+        
+    except requests.RequestException as e:
+        messages.error(request, f"Google OAuth communication failed: {str(e)}")
+        return redirect('login')
+
