@@ -4,68 +4,139 @@
 {% block title %}HeroHealth | Nepal's AI-Powered Smart Triage & Clinic Finder{% endblock %}
 
 {% block content %}
-<div class="hero-section" id="heroBlock">
-    <h1 class="hero-title" id="mainHeroTitle">Your Intelligent Healthcare companion in Nepal</h1>
+
+<section class="hero-section" id="heroBlock">
+    <h1 class="hero-title" id="mainHeroTitle">
+        Your Intelligent Healthcare Companion in Nepal
+    </h1>
+
     <p class="hero-subtitle" id="mainHeroSub">
-        Symptom checking powered by advanced AI, matched instantly with real-time clinics, hospitals, and emergency services across Nepal.
+        Symptom checking powered by AI, matched with healthcare facilities
+        and emergency services across Nepal.
     </p>
-    <div style="display: flex; justify-content: center; gap: 1.5rem; flex-wrap: wrap;" id="heroCTAs">
+
+    <div class="hero-actions" id="heroCTAs">
         <a href="{% url 'consultation' %}" class="btn-premium" id="ctaTriage">
-            <i class="fa-solid fa-stethoscope"></i> Start AI Consultation
+            <i class="fa-solid fa-stethoscope" aria-hidden="true"></i>
+            <span>Start AI Consultation</span>
         </a>
+
         <a href="{% url 'map_view' %}" class="btn-premium btn-premium-accent" id="ctaMap">
-            <i class="fa-solid fa-map-location-dot"></i> Open Proximity Map
+            <i class="fa-solid fa-map-location-dot" aria-hidden="true"></i>
+            <span>Open Proximity Map</span>
         </a>
     </div>
-</div>
+</section>
 
-<div class="feature-grid" id="featuresSection">
-    <!-- Feature 1 -->
-    <div class="glass-card feature-card" id="featTriage">
-        <div class="feature-icon"><i class="fa-solid fa-robot"></i></div>
-        <h3 class="feature-title">AI Symptom Triage</h3>
-        <p class="feature-desc">
-            Submit your symptoms and upload symptom images. Our smart engine analyzes the inputs and suggests the severity, potential causes, and next steps.
-        </p>
-        <a href="{% url 'consultation' %}" class="nav-btn nav-btn-primary" style="text-align:center;" id="btnGoTriage">Consult Now</a>
-    </div>
+<section class="feature-grid" id="featuresSection">
 
-    <!-- Feature 2 -->
-    <div class="glass-card feature-card" id="featDirectory">
-        <div class="feature-icon"><i class="fa-solid fa-hospital"></i></div>
-        <h3 class="feature-title">Nepal Clinic Finder</h3>
-        <p class="feature-desc">
-            Browse verified listings of hospitals, clinics, and health centers in Kathmandu, Lalitpur, Pokhara, Dharan, and more. Filter by specializations.
-        </p>
-        <a href="{% url 'facility_list' %}" class="nav-btn nav-btn-primary" style="text-align:center;" id="btnGoDirectory">Search Directory</a>
-    </div>
-
-    <!-- Feature 3 -->
-    <div class="glass-card feature-card" id="featMap">
-        <div class="feature-icon"><i class="fa-solid fa-compass"></i></div>
-        <h3 class="feature-title">Proximity Mapping</h3>
-        <p class="feature-desc">
-            Find the nearest healthcare services based on your current physical coordinates. Get exact distances and directions on an interactive map.
-        </p>
-        <a href="{% url 'map_view' %}" class="nav-btn nav-btn-primary" style="text-align:center;" id="btnGoMap">View Nearby Maps</a>
-    </div>
-</div>
-
-<!-- Stats Counter Section -->
-<div style="max-width: 1200px; margin: 3rem auto; padding: 2rem;" id="statsBlock">
-    <div class="glass-card" style="display: flex; justify-content: space-around; flex-wrap: wrap; text-align: center; gap: 2rem;">
-        <div id="statHospitals">
-            <h2 style="font-family: var(--font-heading); font-size: 2.5rem; background: var(--primary-grad); -webkit-background-clip: text; -webkit-text-fill-color: transparent;">18+</h2>
-            <p style="color: var(--text-muted); font-size: 0.95rem; font-weight: 500;">Hospitals Indexed</p>
+    <article class="glass-card feature-card" id="featTriage">
+        <div class="feature-icon" aria-hidden="true">
+            <i class="fa-solid fa-robot"></i>
         </div>
-        <div id="statConsultations">
-            <h2 style="font-family: var(--font-heading); font-size: 2.5rem; background: var(--accent-grad); -webkit-background-clip: text; -webkit-text-fill-color: transparent;">500+</h2>
-            <p style="color: var(--text-muted); font-size: 0.95rem; font-weight: 500;">Triage Reports Processed</p>
+
+        <h2 class="feature-title">
+            AI Symptom Triage
+        </h2>
+
+        <p class="feature-desc">
+            Describe your symptoms and provide relevant information to receive
+            AI-assisted triage guidance, potential causes, severity indicators,
+            and recommended next steps.
+        </p>
+
+        <a href="{% url 'consultation' %}" class="nav-btn nav-btn-primary" id="btnGoTriage">
+            Consult Now
+        </a>
+    </article>
+
+    <article class="glass-card feature-card" id="featDirectory">
+        <div class="feature-icon" aria-hidden="true">
+            <i class="fa-solid fa-hospital"></i>
         </div>
-        <div id="statSLA">
-            <h2 style="font-family: var(--font-heading); font-size: 2.5rem; background: var(--primary-grad); -webkit-background-clip: text; -webkit-text-fill-color: transparent;">24/7</h2>
-            <p style="color: var(--text-muted); font-size: 0.95rem; font-weight: 500;">Emergency Line Directory</p>
+
+        <h2 class="feature-title">
+            Nepal Healthcare Finder
+        </h2>
+
+        <p class="feature-desc">
+            Browse healthcare facilities and find hospitals, clinics, and health
+            centers by location, services, and specialization.
+        </p>
+
+        <a href="{% url 'facility_list' %}" class="nav-btn nav-btn-primary" id="btnGoDirectory">
+            Search Directory
+        </a>
+    </article>
+
+    <article class="glass-card feature-card" id="featMap">
+        <div class="feature-icon" aria-hidden="true">
+            <i class="fa-solid fa-compass"></i>
         </div>
+
+        <h2 class="feature-title">
+            Proximity Mapping
+        </h2>
+
+        <p class="feature-desc">
+            Explore healthcare facilities on an interactive map and identify
+            nearby services using available location information.
+        </p>
+
+        <a href="{% url 'map_view' %}" class="nav-btn nav-btn-primary" id="btnGoMap">
+            View Nearby Maps
+        </a>
+    </article>
+
+</section>
+
+<section class="stats-section" id="statsBlock">
+    <div class="glass-card stats-card">
+
+        <div class="stat-item" id="statHospitals">
+            <h2 class="stat-value stat-primary">
+                18+
+            </h2>
+
+            <p class="stat-label">
+                Healthcare Facilities Indexed
+            </p>
+        </div>
+
+        <div class="stat-item" id="statConsultations">
+            <h2 class="stat-value stat-accent">
+                500+
+            </h2>
+
+            <p class="stat-label">
+                Triage Reports Processed
+            </p>
+        </div>
+
+        <div class="stat-item" id="statSLA">
+            <h2 class="stat-value stat-primary">
+                24/7
+            </h2>
+
+            <p class="stat-label">
+                Emergency Information
+            </p>
+        </div>
+
     </div>
-</div>
+</section>
+
+<section class="home-disclaimer" id="homeDisclaimer">
+    <div class="glass-card">
+        <p>
+            <i class="fa-solid fa-circle-info" aria-hidden="true"></i>
+
+            <strong>Important:</strong>
+            HeroHealth provides informational triage guidance and healthcare
+            facility information. It is not a replacement for a qualified
+            medical professional or emergency medical care.
+        </p>
+    </div>
+</section>
+
 {% endblock %}
