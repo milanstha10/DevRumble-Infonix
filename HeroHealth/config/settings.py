@@ -28,13 +28,15 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    
     # Custom apps
     'accounts.apps.AccountsConfig',
     'health.apps.HealthConfig',
     'facilities.apps.FacilitiesConfig',
     'ai_engine.apps.AiEngineConfig',
 ]
+
+
+# Middleware
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
@@ -47,6 +49,9 @@ MIDDLEWARE = [
 ]
 
 ROOT_URLCONF = 'config.urls'
+
+
+# Templates
 
 TEMPLATES = [
     {
@@ -134,3 +139,6 @@ LOGOUT_REDIRECT_URL = 'home'
 
 # Gemini API Configuration
 GEMINI_API_KEY = os.getenv('GEMINI_API_KEY', '')
+
+# Email
+EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
