@@ -1,0 +1,573 @@
+/* =========================================================
+   HEROHEALTH — REGISTER PAGE
+   ========================================================= */
+
+
+/* =========================================================
+   PAGE CONTAINER
+   ========================================================= */
+
+.auth-page-container {
+    width: min(820px, calc(100% - 3rem));
+    margin: 3rem auto 4rem;
+}
+
+
+/* =========================================================
+   AUTH CARD
+   ========================================================= */
+
+.auth-card {
+    width: 100%;
+    padding: 2.25rem;
+}
+
+.register-card {
+    position: relative;
+    overflow: hidden;
+}
+
+
+/* =========================================================
+   SUBTLE TOP ACCENT
+   ========================================================= */
+
+.register-card::before {
+    content: "";
+
+    position: absolute;
+
+    top: 0;
+    left: 0;
+    right: 0;
+
+    height: 2px;
+
+    background: linear-gradient(90deg,
+            transparent,
+            var(--primary),
+            var(--accent),
+            transparent);
+
+    opacity: 0.75;
+}
+
+
+/* =========================================================
+   AUTH HEADER
+   ========================================================= */
+
+.auth-header {
+    text-align: center;
+    margin-bottom: 2.25rem;
+}
+
+.auth-header-icon {
+    width: 54px;
+    height: 54px;
+
+    margin: 0 auto 1rem;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    border-radius: 14px;
+
+    background: rgba(0, 242, 254, 0.07);
+
+    border: 1px solid rgba(0, 242, 254, 0.15);
+
+    color: var(--primary);
+
+    font-size: 1.25rem;
+
+    box-shadow:
+        0 0 25px rgba(0, 242, 254, 0.06);
+}
+
+.auth-header .consultation-title {
+    margin-bottom: 0.5rem;
+}
+
+.auth-header .consultation-desc {
+    max-width: 600px;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+
+/* =========================================================
+   FORM SECTIONS
+   ========================================================= */
+
+.auth-section {
+    margin-bottom: 1.75rem;
+}
+
+.profile-section {
+    margin-top: 0.5rem;
+}
+
+
+/* =========================================================
+   SECTION HEADING
+   ========================================================= */
+
+.auth-section-heading {
+    display: flex;
+    align-items: center;
+    gap: 0.8rem;
+
+    margin-bottom: 1.35rem;
+    padding-bottom: 0.85rem;
+
+    border-bottom: 1px solid var(--border-glass);
+}
+
+.auth-section-icon {
+    flex: 0 0 38px;
+
+    width: 38px;
+    height: 38px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    border-radius: 9px;
+
+    background: rgba(0, 242, 254, 0.06);
+
+    border: 1px solid rgba(0, 242, 254, 0.12);
+
+    color: var(--primary);
+
+    font-size: 0.9rem;
+}
+
+.auth-section-heading h2 {
+    margin: 0 0 0.15rem;
+
+    font-family: var(--font-heading);
+
+    color: var(--primary);
+
+    font-size: 1.08rem;
+    font-weight: 700;
+}
+
+.auth-section-heading p {
+    margin: 0;
+
+    color: var(--text-muted);
+
+    font-size: 0.75rem;
+    line-height: 1.4;
+}
+
+
+/* =========================================================
+   FORM GRID
+   ========================================================= */
+
+.auth-form-grid {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+
+    gap: 1rem;
+}
+
+
+/* =========================================================
+   FORM GROUP
+   ========================================================= */
+
+.auth-card .form-group {
+    margin-bottom: 1.15rem;
+}
+
+
+/* =========================================================
+   LABEL
+   ========================================================= */
+
+.auth-card .form-label {
+    display: block;
+
+    margin-bottom: 0.5rem;
+
+    color: var(--text-primary);
+
+    font-size: 0.84rem;
+    font-weight: 650;
+}
+
+
+/* =========================================================
+   INPUTS
+   ========================================================= */
+
+.auth-card input,
+.auth-card select,
+.auth-card textarea {
+    width: 100%;
+
+    box-sizing: border-box;
+
+    padding: 0.78rem 0.9rem;
+
+    border-radius: 9px;
+
+    border: 1px solid var(--border-glass);
+
+    background: rgba(255, 255, 255, 0.025);
+
+    color: var(--text-primary);
+
+    font-family: inherit;
+    font-size: 0.9rem;
+
+    outline: none;
+
+    transition:
+        border-color 0.25s ease,
+        background 0.25s ease,
+        box-shadow 0.25s ease;
+}
+
+.auth-card input::placeholder,
+.auth-card textarea::placeholder {
+    color: rgba(255, 255, 255, 0.3);
+}
+
+.auth-card input:hover,
+.auth-card select:hover,
+.auth-card textarea:hover {
+    border-color: rgba(0, 242, 254, 0.18);
+}
+
+.auth-card input:focus,
+.auth-card select:focus,
+.auth-card textarea:focus {
+    border-color: rgba(0, 242, 254, 0.5);
+
+    background: rgba(0, 242, 254, 0.025);
+
+    box-shadow:
+        0 0 0 3px rgba(0, 242, 254, 0.07);
+}
+
+
+/* =========================================================
+   SELECT
+   ========================================================= */
+
+.auth-card select {
+    cursor: pointer;
+}
+
+.auth-card select option {
+    background: #0b1320;
+    color: #ffffff;
+}
+
+
+/* =========================================================
+   TEXTAREA
+   ========================================================= */
+
+.auth-card textarea {
+    min-height: 105px;
+
+    resize: vertical;
+
+    line-height: 1.55;
+}
+
+
+/* =========================================================
+   NUMBER INPUT
+   ========================================================= */
+
+.auth-card input[type="number"] {
+    appearance: textfield;
+    -moz-appearance: textfield;
+}
+
+.auth-card input[type="number"]::-webkit-inner-spin-button,
+.auth-card input[type="number"]::-webkit-outer-spin-button {
+    margin: 0;
+    -webkit-appearance: none;
+}
+
+
+/* =========================================================
+   ERROR MESSAGES
+   ========================================================= */
+
+.auth-error {
+    display: block;
+
+    margin-top: 0.4rem;
+
+    color: var(--danger);
+
+    font-size: 0.76rem;
+    line-height: 1.4;
+}
+
+.auth-card .errorlist {
+    list-style: none;
+
+    margin: 0.4rem 0 0;
+    padding: 0;
+
+    color: var(--danger);
+
+    font-size: 0.76rem;
+}
+
+.auth-card .errorlist li {
+    margin-bottom: 0.2rem;
+}
+
+
+/* =========================================================
+   INVALID INPUT
+   ========================================================= */
+
+.auth-card input[aria-invalid="true"],
+.auth-card select[aria-invalid="true"],
+.auth-card textarea[aria-invalid="true"] {
+    border-color: rgba(239, 68, 68, 0.55);
+}
+
+.auth-card input[aria-invalid="true"]:focus,
+.auth-card select[aria-invalid="true"]:focus,
+.auth-card textarea[aria-invalid="true"]:focus {
+    box-shadow:
+        0 0 0 3px rgba(239, 68, 68, 0.07);
+}
+
+
+/* =========================================================
+   SUBMIT BUTTON
+   ========================================================= */
+
+.auth-submit-btn {
+    width: 100%;
+
+    min-height: 48px;
+
+    margin-top: 0.4rem;
+
+    justify-content: center;
+
+    display: inline-flex;
+    align-items: center;
+    gap: 0.6rem;
+
+    font-size: 0.92rem;
+    font-weight: 700;
+}
+
+.auth-submit-btn i {
+    font-size: 0.85rem;
+}
+
+
+/* =========================================================
+   AUTH FOOTER
+   ========================================================= */
+
+.auth-footer {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-wrap: wrap;
+    gap: 0.3rem;
+
+    margin-top: 1.5rem;
+    padding-top: 1.25rem;
+
+    border-top: 1px solid var(--border-glass);
+
+    color: var(--text-muted);
+
+    font-size: 0.85rem;
+}
+
+.auth-footer a {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.35rem;
+
+    color: var(--primary);
+
+    text-decoration: none;
+
+    font-weight: 650;
+
+    transition:
+        color 0.25s ease,
+        transform 0.25s ease;
+}
+
+.auth-footer a:hover {
+    color: var(--accent);
+
+    transform: translateX(2px);
+}
+
+.auth-footer a i {
+    font-size: 0.7rem;
+}
+
+
+/* =========================================================
+   AUTOFILL
+   ========================================================= */
+
+.auth-card input:-webkit-autofill,
+.auth-card input:-webkit-autofill:hover,
+.auth-card input:-webkit-autofill:focus {
+    -webkit-text-fill-color: var(--text-primary);
+
+    box-shadow:
+        0 0 0 1000px rgba(255, 255, 255, 0.025) inset;
+
+    transition:
+        background-color 9999s ease-in-out 0s;
+}
+
+
+/* =========================================================
+   TABLET
+   ========================================================= */
+
+@media (max-width: 700px) {
+
+    .auth-page-container {
+        width: min(100% - 2rem, 820px);
+
+        margin-top: 2rem;
+        margin-bottom: 3rem;
+    }
+
+    .auth-card {
+        padding: 1.5rem;
+    }
+
+    .auth-form-grid {
+        grid-template-columns: 1fr;
+        gap: 0;
+    }
+
+    .auth-header {
+        margin-bottom: 1.75rem;
+    }
+
+}
+
+
+/* =========================================================
+   MOBILE
+   ========================================================= */
+
+@media (max-width: 480px) {
+
+    .auth-page-container {
+        width: calc(100% - 1rem);
+
+        margin-top: 1.25rem;
+    }
+
+    .auth-card {
+        padding: 1.1rem;
+    }
+
+    .auth-header-icon {
+        width: 46px;
+        height: 46px;
+
+        margin-bottom: 0.8rem;
+
+        border-radius: 12px;
+
+        font-size: 1rem;
+    }
+
+    .auth-header .consultation-title {
+        font-size: 1.55rem;
+    }
+
+    .auth-header .consultation-desc {
+        font-size: 0.8rem;
+    }
+
+    .auth-section-heading {
+        gap: 0.65rem;
+
+        margin-bottom: 1.1rem;
+    }
+
+    .auth-section-icon {
+        flex-basis: 34px;
+
+        width: 34px;
+        height: 34px;
+
+        font-size: 0.78rem;
+    }
+
+    .auth-section-heading h2 {
+        font-size: 0.95rem;
+    }
+
+    .auth-section-heading p {
+        font-size: 0.7rem;
+    }
+
+    .auth-card input,
+    .auth-card select,
+    .auth-card textarea {
+        padding: 0.72rem 0.78rem;
+
+        font-size: 0.85rem;
+    }
+
+    .auth-card .form-label {
+        font-size: 0.8rem;
+    }
+
+    .auth-footer {
+        font-size: 0.78rem;
+    }
+
+}
+
+
+/* =========================================================
+   VERY SMALL SCREENS
+   ========================================================= */
+
+@media (max-width: 360px) {
+
+    .auth-page-container {
+        width: calc(100% - 0.75rem);
+    }
+
+    .auth-card {
+        padding: 0.9rem;
+    }
+
+    .auth-header .consultation-title {
+        font-size: 1.4rem;
+    }
+
+    .auth-section-heading p {
+        display: none;
+    }
+
+}
