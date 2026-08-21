@@ -74,7 +74,7 @@
             endif
             %}
           >
-            AI Triage
+            Hero AI
           </a>
         </li>
 
@@ -136,6 +136,17 @@
         </li>
 
         {% if user.is_authenticated %}
+        <li>
+          <a
+            href="{% url 'chatbot' %}"
+            class="nav-link nav-chatbot-icon {% if request.resolver_match.view_name == 'chatbot' %}active{% endif %}"
+            id="navChatbot"
+            aria-label="Chat with Hero AI"
+            title="Chat with Hero AI"
+          >
+            <i class="fa-solid fa-comments" aria-hidden="true"></i>
+          </a>
+        </li>
         <li>
           <a
             href="{% url 'profile' %}"
@@ -229,6 +240,14 @@
             AI Consultation
           </a>
         </li>
+
+        {% if user.is_authenticated %}
+        <li>
+          <a href="{% url 'chatbot' %}" class="footer-link"
+            >Chat with Hero AI</a
+          >
+        </li>
+        {% endif %}
 
         <li>
           <a href="{% url 'facility_list' %}" class="footer-link">

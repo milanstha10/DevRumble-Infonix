@@ -1,4 +1,5 @@
 from django.test import TestCase
+from django.urls import reverse
 from django.contrib.auth.models import User
 from accounts.models import UserProfile
 from facilities.models import HealthcareFacility
@@ -40,3 +41,23 @@ class SafetyTriageTests(TestCase):
         result_mild = run_local_triage("I have mild cold and cough and slight throat pain.")
         self.assertEqual(result_mild['severity'], 'Medium')
         self.assertEqual(result_mild['suggested_specialty'], 'General Medicine')
+
+
+class HealthChatTests(TestCase):
+    def setUp(self):
+        self.user = User.objects.create_user(username='chatuser', password='password123')
+
+    def test_chat_requires_login(self):
+        response = self.client.get(reverse('chatbot'))
+        self.assertEqual(response.status_code, 302)
+        self.assertIn(reverse('login'), response.url)
+
+    def test_authenticated_user_can_send_chat_message(self):
+        self.client.login(username='chatuser', password='password123')
+        response = self.client.post(
+            reverse('chatbot_message'),
+            data='{\"message\": \"I have a mild headache today.\", \"language\": \"en\"}',
+            content_type='application/json',
+        )
+        self.assertEqual(response.status_code, 200)
+        self.assertIn('reply', response.json())

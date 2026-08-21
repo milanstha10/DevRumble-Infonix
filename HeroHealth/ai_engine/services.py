@@ -166,40 +166,94 @@ def analyze_symptoms_ai(symptoms_text, image_path=None):
         return run_local_triage(symptoms_text)
 
     try:
-        # Configure genai client
         genai.configure(api_key=api_key)
-        
-        # We use gemini-2.5-flash as requested by project rules/defaults
         model = genai.GenerativeModel('gemini-2.5-flash')
-        
         content_parts = [SYSTEM_PROMPT, f"User Symptoms:\n{symptoms_text}"]
-        
-        # Handle optional symptom image
         if image_path:
             try:
                 from PIL import Image
-                img = Image.open(image_path)
-                content_parts.append(img)
+                content_parts.append(Image.open(image_path))
             except Exception as img_err:
-                logger.error(f"Failed to load image for Gemini analysis: {img_err}")
-        
-        # Call Gemini model
+                logger.error("Failed to load image for Gemini analysis: %s", img_err)
         response = model.generate_content(content_parts)
-        
-        # Clean response and parse JSON
         response_text = response.text.strip()
-        
-        # Strip markdown syntax ```json ... ``` if present
         if response_text.startswith("```json"):
             response_text = response_text[7:]
         if response_text.endswith("```"):
             response_text = response_text[:-3]
-        response_text = response_text.strip()
-        
-        data = json.loads(response_text)
-        return data
-        
-    except Exception as e:
-        logger.error(f"Gemini API analysis failed: {e}. Falling back to rule engine.")
-        # Return fallback rules
+        return json.loads(response_text.strip())
+    except Exception as exc:
+        logger.error("Gemini API analysis failed: %s. Falling back to rule engine.", exc)
         return run_local_triage(symptoms_text)
+
+
+CHAT_SYSTEM_PROMPT = """
+You are Hero AI, a health-information companion for people in Nepal.
+Reply in the same language as the user. If the user writes in Nepali, reply in
+clear, natural Nepali (Devanagari). Be warm, brief, and practical.
+
+This is NOT a diagnostic or prescribing service. Never name, confirm, rank, or
+rule out a disease/condition, and do not tell the user what medicine, dose, or
+treatment to take. Do not claim certainty. Instead, provide general wellbeing
+information, safe next steps, and questions a qualified clinician may ask.
+
+Always include a short reminder that you cannot diagnose and a clinician can
+assess them. When symptoms could be an emergency (for example severe chest
+pain, trouble breathing, stroke signs, severe bleeding, unconsciousness,
+seizure, or immediate self-harm risk), clearly tell the person to call Nepal
+ambulance 102 or go to the nearest emergency department now. Do not continue
+with routine advice in that case. Never request passwords, financial details,
+or unnecessary identifying information.
+"""
+
+
+def _local_chat_reply(message, language='en'):
+    """Safe, useful fallback used when the generative service is unavailable."""
+    text = message.lower()
+    urgent_words = (
+        'chest pain', 'trouble breathing', 'difficulty breathing', 'cannot breathe',
+        'unconscious', 'seizure', 'stroke', 'heavy bleeding', 'suicide', 'self harm',
+        'छाती दुख्ने', 'सास फेर्न गाह्रो', 'बेहोस', 'रक्तस्राव', 'आत्महत्या'
+    )
+    if any(word in text for word in urgent_words):
+        if language == 'ne':
+            return (
+                'यो लक्षण आपतकालीन हुन सक्छ। अबेलम्ब एम्बुलेन्स १०२ मा कल गर्नुहोस् वा नजिकको आकस्मिक विभागमा जानुहोस्। '
+                'म निदान गर्न सक्दिनँ।'
+            )
+        return (
+            'These symptoms may need emergency care. Please call an ambulance on 102 in Nepal or go to the nearest emergency department now. '
+            'I cannot diagnose this situation.'
+        )
+    if language == 'ne':
+        return (
+            'मैले तपाईंको चिन्ता बुझें। म निदान गर्न सक्दिनँ, तर सामान्य मार्गदर्शन दिन सक्छु। बिश्राम गर्नुहोस्, तुलनात्मक रूपमा पानी पिउनुहोस्, र लक्षण बढ्दै गए स्वास्थ्यकर्मीसँग सम्पर्क गर्नुहोस्। '
+            'लक्षण कतिबेलादेखि छ र कति गम्भीर छ भन्नुहोस्।'
+        )
+    return (
+        "I understand this can be worrying. I cannot diagnose, but I can offer general next steps. "
+        "Rest, drink fluids as you normally can, and note when the symptoms began and whether they are worsening. "
+        "Please contact a qualified clinician if they persist or concern you. How long has this been happening, and is it getting worse?"
+    )
+
+
+def get_health_chat_reply(message, language='en'):
+    """Return medical guidance, with a private local fallback if Gemini is unavailable."""
+    api_key = getattr(settings, 'GEMINI_API_KEY', '')
+    if not HAS_GENAI or not api_key:
+        return _local_chat_reply(message, language)
+
+    try:
+        genai.configure(api_key=api_key)
+        model = genai.GenerativeModel('gemini-2.5-flash')
+        response = model.generate_content([
+            CHAT_SYSTEM_PROMPT,
+            f"Preferred response language: {'Nepali' if language == 'ne' else 'English'}.",
+            f"User message: {message}",
+        ])
+        reply = (response.text or '').strip()
+        return reply or _local_chat_reply(message, language)
+    except Exception as exc:
+        logger.error("Gemini chat request failed: %s", exc)
+        return _local_chat_reply(message, language)
+
