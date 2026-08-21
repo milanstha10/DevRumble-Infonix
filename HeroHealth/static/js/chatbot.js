@@ -103,17 +103,33 @@
   }
 
   async function request(url, options = {}) {
-    const response = await fetch(url, {
-      credentials: 'same-origin',
-      headers: {
-        'X-CSRFToken': csrf(),
-        ...(options.headers || {})
-      },
-      ...options
-    });
-    const data = await response.json().catch(() => ({}));
+    let response;
+    try {
+      response = await fetch(url, {
+        credentials: 'same-origin',
+        headers: {
+          'X-CSRFToken': csrf(),
+          ...(options.headers || {})
+        },
+        ...options
+      });
+    } catch (err) {
+      console.error("Fetch Network Error:", err);
+      throw new Error('Network error: Unable to reach the server. Please check your connection.');
+    }
+
+    let data = {};
+    const text = await response.text();
+    try {
+      data = JSON.parse(text);
+    } catch (e) {
+      console.error("Failed to parse JSON response:", text);
+      throw new Error(`Server returned status ${response.status}. Please check your console/server logs.`);
+    }
+
     if (!response.ok || !data.success) {
-      throw new Error(data.error || 'Unable to connect to Hero AI. Please check your connection and try again.');
+      console.error("Server error response:", response.status, data);
+      throw new Error(data.error || `Server error (Status ${response.status}).`);
     }
     return data;
   }
