@@ -40,6 +40,9 @@ INSTALLED_APPS = [
     'HeroHealth.apps.HerohealthConfig',
 ]
 
+
+# Middleware
+
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
@@ -50,7 +53,13 @@ MIDDLEWARE = [
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
 ]
 
+
+# Root URL configuration
+
 ROOT_URLCONF = 'core.urls'
+
+
+# Templates
 
 TEMPLATES = [
     {
@@ -66,6 +75,9 @@ TEMPLATES = [
         },
     },
 ]
+
+
+# WSGI
 
 WSGI_APPLICATION = 'core.wsgi.application'
 
@@ -121,8 +133,9 @@ STATIC_URL = 'static/'
 # Email
 # https://docs.djangoproject.com/en/6.1/topics/email/#topic-email-configuration
 
-MAILERS = {
-    'default': {
-        'BACKEND': 'django.core.mail.backends.console.EmailBackend',
-    },
-}
+EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
+
+
+# Default primary key field type
+
+DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
