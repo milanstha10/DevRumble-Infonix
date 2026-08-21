@@ -1,0 +1,894 @@
+/* =========================================================
+   HEROHEALTH — LOGIN PAGE
+   ========================================================= */
+
+
+/* =========================================================
+   PAGE CONTAINER
+   ========================================================= */
+
+.login-page {
+    width: min(100% - 3rem, 520px);
+
+    min-height: calc(100vh - 160px);
+
+    margin: 0 auto;
+
+    padding: 3rem 0 4rem;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    position: relative;
+}
+
+
+/* =========================================================
+   BACKGROUND GLOW
+   ========================================================= */
+
+.login-page::before {
+    content: "";
+
+    position: absolute;
+
+    width: 480px;
+    height: 480px;
+
+    top: 50%;
+    left: 50%;
+
+    transform: translate(-50%, -50%);
+
+    background:
+        radial-gradient(circle,
+            rgba(0, 242, 254, 0.11) 0%,
+            rgba(0, 242, 254, 0.045) 35%,
+            transparent 70%);
+
+    filter: blur(28px);
+
+    pointer-events: none;
+
+    z-index: 0;
+}
+
+
+/* =========================================================
+   LOGIN CARD
+   ========================================================= */
+
+.login-card {
+    width: 100%;
+
+    position: relative;
+    z-index: 1;
+
+    padding: 2.25rem;
+
+    border-radius: 18px;
+
+    border: 1px solid var(--border-glass);
+
+    background:
+        linear-gradient(145deg,
+            rgba(255, 255, 255, 0.065),
+            rgba(255, 255, 255, 0.025));
+
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+
+    box-shadow:
+        0 25px 70px rgba(0, 0, 0, 0.35),
+        inset 0 1px 0 rgba(255, 255, 255, 0.04);
+
+    overflow: hidden;
+}
+
+
+/* =========================================================
+   TOP ACCENT
+   ========================================================= */
+
+.login-card::before {
+    content: "";
+
+    position: absolute;
+
+    top: 0;
+    left: 0;
+    right: 0;
+
+    height: 2px;
+
+    background:
+        linear-gradient(90deg,
+            transparent,
+            var(--primary),
+            var(--accent),
+            transparent);
+
+    opacity: 0.75;
+}
+
+
+/* =========================================================
+   HEADER
+   ========================================================= */
+
+.login-header {
+    text-align: center;
+
+    margin-bottom: 2rem;
+}
+
+
+/* =========================================================
+   LOGIN ICON
+   ========================================================= */
+
+.login-icon {
+    width: 58px;
+    height: 58px;
+
+    margin: 0 auto 1rem;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    border-radius: 14px;
+
+    background:
+        linear-gradient(135deg,
+            rgba(0, 242, 254, 0.13),
+            rgba(0, 242, 254, 0.035));
+
+    border: 1px solid rgba(0, 242, 254, 0.18);
+
+    color: var(--primary);
+
+    font-size: 1.4rem;
+
+    box-shadow:
+        0 0 28px rgba(0, 242, 254, 0.07);
+}
+
+
+.login-icon i {
+    font-size: 1.5rem;
+}
+
+
+/* =========================================================
+   TITLE
+   ========================================================= */
+
+.login-title {
+    margin: 0 0 0.55rem;
+
+    color: var(--text-primary);
+
+    font-family: var(--font-heading);
+
+    font-size: 2rem;
+    font-weight: 800;
+
+    line-height: 1.2;
+
+    letter-spacing: -0.02em;
+}
+
+
+/* =========================================================
+   DESCRIPTION
+   ========================================================= */
+
+.login-description {
+    max-width: 410px;
+
+    margin: 0 auto;
+
+    color: var(--text-muted);
+
+    font-size: 0.88rem;
+
+    line-height: 1.6;
+}
+
+
+/* =========================================================
+   LOGIN FORM
+   ========================================================= */
+
+.login-form {
+    width: 100%;
+}
+
+
+/* =========================================================
+   FORM GROUP
+   ========================================================= */
+
+.login-form .form-group {
+    margin-bottom: 1.15rem;
+}
+
+
+/* =========================================================
+   FORM LABEL
+   ========================================================= */
+
+.login-form .form-label {
+    display: block;
+
+    margin-bottom: 0.5rem;
+
+    color: var(--text-primary);
+
+    font-size: 0.84rem;
+    font-weight: 650;
+}
+
+
+/* =========================================================
+   DJANGO GENERATED INPUTS
+   ========================================================= */
+
+.login-form input,
+.login-form select,
+.login-form textarea {
+    width: 100%;
+
+    box-sizing: border-box;
+
+    min-height: 48px;
+
+    padding: 0.78rem 0.9rem;
+
+    border-radius: 9px;
+
+    border: 1px solid var(--border-glass);
+
+    outline: none;
+
+    background:
+        rgba(255, 255, 255, 0.025);
+
+    color: var(--text-primary);
+
+    font-family: var(--font-body);
+
+    font-size: 0.9rem;
+
+    transition:
+        border-color 0.25s ease,
+        background 0.25s ease,
+        box-shadow 0.25s ease;
+}
+
+
+/* =========================================================
+   PLACEHOLDER
+   ========================================================= */
+
+.login-form input::placeholder,
+.login-form textarea::placeholder {
+    color: rgba(255, 255, 255, 0.3);
+}
+
+
+/* =========================================================
+   INPUT HOVER
+   ========================================================= */
+
+.login-form input:hover,
+.login-form select:hover,
+.login-form textarea:hover {
+    border-color: rgba(0, 242, 254, 0.18);
+}
+
+
+/* =========================================================
+   INPUT FOCUS
+   ========================================================= */
+
+.login-form input:focus,
+.login-form select:focus,
+.login-form textarea:focus {
+    border-color: rgba(0, 242, 254, 0.55);
+
+    background:
+        rgba(0, 242, 254, 0.025);
+
+    box-shadow:
+        0 0 0 3px rgba(0, 242, 254, 0.07),
+        0 0 20px rgba(0, 242, 254, 0.025);
+}
+
+
+/* =========================================================
+   SELECT
+   ========================================================= */
+
+.login-form select {
+    cursor: pointer;
+}
+
+.login-form select option {
+    background: #0b1320;
+    color: #ffffff;
+}
+
+
+/* =========================================================
+   TEXTAREA
+   ========================================================= */
+
+.login-form textarea {
+    min-height: 105px;
+
+    resize: vertical;
+
+    line-height: 1.55;
+}
+
+
+/* =========================================================
+   HELP TEXT
+   ========================================================= */
+
+.login-help {
+    display: block;
+
+    margin-top: 0.4rem;
+
+    color: var(--text-muted);
+
+    font-size: 0.73rem;
+
+    line-height: 1.5;
+}
+
+
+/* =========================================================
+   FIELD ERRORS
+   ========================================================= */
+
+.login-field-error {
+    display: flex;
+
+    align-items: flex-start;
+
+    gap: 0.4rem;
+
+    margin-top: 0.4rem;
+
+    color: var(--danger);
+
+    font-size: 0.76rem;
+
+    line-height: 1.4;
+}
+
+
+.login-field-error i {
+    margin-top: 2px;
+
+    flex-shrink: 0;
+
+    color: var(--danger);
+}
+
+
+/* =========================================================
+   DJANGO ERROR LIST
+   ========================================================= */
+
+.login-form .errorlist {
+    list-style: none;
+
+    margin: 0.4rem 0 0;
+    padding: 0;
+
+    color: var(--danger);
+
+    font-size: 0.76rem;
+
+    line-height: 1.4;
+}
+
+
+.login-form .errorlist li {
+    margin-bottom: 0.2rem;
+}
+
+
+/* =========================================================
+   FORM-WIDE ERROR BOX
+   ========================================================= */
+
+.login-error-box {
+    display: flex;
+
+    align-items: flex-start;
+
+    gap: 0.75rem;
+
+    margin-bottom: 1.35rem;
+
+    padding: 0.9rem 1rem;
+
+    border-radius: 10px;
+
+    border: 1px solid rgba(239, 68, 68, 0.25);
+
+    border-left: 4px solid var(--danger);
+
+    background:
+        rgba(239, 68, 68, 0.07);
+
+    color: #fca5a5;
+
+    font-size: 0.84rem;
+
+    line-height: 1.5;
+}
+
+
+.login-error-box>i {
+    margin-top: 2px;
+
+    color: var(--danger);
+
+    flex-shrink: 0;
+}
+
+
+.login-error-box p {
+    margin: 0;
+}
+
+
+.login-error-box p+p {
+    margin-top: 0.25rem;
+}
+
+
+/* =========================================================
+   INVALID INPUTS
+   ========================================================= */
+
+.login-form input[aria-invalid="true"],
+.login-form select[aria-invalid="true"],
+.login-form textarea[aria-invalid="true"] {
+    border-color: rgba(239, 68, 68, 0.55);
+}
+
+
+.login-form input[aria-invalid="true"]:focus,
+.login-form select[aria-invalid="true"]:focus,
+.login-form textarea[aria-invalid="true"]:focus {
+    box-shadow:
+        0 0 0 3px rgba(239, 68, 68, 0.07);
+}
+
+
+/* =========================================================
+   AUTOFILL
+   ========================================================= */
+
+.login-form input:-webkit-autofill,
+.login-form input:-webkit-autofill:hover,
+.login-form input:-webkit-autofill:focus {
+    -webkit-text-fill-color: var(--text-primary);
+
+    -webkit-box-shadow:
+        0 0 0 1000px rgba(15, 23, 42, 0.95) inset;
+
+    box-shadow:
+        0 0 0 1000px rgba(15, 23, 42, 0.95) inset;
+
+    transition:
+        background-color 9999s ease-in-out 0s;
+}
+
+
+/* =========================================================
+   LOGIN SUBMIT BUTTON
+   ========================================================= */
+
+.login-submit {
+    width: 100%;
+
+    min-height: 48px;
+
+    margin-top: 0.25rem;
+
+    display: inline-flex;
+
+    align-items: center;
+    justify-content: center;
+
+    gap: 0.65rem;
+
+    border: none;
+
+    cursor: pointer;
+
+    font-size: 0.92rem;
+    font-weight: 700;
+
+    letter-spacing: 0.01em;
+}
+
+
+.login-submit i {
+    font-size: 0.85rem;
+
+    transition:
+        transform 0.2s ease;
+}
+
+
+.login-submit:hover i {
+    transform: translateX(4px);
+}
+
+
+.login-submit:active {
+    transform: translateY(1px);
+}
+
+
+/* =========================================================
+   GOOGLE AUTHENTICATION
+   ========================================================= */
+
+.google-auth-section {
+    width: 100%;
+
+    margin-top: 1.5rem;
+}
+
+
+/* =========================================================
+   GOOGLE DIVIDER
+   ========================================================= */
+
+.google-auth-divider {
+    display: flex;
+
+    align-items: center;
+
+    width: 100%;
+
+    margin-bottom: 1rem;
+
+    color: var(--text-muted);
+
+    font-size: 0.72rem;
+    font-weight: 650;
+
+    letter-spacing: 0.08em;
+
+    text-align: center;
+}
+
+
+.google-auth-divider::before,
+.google-auth-divider::after {
+    content: "";
+
+    flex: 1;
+
+    height: 1px;
+
+    background:
+        linear-gradient(90deg,
+            transparent,
+            var(--border-glass));
+}
+
+
+.google-auth-divider::after {
+    background:
+        linear-gradient(90deg,
+            var(--border-glass),
+            transparent);
+}
+
+
+.google-auth-divider span {
+    padding: 0 0.85rem;
+}
+
+
+/* =========================================================
+   GOOGLE BUTTON
+   ========================================================= */
+
+.google-auth-btn {
+    width: 100%;
+
+    min-height: 48px;
+
+    padding: 0.75rem 1rem;
+
+    display: flex;
+
+    align-items: center;
+    justify-content: center;
+
+    gap: 0.7rem;
+
+    box-sizing: border-box;
+
+    border-radius: 9px;
+
+    text-decoration: none;
+
+    font-size: 0.9rem;
+    font-weight: 700;
+
+    transition:
+        transform 0.2s ease,
+        box-shadow 0.25s ease,
+        background 0.25s ease;
+}
+
+
+.google-auth-btn i {
+    font-size: 1rem;
+
+    transition:
+        transform 0.2s ease;
+}
+
+
+.google-auth-btn:hover i {
+    transform: scale(1.08);
+}
+
+
+/* =========================================================
+   LOGIN FOOTER
+   ========================================================= */
+
+.login-footer {
+    display: flex;
+
+    align-items: center;
+    justify-content: center;
+
+    flex-wrap: wrap;
+
+    gap: 0.35rem;
+
+    margin-top: 1.5rem;
+
+    padding-top: 1.25rem;
+
+    border-top: 1px solid var(--border-glass);
+
+    color: var(--text-muted);
+
+    font-size: 0.84rem;
+
+    text-align: center;
+}
+
+
+.login-footer a {
+    display: inline-flex;
+
+    align-items: center;
+
+    color: var(--primary);
+
+    text-decoration: none;
+
+    font-weight: 650;
+
+    transition:
+        color 0.25s ease,
+        transform 0.25s ease;
+}
+
+
+.login-footer a:hover {
+    color: var(--accent);
+
+    transform: translateX(2px);
+}
+
+
+/* =========================================================
+   DISABLED INPUTS
+   ========================================================= */
+
+.login-form input:disabled,
+.login-form select:disabled,
+.login-form textarea:disabled {
+    opacity: 0.55;
+
+    cursor: not-allowed;
+}
+
+
+/* =========================================================
+   TABLET
+   ========================================================= */
+
+@media (max-width: 700px) {
+
+    .login-page {
+        width: min(100% - 2rem, 520px);
+
+        min-height: auto;
+
+        padding: 2.5rem 0 3rem;
+    }
+
+
+    .login-card {
+        padding: 1.75rem;
+    }
+
+
+    .login-header {
+        margin-bottom: 1.75rem;
+    }
+
+
+    .login-title {
+        font-size: 1.8rem;
+    }
+
+}
+
+
+/* =========================================================
+   MOBILE
+   ========================================================= */
+
+@media (max-width: 480px) {
+
+    .login-page {
+        width: calc(100% - 1rem);
+
+        padding: 1.5rem 0 2.5rem;
+    }
+
+
+    .login-card {
+        padding: 1.1rem;
+
+        border-radius: 13px;
+    }
+
+
+    .login-icon {
+        width: 46px;
+        height: 46px;
+
+        margin-bottom: 0.8rem;
+
+        border-radius: 12px;
+    }
+
+
+    .login-icon i {
+        font-size: 1.15rem;
+    }
+
+
+    .login-title {
+        font-size: 1.55rem;
+    }
+
+
+    .login-description {
+        font-size: 0.8rem;
+    }
+
+
+    .login-form .form-group {
+        margin-bottom: 1rem;
+    }
+
+
+    .login-form .form-label {
+        font-size: 0.8rem;
+    }
+
+
+    .login-form input,
+    .login-form select,
+    .login-form textarea {
+        min-height: 46px;
+
+        padding: 0.72rem 0.78rem;
+
+        font-size: 0.85rem;
+    }
+
+
+    .login-submit {
+        min-height: 47px;
+    }
+
+
+    .google-auth-section {
+        margin-top: 1.25rem;
+    }
+
+
+    .google-auth-btn {
+        min-height: 47px;
+
+        font-size: 0.84rem;
+    }
+
+
+    .login-footer {
+        margin-top: 1.25rem;
+
+        padding-top: 1rem;
+
+        font-size: 0.78rem;
+    }
+
+}
+
+
+/* =========================================================
+   VERY SMALL SCREENS
+   ========================================================= */
+
+@media (max-width: 360px) {
+
+    .login-page {
+        width: calc(100% - 0.75rem);
+    }
+
+
+    .login-card {
+        padding: 0.9rem;
+    }
+
+
+    .login-title {
+        font-size: 1.4rem;
+    }
+
+
+    .login-description {
+        font-size: 0.76rem;
+    }
+
+
+    .google-auth-divider span {
+        padding: 0 0.6rem;
+    }
+
+}
+
+
+/* =========================================================
+   REDUCED MOTION
+   ========================================================= */
+
+@media (prefers-reduced-motion: reduce) {
+
+    .login-form input,
+    .login-form select,
+    .login-form textarea,
+    .login-submit i,
+    .google-auth-btn i,
+    .login-footer a {
+        transition: none;
+    }
+
+}
