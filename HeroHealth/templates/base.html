@@ -74,16 +74,26 @@
                 </a>
             </li>
 
-            <li>
-                <a
-                    href="{% url 'consultation' %}"
-                    class="nav-link {% if request.resolver_match.view_name == 'consultation' or request.resolver_match.view_name == 'consultation_result' %}active{% endif %}"
-                    id="navTriage"
-                >
-                    <i class="fa-solid fa-robot"></i>
-                    <span>AI Triage</span>
-                </a>
-            </li>
+        <li>
+          <a
+            href="{% url 'consultation' %}"
+            class="nav-link {% if request.resolver_match.view_name == 'consultation' or request.resolver_match.view_name == 'consultation_result' %}active{% endif %}"
+            id="navTriage"
+            {%
+            if
+            request.resolver_match.view_name=""
+            ="consultation"
+            or
+            request.resolver_match.view_name=""
+            ="consultation_result"
+            %}aria-current="page"
+            {%
+            endif
+            %}
+          >
+            AI Triage
+          </a>
+        </li>
 
             <li>
                 <a
@@ -118,18 +128,24 @@
                 </a>
             </li>
 
-            {% if user.is_authenticated %}
-
-                <li>
-                    <a
-                        href="{% url 'profile' %}"
-                        class="nav-link {% if request.resolver_match.view_name == 'profile' %}active{% endif %}"
-                        id="navProfile"
-                    >
-                        <i class="fa-solid fa-user"></i>
-                        <span>Profile</span>
-                    </a>
-                </li>
+        {% if user.is_authenticated %}
+        <li>
+          <a
+            href="{% url 'profile' %}"
+            class="nav-link {% if request.resolver_match.view_name == 'profile' %}active{% endif %}"
+            id="navProfile"
+            {%
+            if
+            request.resolver_match.view_name=""
+            ="profile"
+            %}aria-current="page"
+            {%
+            endif
+            %}
+          >
+            Profile
+          </a>
+        </li>
 
                 <li>
                     <a
@@ -225,11 +241,11 @@
                 </a>
             </li>
 
-            <li>
-                <a href="{% url 'consultation' %}" class="footer-link">
-                    AI Consultation
-                </a>
-            </li>
+        <li>
+          <a href="{% url 'consultation' %}" class="footer-link">
+            AI Consultation
+          </a>
+        </li>
 
             <li>
                 <a href="{% url 'facility_list' %}" class="footer-link">
