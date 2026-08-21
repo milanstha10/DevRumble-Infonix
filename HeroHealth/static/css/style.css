@@ -168,10 +168,29 @@ body::after {
     padding: 2rem;
     box-shadow: var(--shadow-premium);
     transition: var(--transition-smooth);
+    position: relative;
+    overflow: hidden;
 }
 
 .glass-card:hover {
     border-color: rgba(0, 242, 254, 0.2);
+}
+
+/* Interactive Dot Background Canvas */
+.dot-bg-canvas {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 1;
+    pointer-events: none;
+}
+
+/* Ensure card content sits on top of background canvas */
+.glass-card > *:not(.dot-bg-canvas) {
+    position: relative;
+    z-index: 2;
 }
 
 /* Form Styles */
