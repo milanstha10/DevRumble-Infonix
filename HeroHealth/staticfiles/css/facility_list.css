@@ -1,0 +1,456 @@
+/* =========================================================
+   HEROHEALTH - FACILITY DIRECTORY PAGE
+   ========================================================= */
+
+
+/* ---------------------------------------------------------
+   Main Container
+   --------------------------------------------------------- */
+
+.facilities-main-container {
+    width: 100%;
+    max-width: 1200px;
+
+    margin: 3rem auto;
+    padding: 0 1.5rem;
+}
+
+
+/* ---------------------------------------------------------
+   Page Header
+   --------------------------------------------------------- */
+
+.facility-header {
+    margin-bottom: 2rem;
+}
+
+.facility-page-title {
+    font-size: 2.25rem;
+}
+
+.facility-page-title i {
+    color: var(--primary);
+}
+
+
+/* ---------------------------------------------------------
+   Search / Filter Card
+   --------------------------------------------------------- */
+
+.search-filter-card {
+    margin-bottom: 2rem;
+    padding: 1.5rem;
+}
+
+.search-filter-form {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    flex-wrap: wrap;
+}
+
+
+/* Search field takes more space */
+
+.facility-search-field {
+    flex: 2;
+    min-width: 250px;
+}
+
+
+/* Dropdown fields */
+
+.facility-filter-field {
+    flex: 1;
+    min-width: 150px;
+}
+
+
+/* Filter button */
+
+.facility-filter-button {
+    padding: 0.75rem 1.5rem;
+    white-space: nowrap;
+}
+
+
+/* Clear button */
+
+.facility-clear-button {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+
+    white-space: nowrap;
+}
+
+
+/* ---------------------------------------------------------
+   Facility Grid
+   --------------------------------------------------------- */
+
+.facility-grid {
+    display: grid;
+
+    grid-template-columns:
+        repeat(auto-fit, minmax(320px, 1fr));
+
+    gap: 1.5rem;
+}
+
+
+/* ---------------------------------------------------------
+   Facility Card
+   --------------------------------------------------------- */
+
+.facility-card {
+    display: flex;
+    flex-direction: column;
+
+    height: 100%;
+
+    border-color: rgba(255, 255, 255, 0.04);
+}
+
+.facility-card:hover {
+    border-color: rgba(0, 242, 254, 0.2);
+    transform: translateY(-3px);
+}
+
+
+/* ---------------------------------------------------------
+   Card Header
+   --------------------------------------------------------- */
+
+.facility-card-top {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+
+    gap: 0.75rem;
+
+    margin-bottom: 0.75rem;
+}
+
+
+/* Facility type badge */
+
+.facility-type {
+    display: inline-flex;
+    align-items: center;
+
+    padding: 2px 8px;
+
+    background: rgba(255, 255, 255, 0.05);
+
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 4px;
+
+    color: var(--text-secondary);
+
+    font-size: 0.8rem;
+    font-weight: 600;
+
+    line-height: 1.5;
+}
+
+
+/* ---------------------------------------------------------
+   Facility Information
+   --------------------------------------------------------- */
+
+.facility-name {
+    margin-bottom: 0.5rem;
+
+    color: var(--text-primary);
+
+    font-family: var(--font-heading);
+    font-size: 1.25rem;
+    font-weight: 700;
+
+    line-height: 1.3;
+
+    overflow-wrap: anywhere;
+}
+
+
+.facility-meta {
+    display: flex;
+    align-items: flex-start;
+    gap: 0.5rem;
+
+    margin-bottom: 0.75rem;
+
+    color: var(--text-muted);
+
+    font-size: 0.85rem;
+    line-height: 1.5;
+
+    overflow-wrap: anywhere;
+}
+
+
+.facility-meta i {
+    flex: 0 0 auto;
+
+    margin-top: 0.2rem;
+
+    color: var(--primary);
+}
+
+
+.facility-phone {
+    margin-bottom: 1rem;
+}
+
+
+/* ---------------------------------------------------------
+   Specialization Tags
+   --------------------------------------------------------- */
+
+.facility-specialties {
+    flex-grow: 1;
+
+    margin-bottom: 1.5rem;
+}
+
+
+.facility-specialty-tag {
+    margin-right: 4px;
+    margin-bottom: 4px;
+
+    padding: 2px 8px;
+
+    font-size: 0.75rem;
+}
+
+
+/* ---------------------------------------------------------
+   Card Actions
+   --------------------------------------------------------- */
+
+.facility-actions {
+    display: grid;
+
+    grid-template-columns: 1fr 1fr;
+
+    gap: 0.75rem;
+
+    padding-top: 1rem;
+
+    border-top: 1px solid var(--border-glass);
+}
+
+
+.facility-action-button {
+    width: 100%;
+
+    text-align: center;
+
+    font-size: 0.85rem;
+}
+
+
+/* ---------------------------------------------------------
+   Empty State
+   --------------------------------------------------------- */
+
+.no-facilities {
+    padding: 5rem 1rem;
+
+    color: var(--text-muted);
+
+    text-align: center;
+}
+
+
+.no-facilities-icon {
+    margin-bottom: 1.5rem;
+
+    color: var(--text-muted);
+
+    font-size: 3rem;
+
+    opacity: 0.3;
+}
+
+
+.no-facilities p {
+    font-size: 1.2rem;
+}
+
+
+/* ---------------------------------------------------------
+   Tablet
+   --------------------------------------------------------- */
+
+@media (max-width: 992px) {
+
+    .facilities-main-container {
+        margin-top: 2.5rem;
+        margin-bottom: 2.5rem;
+    }
+
+    .facility-page-title {
+        font-size: 2rem;
+    }
+
+    .search-filter-form {
+        align-items: stretch;
+    }
+
+    .facility-search-field {
+        flex: 1 1 100%;
+    }
+
+    .facility-filter-field {
+        flex: 1;
+    }
+
+    .facility-filter-button,
+    .facility-clear-button {
+        min-height: 44px;
+    }
+}
+
+
+/* ---------------------------------------------------------
+   Mobile
+   --------------------------------------------------------- */
+
+@media (max-width: 768px) {
+
+    .facilities-main-container {
+        margin-top: 2rem;
+        margin-bottom: 2rem;
+
+        padding: 0 1rem;
+    }
+
+    .facility-page-title {
+        font-size: 1.75rem;
+    }
+
+    .search-filter-card {
+        padding: 1.25rem;
+    }
+
+    .search-filter-form {
+        flex-direction: column;
+        align-items: stretch;
+        gap: 0.85rem;
+    }
+
+    .facility-search-field,
+    .facility-filter-field {
+        width: 100%;
+        min-width: 0;
+    }
+
+    .facility-filter-button,
+    .facility-clear-button {
+        width: 100%;
+    }
+
+    .facility-grid {
+        grid-template-columns: 1fr;
+
+        gap: 1.25rem;
+    }
+
+    .facility-card {
+        padding: 1.5rem;
+    }
+}
+
+
+/* ---------------------------------------------------------
+   Small Mobile
+   --------------------------------------------------------- */
+
+@media (max-width: 576px) {
+
+    .facilities-main-container {
+        margin-top: 1.5rem;
+        margin-bottom: 1.5rem;
+
+        padding: 0 0.75rem;
+    }
+
+    .facility-page-title {
+        font-size: 1.55rem;
+    }
+
+    .search-filter-card {
+        padding: 1rem;
+    }
+
+    .facility-card {
+        padding: 1.25rem;
+    }
+
+    .facility-name {
+        font-size: 1.15rem;
+    }
+
+    .facility-meta {
+        font-size: 0.82rem;
+    }
+
+    .facility-actions {
+        grid-template-columns: 1fr;
+    }
+
+    .facility-action-button {
+        min-height: 40px;
+    }
+
+    .no-facilities {
+        padding: 4rem 1rem;
+    }
+
+    .no-facilities-icon {
+        font-size: 2.5rem;
+    }
+
+    .no-facilities p {
+        font-size: 1rem;
+    }
+}
+
+
+/* ---------------------------------------------------------
+   Very Small Screens
+   --------------------------------------------------------- */
+
+@media (max-width: 400px) {
+
+    .facilities-main-container {
+        padding: 0 0.6rem;
+    }
+
+    .facility-page-title {
+        font-size: 1.4rem;
+    }
+
+    .facility-card {
+        padding: 1rem;
+    }
+
+    .facility-card-top {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+
+    .facility-type {
+        font-size: 0.75rem;
+    }
+
+    .facility-name {
+        font-size: 1.1rem;
+    }
+
+    .facility-specialty-tag {
+        font-size: 0.7rem;
+    }
+}
