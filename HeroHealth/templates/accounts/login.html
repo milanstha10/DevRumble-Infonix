@@ -13,7 +13,10 @@
 
     <div class="login-card glass-card" id="loginCard">
 
-        <!-- Header -->
+        <!-- =====================================================
+             HEADER
+        ====================================================== -->
+
         <div class="login-header">
 
             <div class="login-icon" aria-hidden="true">
@@ -31,52 +34,178 @@
         </div>
 
 
-        <!-- Login Form -->
-        <form method="POST" class="login-form" id="loginForm">
+        <!-- =====================================================
+             LOGIN FORM
+        ====================================================== -->
+
+        <form
+            method="POST"
+            class="login-form"
+            id="loginForm"
+            novalidate
+        >
 
             {% csrf_token %}
 
-            {% if form.non_field_errors %}
-                <div class="login-error-box" role="alert">
 
-                    <i class="fa-solid fa-circle-exclamation"></i>
+            <!-- =================================================
+                 FORM-WIDE ERRORS
+            ================================================== -->
+
+            {% if form.non_field_errors %}
+
+                <div
+                    class="login-error-box"
+                    role="alert"
+                >
+
+                    <i
+                        class="fa-solid fa-circle-exclamation"
+                        aria-hidden="true"
+                    ></i>
 
                     <div>
+
                         {% for error in form.non_field_errors %}
+
                             <p>{{ error }}</p>
+
                         {% endfor %}
+
                     </div>
 
                 </div>
+
             {% endif %}
 
 
+            <!-- =================================================
+                 LOGIN FIELDS
+            ================================================== -->
+
             {% for field in form %}
-            <div class="form-group">
-                <label class="form-label" for="{{ field.id_for_label }}">{{ field.label }}</label>
-                {{ field }}
-                {% if field.errors %}
-                <small style="color: var(--danger); display:block; margin-top:0.25rem;">{{ field.errors.0 }}</small>
-                {% endif %}
-            </div>
+
+                <div class="form-group">
+
+                    <label
+                        class="form-label"
+                        for="{{ field.id_for_label }}"
+                    >
+                        {{ field.label }}
+                    </label>
+
+                    {{ field }}
+
+                    {% if field.help_text %}
+
+                        <small class="login-help">
+                            {{ field.help_text|safe }}
+                        </small>
+
+                    {% endif %}
+
+                    {% if field.errors %}
+
+                        <small class="login-field-error">
+
+                            <i
+                                class="fa-solid fa-circle-exclamation"
+                                aria-hidden="true"
+                            ></i>
+
+                            <span>
+                                {{ field.errors.0 }}
+                            </span>
+
+                        </small>
+
+                    {% endif %}
+
+                </div>
+
             {% endfor %}
 
 
-            <!-- Submit Button -->
+            <!-- =================================================
+                 LOGIN BUTTON
+            ================================================== -->
+
             <button
                 type="submit"
                 class="login-submit btn-premium"
                 id="submitLogin"
             >
-                <span>Log In</span>
-                <i class="fa-solid fa-arrow-right-to-bracket"></i>
+
+                <span>
+                    Log In
+                </span>
+
+                <i
+                    class="fa-solid fa-arrow-right-to-bracket"
+                    aria-hidden="true"
+                ></i>
+
             </button>
 
         </form>
-        
-        <div style="text-align: center; margin-top: 1.5rem;" id="loginFooter">
-            <span style="color: var(--text-muted);">Don't have an account? </span>
-            <a href="{% url 'register' %}" style="color: var(--primary); text-decoration: none; font-weight:600;">Sign Up</a>
+
+
+        <!-- =====================================================
+             GOOGLE AUTHENTICATION
+        ====================================================== -->
+
+        <div
+            class="google-auth-section"
+            id="googleLoginSection"
+        >
+
+            <div
+                class="google-auth-divider"
+                aria-hidden="true"
+            >
+                <span>OR</span>
+            </div>
+
+
+            <a
+                href="{% url 'google_login' %}"
+                class="btn-premium btn-premium-accent google-auth-btn"
+                id="btnGoogleLogin"
+            >
+
+                <i
+                    class="fa-brands fa-google"
+                    aria-hidden="true"
+                ></i>
+
+                <span>
+                    Continue with Google
+                </span>
+
+            </a>
+
+        </div>
+
+
+        <!-- =====================================================
+             REGISTER FOOTER
+        ====================================================== -->
+
+        <div
+            class="login-footer"
+            id="loginFooter"
+        >
+
+            <span>
+                Don't have an account?
+            </span>
+
+            <a
+                href="{% url 'register' %}"
+            >
+                Sign Up
+            </a>
+
         </div>
 
     </div>
