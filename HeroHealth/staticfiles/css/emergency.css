@@ -1,0 +1,272 @@
+.emergency-container {
+    max-width: 1000px;
+    margin: 3rem auto;
+    padding: 0 1.5rem;
+}
+
+.emergency-header {
+    margin-bottom: 2rem;
+    text-align: center;
+}
+
+.emergency-title {
+    margin-bottom: 0.5rem;
+    color: var(--danger);
+    font-family: var(--font-heading);
+    font-size: 2.5rem;
+    font-weight: 700;
+    line-height: 1.3;
+}
+
+.emergency-description {
+    color: var(--text-muted);
+}
+
+.emergency-triage-card {
+    margin-bottom: 2rem;
+    border-color: rgba(239, 68, 68, 0.2);
+}
+
+.emergency-section-title {
+    margin-bottom: 1rem;
+    color: var(--primary);
+    font-family: var(--font-heading);
+    font-size: 1.35rem;
+}
+
+.triage-guide-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 1.5rem;
+}
+
+.triage-guide {
+    padding: 1rem;
+    border-radius: 4px;
+}
+
+.triage-guide h4 {
+    margin-bottom: 0.5rem;
+    font-weight: 700;
+}
+
+.triage-guide p {
+    color: var(--text-muted);
+    font-size: 0.85rem;
+    line-height: 1.5;
+}
+
+.triage-guide-action {
+    margin-top: 0.5rem;
+    font-weight: 700 !important;
+}
+
+.triage-guide-red {
+    background: rgba(239, 68, 68, 0.05);
+    border-left: 4px solid var(--danger);
+}
+
+.triage-guide-red h4 {
+    color: #f87171;
+}
+
+.triage-guide-red .triage-guide-action {
+    color: #f87171;
+}
+
+.triage-guide-yellow {
+    background: rgba(245, 158, 11, 0.05);
+    border-left: 4px solid var(--warning);
+}
+
+.triage-guide-yellow h4 {
+    color: #fbbf24;
+}
+
+.triage-guide-yellow .triage-guide-action {
+    color: #fbbf24;
+}
+
+.triage-guide-green {
+    background: rgba(16, 185, 129, 0.05);
+    border-left: 4px solid var(--success);
+}
+
+.triage-guide-green h4 {
+    color: #34d399;
+}
+
+.triage-guide-green .triage-guide-action {
+    color: #34d399;
+}
+
+.triage-badge {
+    display: inline-block;
+    margin-right: 5px;
+    padding: 2px 8px;
+    border-radius: 3px;
+    color: #fff;
+    font-size: 0.75rem;
+}
+
+.triage-badge-red {
+    background: var(--danger);
+}
+
+.triage-badge-yellow {
+    background: var(--warning);
+}
+
+.triage-badge-green {
+    background: var(--success);
+}
+
+.helpline-panel {
+    width: 100%;
+}
+
+.helpline-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 1.25rem;
+}
+
+.helpline-item {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1rem;
+    padding: 1.25rem;
+    border-color: rgba(255, 255, 255, 0.05);
+}
+
+.helpline-info {
+    max-width: 70%;
+    min-width: 0;
+}
+
+.helpline-name {
+    margin-bottom: 0.25rem;
+    font-size: 1.05rem;
+    font-weight: 700;
+}
+
+.helpline-description {
+    color: var(--text-muted);
+    font-size: 0.8rem;
+}
+
+.helpline-action {
+    flex: 0 0 auto;
+    text-align: right;
+}
+
+.call-btn {
+    display: inline-block;
+    padding: 0.5rem 1rem;
+    background: rgba(239, 68, 68, 0.15);
+    border: 1px solid rgba(239, 68, 68, 0.3);
+    border-radius: var(--radius-md);
+    color: #f87171;
+    font-family: var(--font-heading);
+    font-size: 1rem;
+    font-weight: 700;
+    text-decoration: none;
+    transition: var(--transition-smooth);
+}
+
+.call-btn:hover {
+    background: rgba(239, 68, 68, 0.25);
+    border-color: rgba(239, 68, 68, 0.5);
+    transform: translateY(-2px);
+}
+
+.call-btn:active {
+    transform: translateY(0);
+}
+
+@media (max-width: 768px) {
+    .emergency-container {
+        width: 100%;
+        margin-top: 2rem;
+        margin-bottom: 2rem;
+        padding: 0 1rem;
+    }
+
+    .emergency-title {
+        font-size: 2rem;
+    }
+
+    .triage-guide-grid {
+        grid-template-columns: 1fr;
+        gap: 1rem;
+    }
+
+    .helpline-grid {
+        grid-template-columns: 1fr;
+    }
+}
+
+@media (max-width: 576px) {
+    .emergency-container {
+        padding: 0 0.75rem;
+    }
+
+    .emergency-title {
+        font-size: 1.75rem;
+    }
+
+    .emergency-description {
+        font-size: 0.9rem;
+    }
+
+    .emergency-section-title {
+        font-size: 1.2rem;
+    }
+
+    .triage-guide {
+        padding: 0.9rem;
+    }
+
+    .helpline-item {
+        align-items: flex-start;
+        flex-direction: column;
+        padding: 1rem;
+    }
+
+    .helpline-info {
+        max-width: 100%;
+    }
+
+    .helpline-action {
+        width: 100%;
+        text-align: left;
+    }
+
+    .call-btn {
+        width: 100%;
+        text-align: center;
+    }
+}
+
+@media (max-width: 400px) {
+    .emergency-container {
+        padding: 0 0.6rem;
+    }
+
+    .emergency-title {
+        font-size: 1.6rem;
+    }
+
+    .triage-guide p {
+        font-size: 0.8rem;
+    }
+
+    .helpline-name {
+        font-size: 1rem;
+    }
+
+    .call-btn {
+        font-size: 0.9rem;
+    }
+}

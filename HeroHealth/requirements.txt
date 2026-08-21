@@ -1,5 +1,8 @@
-Django>=5.0
-pillow
+Django>=5.0,<7.0
+Pillow
 python-dotenv
 google-generativeai
 requests
+dj-database-url
+psycopg2-binary
+whitenoise
