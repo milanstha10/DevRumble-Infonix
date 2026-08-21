@@ -35,7 +35,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
   function buildParticles(){
     particles = [];
-    targetCount = Math.round((W * H) / 9000);
+    targetCount = Math.round((W * H) / 3000);
     for (let i = 0; i < targetCount; i++){
       const p = spawnParticle(rand(0, 12000));
       p.baseR = p.r;
