@@ -138,17 +138,6 @@
         {% if user.is_authenticated %}
         <li>
           <a
-            href="{% url 'chatbot' %}"
-            class="nav-link nav-chatbot-icon {% if request.resolver_match.view_name == 'chatbot' %}active{% endif %}"
-            id="navChatbot"
-            aria-label="Chat with Hero AI"
-            title="Chat with Hero AI"
-          >
-            <i class="fa-solid fa-comments" aria-hidden="true"></i>
-          </a>
-        </li>
-        <li>
-          <a
             href="{% url 'profile' %}"
             class="nav-link {% if request.resolver_match.view_name == 'profile' %}active{% endif %}"
             id="navProfile"
@@ -268,7 +257,74 @@
       </p>
     </footer>
 
+    <!-- Floating Chatbot Widget -->
+    {% if user.is_authenticated %}
+    <div class="hero-chat-widget hero-chat-page" id="chatWidget"
+         data-message-url="{% url 'chatbot_message' %}"
+         data-history-url="{% url 'chatbot_history' %}"
+         data-reset-url="{% url 'chatbot_reset' %}">
+         
+        <!-- Trigger Button -->
+        <button class="chat-trigger-btn" id="chatTriggerBtn" title="Chat with Hero AI" aria-label="Chat with Hero AI">
+            <i class="fa-solid fa-comments"></i>
+        </button>
+        
+        <!-- Chat Window Container -->
+        <div class="chat-window glass-card chat-window-hidden" id="chatWindow">
+            <header class="hero-chat-header" style="display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid var(--border-glass); padding-bottom: 0.5rem; margin-bottom: 0.5rem;">
+                <div>
+                    <h3 id="heroChatTitle" style="font-family: var(--font-heading); margin: 0 0 0.1rem 0; font-size: 1.1rem; color: var(--primary);">
+                        <i class="fa-solid fa-shield-heart"></i> Hero AI
+                    </h3>
+                    <p style="margin: 0; font-size: 0.75rem; color: var(--text-muted);">Health guidance assistant</p>
+                </div>
+                <div class="hero-chat-header-controls" style="display: flex; align-items: center; gap: 0.4rem;">
+                    <div class="hero-language-toggle" role="group" aria-label="Response language">
+                        <button type="button" class="hero-language active" data-language="en" aria-pressed="true" style="padding: 0.2rem 0.4rem; font-size: 0.7rem; border-radius: 4px;">EN</button>
+                        <button type="button" class="hero-language" data-language="ne" aria-pressed="false" lang="ne" style="padding: 0.2rem 0.4rem; font-size: 0.7rem; border-radius: 4px;">ने</button>
+                    </div>
+                    <button id="newChatButton" type="button" class="hero-secondary-button" style="padding: 0.2rem 0.4rem; font-size: 0.7rem; border-radius: 4px;" title="Reset Chat">
+                        <i class="fa-solid fa-rotate-left"></i>
+                    </button>
+                    <button id="closeChatBtn" type="button" class="hero-secondary-button" style="padding: 0.2rem 0.4rem; font-size: 0.7rem; border-radius: 4px;" title="Close Chat">
+                        <i class="fa-solid fa-xmark"></i>
+                    </button>
+                </div>
+            </header>
+            
+            <div id="chatStatus" class="sr-only" aria-live="polite"></div>
+            
+            <!-- Messages List -->
+            <div id="chatMessages" class="hero-chat-messages" style="height: 260px; overflow-y: auto; display: flex; flex-direction: column; gap: 0.75rem; margin-bottom: 0.5rem;" aria-label="Hero AI conversation" aria-live="polite"></div>
+            
+            <!-- Quick Prompts -->
+            <div id="quickPrompts" class="hero-quick-prompts" style="margin-bottom: 0.5rem; display: flex; flex-wrap: wrap; gap: 0.4rem;" aria-label="Suggested questions">
+                <button type="button" data-prompt="What should I do for a fever?">Fever</button>
+                <button type="button" data-prompt="Help me understand symptoms.">Symptoms</button>
+                <button type="button" data-prompt="When should I see a doctor?">Seek Care</button>
+            </div>
+            
+            <!-- Composer Form -->
+            <form id="chatForm" class="hero-chat-composer" novalidate style="margin-top: auto; display: flex; flex-direction: column; background: rgba(255, 255, 255, 0.03); border: 1px solid var(--border-glass); border-radius: 8px; padding: 0.5rem;">
+                {% csrf_token %}
+                <textarea id="chatInput" rows="1" maxlength="1200" placeholder="Ask a health question..." style="width: 100%; background: transparent; border: none; color: var(--text-primary); font-family: var(--font-body); font-size: 0.85rem; resize: none; outline: none; padding: 0.25rem;"></textarea>
+                <div class="hero-composer-footer" style="display: flex; justify-content: space-between; align-items: center; border-top: 1px solid rgba(255, 255, 255, 0.05); padding-top: 0.25rem; margin-top: 0.25rem;">
+                    <span id="chatCounter" class="hero-character-count" style="font-size: 0.7rem; color: var(--text-muted);">0 / 1200</span>
+                    <span id="voiceStatus" class="hero-voice-status" style="font-size: 0.7rem; color: var(--text-muted);"></span>
+                    <div class="hero-composer-actions" style="display: flex; align-items: center; gap: 0.4rem;">
+                        <button id="voiceButton" type="button" class="hero-icon-button" style="background: none; border: none; color: var(--text-muted); cursor: pointer; padding: 0.25rem;" aria-label="Start voice input"><i class="fa-solid fa-microphone"></i></button>
+                        <button id="sendButton" type="submit" class="btn-premium hero-send-button" style="padding: 0.25rem 0.75rem; font-size: 0.85rem; border-radius: 4px;"><i class="fa-solid fa-paper-plane"></i></button>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+    {% endif %}
+
     <script src="{% static 'js/main.js' %}" defer></script>
+    {% if user.is_authenticated %}
+    <script src="{% static 'js/chatbot.js' %}" defer></script>
+    {% endif %}
 
     {% block extra_js %}{% endblock %}
   </body>
