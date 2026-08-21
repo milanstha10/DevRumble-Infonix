@@ -1,129 +1,284 @@
 {% extends 'base.html' %}
 {% load static %}
 
-{% block title %}HeroHealth | {{ facility.name }}{% endblock %}
+{% block title %}
+    HeroHealth | {{ facility.name }}
+{% endblock %}
+
 
 {% block extra_head %}
-<link rel="stylesheet" href="{% static 'css/facility-detail.css' %}">
+
+<link
+    rel="stylesheet"
+    href="{% static 'css/facility-detail.css' %}"
+>
+
 {% endblock %}
+
 
 {% block content %}
 
-<div class="facility-detail-container" id="facilityDetailContainer">
+<div
+    class="facility-detail-container"
+    id="facilityDetailContainer"
+>
 
-    <!-- Back to Directory -->
-    <a href="{% url 'facility_list' %}"
-       class="facility-back-link"
-       id="backToDirectory">
-        <i class="fa-solid fa-arrow-left" aria-hidden="true"></i>
-        <span>Back to Directory</span>
+    <!-- =====================================================
+         BACK TO DIRECTORY
+    ====================================================== -->
+
+    <a
+        href="{% url 'facility_list' %}"
+        class="facility-back-link"
+        id="backToDirectory"
+    >
+
+        <i
+            class="fa-solid fa-arrow-left"
+            aria-hidden="true"
+        ></i>
+
+        <span>
+            Back to Directory
+        </span>
+
     </a>
 
-    <div class="glass-card facility-detail-card" id="detailCard">
 
-        <div class="facility-details-grid" id="detailGrid">
+    <!-- =====================================================
+         MAIN DETAIL CARD
+    ====================================================== -->
 
-            <!-- =====================================================
+    <div
+        class="glass-card facility-detail-card"
+        id="detailCard"
+    >
+
+        <div
+            class="facility-details-grid"
+            id="detailGrid"
+        >
+
+
+            <!-- =================================================
                  LEFT PANEL — FACILITY INFORMATION
-            ====================================================== -->
-            <div class="facility-info-panel" id="infoPanel">
+            ================================================== -->
 
-                <!-- Facility type + status -->
-                <div class="facility-meta-row" id="detailHeaderRow">
+            <div
+                class="facility-info-panel"
+                id="infoPanel"
+            >
+
+
+                <!-- =============================================
+                     FACILITY TYPE + STATUS
+                ============================================== -->
+
+                <div
+                    class="facility-meta-row"
+                    id="detailHeaderRow"
+                >
 
                     <span class="facility-type-badge">
                         {{ facility.type }}
                     </span>
 
+
                     {% if facility.status == 'Available' %}
-                        <span class="status-badge available" id="detailStatus">
+
+                        <span
+                            class="status-badge available"
+                            id="detailStatus"
+                        >
                             Available
                         </span>
+
                     {% elif facility.status == 'Busy' %}
-                        <span class="status-badge busy" id="detailStatus">
+
+                        <span
+                            class="status-badge busy"
+                            id="detailStatus"
+                        >
                             Busy
                         </span>
+
                     {% else %}
-                        <span class="status-badge emergency" id="detailStatus">
+
+                        <span
+                            class="status-badge emergency"
+                            id="detailStatus"
+                        >
                             Emergency Only
                         </span>
+
                     {% endif %}
 
                 </div>
 
-                <!-- Facility name -->
-                <h1 class="facility-detail-name" id="facilityName">
+
+                <!-- =============================================
+                     FACILITY NAME
+                ============================================== -->
+
+                <h1
+                    class="facility-detail-name"
+                    id="facilityName"
+                >
                     {{ facility.name }}
                 </h1>
 
-                <!-- Contact information -->
-                <div class="facility-contact-details" id="contactDetails">
+
+                <!-- =============================================
+                     CONTACT INFORMATION
+                ============================================== -->
+
+                <div
+                    class="facility-contact-details"
+                    id="contactDetails"
+                >
+
+
+                    <!-- ADDRESS -->
 
                     <div class="contact-item">
+
                         <span class="contact-icon">
-                            <i class="fa-solid fa-map-location-dot"
-                               aria-hidden="true"></i>
+
+                            <i
+                                class="fa-solid fa-map-location-dot"
+                                aria-hidden="true"
+                            ></i>
+
                         </span>
 
+
                         <div>
-                            <span class="contact-label">Address</span>
-                            <p>{{ facility.address }}</p>
+
+                            <span class="contact-label">
+                                Address
+                            </span>
+
+                            <p>
+                                {{ facility.address }}
+                            </p>
+
                         </div>
+
                     </div>
 
+
+                    <!-- PHONE -->
+
                     <div class="contact-item">
+
                         <span class="contact-icon">
-                            <i class="fa-solid fa-phone"
-                               aria-hidden="true"></i>
+
+                            <i
+                                class="fa-solid fa-phone"
+                                aria-hidden="true"
+                            ></i>
+
                         </span>
 
+
                         <div>
-                            <span class="contact-label">Phone</span>
+
+                            <span class="contact-label">
+                                Phone
+                            </span>
+
                             <p>
                                 {{ facility.phone|default:"Not Available" }}
                             </p>
+
                         </div>
+
                     </div>
 
+
+                    <!-- WEBSITE -->
+
                     {% if facility.website %}
+
                         <div class="contact-item">
+
                             <span class="contact-icon">
-                                <i class="fa-solid fa-globe"
-                                   aria-hidden="true"></i>
+
+                                <i
+                                    class="fa-solid fa-globe"
+                                    aria-hidden="true"
+                                ></i>
+
                             </span>
 
+
                             <div>
-                                <span class="contact-label">Website</span>
+
+                                <span class="contact-label">
+                                    Website
+                                </span>
+
 
                                 <p>
-                                    <a href="{{ facility.website }}"
-                                       target="_blank"
-                                       rel="noopener noreferrer"
-                                       class="facility-website">
+
+                                    <a
+                                        href="{{ facility.website }}"
+                                        target="_blank"
+                                        rel="noopener noreferrer"
+                                        class="facility-website"
+                                    >
+
                                         {{ facility.website }}
-                                        <i class="fa-solid fa-arrow-up-right-from-square"
-                                           aria-hidden="true"></i>
+
+                                        <i
+                                            class="fa-solid fa-arrow-up-right-from-square"
+                                            aria-hidden="true"
+                                        ></i>
+
                                     </a>
+
                                 </p>
+
                             </div>
+
                         </div>
+
                     {% endif %}
 
                 </div>
 
-                <!-- Divider -->
+
+                <!-- =============================================
+                     DIVIDER
+                ============================================== -->
+
                 <div class="facility-divider"></div>
 
-                <!-- Services -->
-                <section class="facility-services" id="facilityServices">
+
+                <!-- =============================================
+                     SERVICES & SPECIALIZATIONS
+                ============================================== -->
+
+                <section
+                    class="facility-services"
+                    id="facilityServices"
+                >
 
                     <div class="section-heading-row">
+
+
                         <div class="section-heading-icon">
-                            <i class="fa-solid fa-notes-medical"
-                               aria-hidden="true"></i>
+
+                            <i
+                                class="fa-solid fa-notes-medical"
+                                aria-hidden="true"
+                            ></i>
+
                         </div>
 
+
                         <div>
+
                             <h2>
                                 Services &amp; Specializations
                             </h2>
@@ -131,29 +286,46 @@
                             <p>
                                 Medical services available at this facility
                             </p>
+
                         </div>
+
                     </div>
 
+
                     {% if facility.specializations_list %}
-                        <div class="detail-specialties-list"
-                             id="detailSpecialtiesList">
+
+                        <div
+                            class="detail-specialties-list"
+                            id="detailSpecialtiesList"
+                        >
 
                             {% for spec in facility.specializations_list %}
-                                <span class="specialty-tag facility-specialty-tag">
+
+                                <span
+                                    class="specialty-tag facility-specialty-tag"
+                                >
                                     {{ spec }}
                                 </span>
+
                             {% endfor %}
 
                         </div>
+
                     {% else %}
+
                         <div class="no-specialties">
-                            <i class="fa-solid fa-circle-info"
-                               aria-hidden="true"></i>
+
+                            <i
+                                class="fa-solid fa-circle-info"
+                                aria-hidden="true"
+                            ></i>
 
                             <span>
                                 No specialization information available.
                             </span>
+
                         </div>
+
                     {% endif %}
 
                 </section>
@@ -161,67 +333,126 @@
             </div>
 
 
-            <!-- =====================================================
-                 RIGHT PANEL — MAP
-            ====================================================== -->
-            <div class="facility-map-panel" id="mapPanel">
+            <!-- =================================================
+                 RIGHT PANEL — FACILITY MAP
+            ================================================== -->
+
+            <div
+                class="facility-map-panel"
+                id="mapPanel"
+            >
+
+
+                <!-- =============================================
+                     MAP HEADER
+                ============================================== -->
 
                 <div class="map-panel-header">
 
                     <div>
+
                         <h2>
-                            <i class="fa-solid fa-location-crosshairs"
-                               aria-hidden="true"></i>
+
+                            <i
+                                class="fa-solid fa-location-crosshairs"
+                                aria-hidden="true"
+                            ></i>
 
                             Location
+
                         </h2>
+
 
                         <p>
                             Facility location and navigation
                         </p>
+
                     </div>
 
                 </div>
 
-                <!-- Map -->
-                <div id="facilityDetailMap"
-                     class="map-container facility-detail-map"
-                     data-lat="{{ facility.latitude }}"
-                     data-lon="{{ facility.longitude }}"
-                     data-name="{{ facility.name }}"
-                     data-address="{{ facility.address }}">
-                </div>
 
-                <!-- Coordinates -->
+                <!-- =============================================
+                     LEAFLET MAP
+                ============================================== -->
+
+                <div
+                    id="facilityDetailMap"
+                    class="map-container facility-detail-map"
+
+                    data-lat="{{ facility.latitude }}"
+                    data-lon="{{ facility.longitude }}"
+
+                    data-name="{{ facility.name|escape }}"
+                    data-address="{{ facility.address|escape }}"
+
+                    aria-label="Map showing {{ facility.name }}"
+                ></div>
+
+
+                <!-- =============================================
+                     COORDINATES
+                ============================================== -->
+
                 <div class="coordinates-info">
 
+
                     <div class="coordinate-item">
-                        <span class="coordinate-label">Latitude</span>
-                        <strong>{{ facility.latitude }}</strong>
+
+                        <span class="coordinate-label">
+                            Latitude
+                        </span>
+
+                        <strong>
+                            {{ facility.latitude }}
+                        </strong>
+
                     </div>
+
 
                     <div class="coordinate-divider"></div>
 
+
                     <div class="coordinate-item">
-                        <span class="coordinate-label">Longitude</span>
-                        <strong>{{ facility.longitude }}</strong>
+
+                        <span class="coordinate-label">
+                            Longitude
+                        </span>
+
+                        <strong>
+                            {{ facility.longitude }}
+                        </strong>
+
                     </div>
 
                 </div>
 
-                <!-- Navigation -->
-                <div class="map-actions-row" id="mapActionsRow">
 
-                    <a href="https://www.google.com/maps/dir/?api=1&destination={{ facility.latitude }},{{ facility.longitude }}"
-                       target="_blank"
-                       rel="noopener noreferrer"
-                       class="btn-premium facility-navigation-btn"
-                       id="googleDirectionsLink">
+                <!-- =============================================
+                     NAVIGATION
+                ============================================== -->
 
-                        <i class="fa-solid fa-diamond-turn-right"
-                           aria-hidden="true"></i>
+                <div
+                    class="map-actions-row"
+                    id="mapActionsRow"
+                >
 
-                        <span>Get Navigation Directions</span>
+                    <a
+                        href="https://www.google.com/maps/dir/?api=1&amp;destination={{ facility.latitude }},{{ facility.longitude }}"
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        class="btn-premium facility-navigation-btn"
+                        id="googleDirectionsLink"
+                    >
+
+                        <i
+                            class="fa-solid fa-diamond-turn-right"
+                            aria-hidden="true"
+                        ></i>
+
+                        <span>
+                            Get Navigation Directions
+                        </span>
 
                     </a>
 
@@ -238,6 +469,15 @@
 {% endblock %}
 
 
+<!-- =========================================================
+     DETAIL PAGE JAVASCRIPT
+========================================================== -->
+
 {% block extra_js %}
-<script src="{% static 'js/map.js' %}"></script>
+
+<script
+    src="{% static 'js/facility-detail.js' %}"
+    defer
+></script>
+
 {% endblock %}

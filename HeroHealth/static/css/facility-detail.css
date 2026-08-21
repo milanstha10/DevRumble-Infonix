@@ -1,5 +1,6 @@
 /* =========================================================
    HEROHEALTH — FACILITY DETAIL PAGE
+   CLEAN / STABLE LEAFLET DETAIL MAP VERSION
    ========================================================= */
 
 
@@ -9,7 +10,10 @@
 
 .facility-detail-container {
     width: min(1200px, calc(100% - 3rem));
+
     margin: 3rem auto;
+
+    box-sizing: border-box;
 }
 
 
@@ -19,15 +23,19 @@
 
 .facility-back-link {
     display: inline-flex;
+
     align-items: center;
+
     gap: 0.55rem;
 
     margin-bottom: 1.5rem;
 
     color: var(--primary);
+
     text-decoration: none;
 
     font-size: 0.95rem;
+
     font-weight: 650;
 
     transition:
@@ -37,16 +45,27 @@
 
 .facility-back-link i {
     font-size: 0.85rem;
-    transition: transform 0.25s ease;
+
+    transition:
+        transform 0.25s ease;
 }
 
 .facility-back-link:hover {
     color: var(--accent);
+
     transform: translateX(-2px);
 }
 
 .facility-back-link:hover i {
     transform: translateX(-3px);
+}
+
+.facility-back-link:focus-visible {
+    outline: 2px solid var(--primary);
+
+    outline-offset: 4px;
+
+    border-radius: 4px;
 }
 
 
@@ -55,7 +74,12 @@
    ========================================================= */
 
 .facility-detail-card {
+    width: 100%;
+
     padding: 2rem;
+
+    box-sizing: border-box;
+
     overflow: hidden;
 }
 
@@ -65,8 +89,13 @@
    ========================================================= */
 
 .facility-details-grid {
+    width: 100%;
+
     display: grid;
-    grid-template-columns: minmax(0, 1.15fr) minmax(350px, 0.85fr);
+
+    grid-template-columns:
+        minmax(0, 1.15fr) minmax(350px, 0.85fr);
+
     gap: 3rem;
 
     align-items: start;
@@ -79,6 +108,8 @@
 
 .facility-info-panel {
     min-width: 0;
+
+    width: 100%;
 }
 
 
@@ -88,8 +119,11 @@
 
 .facility-meta-row {
     display: flex;
+
     align-items: center;
+
     flex-wrap: wrap;
+
     gap: 0.7rem;
 
     margin-bottom: 1.25rem;
@@ -97,6 +131,7 @@
 
 .facility-type-badge {
     display: inline-flex;
+
     align-items: center;
 
     padding: 0.35rem 0.85rem;
@@ -104,12 +139,16 @@
     border-radius: 6px;
 
     background: rgba(0, 242, 254, 0.07);
+
     border: 1px solid rgba(0, 242, 254, 0.16);
 
     color: var(--primary);
 
     font-size: 0.82rem;
+
     font-weight: 650;
+
+    line-height: 1.4;
 }
 
 
@@ -123,13 +162,18 @@
     max-width: 850px;
 
     font-family: var(--font-heading);
+
     font-size: 2.45rem;
+
     font-weight: 800;
+
     line-height: 1.15;
 
     color: var(--text-primary);
 
     letter-spacing: -0.025em;
+
+    overflow-wrap: anywhere;
 }
 
 
@@ -139,7 +183,9 @@
 
 .facility-contact-details {
     display: flex;
+
     flex-direction: column;
+
     gap: 1.15rem;
 
     margin-bottom: 2rem;
@@ -147,8 +193,12 @@
 
 .contact-item {
     display: flex;
+
     align-items: flex-start;
+
     gap: 0.9rem;
+
+    min-width: 0;
 }
 
 .contact-icon {
@@ -158,12 +208,16 @@
     height: 38px;
 
     display: flex;
+
     align-items: center;
     justify-content: center;
+
+    box-sizing: border-box;
 
     border-radius: 10px;
 
     background: rgba(0, 242, 254, 0.07);
+
     border: 1px solid rgba(0, 242, 254, 0.12);
 
     color: var(--primary);
@@ -173,6 +227,8 @@
 
 .contact-item>div {
     min-width: 0;
+
+    flex: 1;
 }
 
 .contact-label {
@@ -183,9 +239,11 @@
     color: var(--text-muted);
 
     font-size: 0.72rem;
+
     font-weight: 700;
 
     text-transform: uppercase;
+
     letter-spacing: 0.07em;
 }
 
@@ -195,9 +253,12 @@
     color: var(--text-primary);
 
     font-size: 0.98rem;
+
     line-height: 1.55;
 
     word-break: break-word;
+
+    overflow-wrap: anywhere;
 }
 
 
@@ -207,13 +268,18 @@
 
 .facility-website {
     display: inline-flex;
+
     align-items: center;
+
     gap: 0.45rem;
 
     max-width: 100%;
 
     color: var(--primary);
+
     text-decoration: none;
+
+    overflow-wrap: anywhere;
 
     transition:
         color 0.25s ease,
@@ -222,11 +288,15 @@
 
 .facility-website:hover {
     color: var(--accent);
+
     text-decoration: underline;
 }
 
 .facility-website i {
+    flex: 0 0 auto;
+
     font-size: 0.7rem;
+
     opacity: 0.8;
 }
 
@@ -236,6 +306,8 @@
    ========================================================= */
 
 .facility-divider {
+    width: 100%;
+
     height: 1px;
 
     margin: 2rem 0;
@@ -250,11 +322,15 @@
 
 .facility-services {
     padding-top: 0.25rem;
+
+    min-width: 0;
 }
 
 .section-heading-row {
     display: flex;
+
     align-items: flex-start;
+
     gap: 0.85rem;
 
     margin-bottom: 1.25rem;
@@ -267,17 +343,25 @@
     height: 40px;
 
     display: flex;
+
     align-items: center;
     justify-content: center;
+
+    box-sizing: border-box;
 
     border-radius: 10px;
 
     background: rgba(0, 242, 254, 0.07);
+
     border: 1px solid rgba(0, 242, 254, 0.13);
 
     color: var(--primary);
 
     font-size: 1rem;
+}
+
+.section-heading-row>div:last-child {
+    min-width: 0;
 }
 
 .section-heading-row h2 {
@@ -288,7 +372,10 @@
     color: var(--text-primary);
 
     font-size: 1.25rem;
+
     font-weight: 750;
+
+    line-height: 1.3;
 }
 
 .section-heading-row p {
@@ -297,6 +384,8 @@
     color: var(--text-muted);
 
     font-size: 0.8rem;
+
+    line-height: 1.45;
 }
 
 
@@ -306,8 +395,12 @@
 
 .detail-specialties-list {
     display: flex;
+
     flex-wrap: wrap;
+
     gap: 0.55rem;
+
+    min-width: 0;
 }
 
 .facility-specialty-tag {
@@ -316,6 +409,8 @@
     margin: 0 !important;
 
     font-size: 0.82rem !important;
+
+    line-height: 1.35;
 
     transition:
         background 0.25s ease,
@@ -328,6 +423,7 @@
     transform: translateY(-2px);
 
     background: rgba(0, 242, 254, 0.1);
+
     border-color: rgba(0, 242, 254, 0.25);
 
     color: var(--primary);
@@ -340,7 +436,9 @@
 
 .no-specialties {
     display: flex;
+
     align-items: center;
+
     gap: 0.65rem;
 
     padding: 1rem;
@@ -348,14 +446,19 @@
     border-radius: 10px;
 
     background: rgba(255, 255, 255, 0.025);
+
     border: 1px solid var(--border-glass);
 
     color: var(--text-muted);
 
     font-size: 0.85rem;
+
+    line-height: 1.45;
 }
 
 .no-specialties i {
+    flex: 0 0 auto;
+
     color: var(--accent);
 }
 
@@ -367,7 +470,11 @@
 .facility-map-panel {
     min-width: 0;
 
+    width: 100%;
+
     padding: 1.25rem;
+
+    box-sizing: border-box;
 
     border-radius: 14px;
 
@@ -389,10 +496,18 @@
 
 .map-panel-header {
     display: flex;
+
     align-items: center;
+
     justify-content: space-between;
 
+    min-width: 0;
+
     margin-bottom: 1rem;
+}
+
+.map-panel-header>div {
+    min-width: 0;
 }
 
 .map-panel-header h2 {
@@ -403,7 +518,10 @@
     color: var(--text-primary);
 
     font-size: 1.15rem;
+
     font-weight: 750;
+
+    line-height: 1.3;
 }
 
 .map-panel-header h2 i {
@@ -418,16 +536,46 @@
     color: var(--text-muted);
 
     font-size: 0.78rem;
+
+    line-height: 1.45;
 }
 
 
 /* =========================================================
-   MAP
+   DETAIL MAP WRAPPER
    ========================================================= */
 
+/*
+ * IMPORTANT:
+ *
+ * Leaflet needs a parent/container with a definite height.
+ *
+ * The map itself gets:
+ *
+ *     width: 100%
+ *     height: 350px
+ *
+ * Do not use height: auto here.
+ */
+
 .facility-detail-map {
-    width: 100%;
+    position: relative;
+
+    display: block;
+
+    width: 100% !important;
+
     height: 350px !important;
+
+    min-width: 0;
+
+    min-height: 350px;
+
+    margin: 0;
+
+    padding: 0;
+
+    box-sizing: border-box;
 
     overflow: hidden;
 
@@ -435,7 +583,312 @@
 
     border: 1px solid rgba(255, 255, 255, 0.07);
 
-    background: rgba(0, 0, 0, 0.15);
+    background: #101827;
+
+    isolation: isolate;
+}
+
+
+/* =========================================================
+   LEAFLET DETAIL MAP
+   ========================================================= */
+
+.facility-detail-map.leaflet-container {
+    position: relative;
+
+    width: 100% !important;
+
+    height: 350px !important;
+
+    min-width: 0 !important;
+
+    min-height: 350px !important;
+
+    margin: 0;
+
+    padding: 0;
+
+    overflow: hidden;
+
+    box-sizing: border-box;
+
+    border-radius: 10px;
+
+    background: #101827;
+
+    font-family: var(--font-body);
+
+    line-height: 1.5;
+}
+
+
+/* =========================================================
+   LEAFLET RESET
+   ========================================================= */
+
+/*
+ * Protect Leaflet from global application CSS.
+ */
+
+.facility-detail-map.leaflet-container *,
+.facility-detail-map.leaflet-container *::before,
+.facility-detail-map.leaflet-container *::after {
+    box-sizing: content-box;
+}
+
+
+/*
+ * Global img rules can break Leaflet tiles.
+ */
+
+.facility-detail-map.leaflet-container img {
+    max-width: none !important;
+
+    max-height: none !important;
+}
+
+
+/*
+ * Keep Leaflet tiles at their expected dimensions.
+ */
+
+.facility-detail-map.leaflet-container .leaflet-tile {
+    width: 256px;
+
+    height: 256px;
+
+    max-width: none !important;
+
+    max-height: none !important;
+}
+
+
+/* =========================================================
+   LEAFLET PANES
+   ========================================================= */
+
+.facility-detail-map .leaflet-pane {
+    position: absolute;
+}
+
+.facility-detail-map .leaflet-map-pane {
+    position: absolute;
+}
+
+.facility-detail-map .leaflet-tile-pane {
+    position: absolute;
+}
+
+.facility-detail-map .leaflet-overlay-pane {
+    position: absolute;
+}
+
+.facility-detail-map .leaflet-shadow-pane {
+    position: absolute;
+}
+
+.facility-detail-map .leaflet-marker-pane {
+    position: absolute;
+}
+
+.facility-detail-map .leaflet-tooltip-pane {
+    position: absolute;
+}
+
+.facility-detail-map .leaflet-popup-pane {
+    position: absolute;
+}
+
+
+/* =========================================================
+   LEAFLET CONTROLS
+   ========================================================= */
+
+.facility-detail-map .leaflet-top,
+.facility-detail-map .leaflet-bottom {
+    position: absolute;
+
+    z-index: 1000;
+
+    pointer-events: none;
+}
+
+.facility-detail-map .leaflet-top {
+    top: 0;
+}
+
+.facility-detail-map .leaflet-bottom {
+    bottom: 0;
+}
+
+.facility-detail-map .leaflet-left {
+    left: 0;
+}
+
+.facility-detail-map .leaflet-right {
+    right: 0;
+}
+
+.facility-detail-map .leaflet-control {
+    position: relative;
+
+    z-index: 1000;
+
+    pointer-events: auto;
+}
+
+
+/* =========================================================
+   LEAFLET ZOOM BUTTONS
+   ========================================================= */
+
+.facility-detail-map .leaflet-control-zoom {
+    border: 1px solid var(--border-light) !important;
+
+    border-radius: 8px !important;
+
+    overflow: hidden;
+
+    box-shadow:
+        0 6px 18px rgba(0, 0, 0, 0.35);
+}
+
+.facility-detail-map .leaflet-control-zoom a {
+    width: 34px;
+
+    height: 34px;
+
+    display: flex;
+
+    align-items: center;
+
+    justify-content: center;
+
+    padding: 0;
+
+    background: rgba(15, 22, 42, 0.96) !important;
+
+    color: var(--text-primary) !important;
+
+    border: 0 !important;
+
+    font-size: 18px;
+
+    line-height: 34px;
+
+    text-decoration: none;
+}
+
+.facility-detail-map .leaflet-control-zoom a:hover {
+    background: rgba(0, 242, 254, 0.15) !important;
+
+    color: var(--primary) !important;
+}
+
+.facility-detail-map .leaflet-control-zoom a:focus-visible {
+    outline: 2px solid var(--primary);
+
+    outline-offset: -2px;
+}
+
+
+/* =========================================================
+   LEAFLET ATTRIBUTION
+   ========================================================= */
+
+.facility-detail-map .leaflet-control-attribution {
+    padding: 3px 7px;
+
+    background: rgba(5, 10, 18, 0.85) !important;
+
+    color: rgba(255, 255, 255, 0.55) !important;
+
+    font-size: 10px;
+
+    line-height: 1.4;
+}
+
+.facility-detail-map .leaflet-control-attribution a {
+    color: var(--primary) !important;
+}
+
+
+/* =========================================================
+   LEAFLET POPUP
+   ========================================================= */
+
+.facility-detail-map .leaflet-popup {
+    margin-bottom: 20px;
+}
+
+.facility-detail-map .leaflet-popup-content-wrapper {
+    background: #0f162a;
+
+    color: var(--text-primary);
+
+    border: 1px solid rgba(0, 242, 254, 0.12);
+
+    border-radius: var(--radius-md);
+
+    box-shadow:
+        0 12px 35px rgba(0, 0, 0, 0.45);
+}
+
+.facility-detail-map .leaflet-popup-tip {
+    background: #0f162a;
+}
+
+.facility-detail-map .leaflet-popup-content {
+    margin: 14px 16px;
+
+    color: var(--text-primary);
+
+    font-family: var(--font-body);
+
+    line-height: 1.5;
+}
+
+.facility-detail-map .leaflet-popup-close-button {
+    color: var(--text-muted) !important;
+
+    font-size: 20px !important;
+
+    font-weight: 400 !important;
+
+    text-decoration: none !important;
+}
+
+.facility-detail-map .leaflet-popup-close-button:hover {
+    color: var(--primary) !important;
+}
+
+
+/* =========================================================
+   FACILITY DETAIL MAP MARKER
+   ========================================================= */
+
+.facility-detail-marker {
+    background: transparent !important;
+
+    border: 0 !important;
+}
+
+.facility-detail-marker-inner {
+    width: 20px;
+
+    height: 20px;
+
+    border-radius: 50%;
+
+    background: var(--primary);
+
+    border: 3px solid #ffffff;
+
+    box-sizing: border-box;
+
+    box-shadow:
+        0 0 0 3px rgba(0, 242, 254, 0.25),
+        0 0 18px rgba(0, 242, 254, 0.65);
 }
 
 
@@ -445,22 +898,32 @@
 
 .coordinates-info {
     display: grid;
+
     grid-template-columns: 1fr auto 1fr;
+
     align-items: center;
 
     margin-top: 1rem;
+
     padding: 0.85rem;
+
+    box-sizing: border-box;
 
     border-radius: 9px;
 
     background: rgba(255, 255, 255, 0.025);
+
     border: 1px solid rgba(255, 255, 255, 0.05);
 }
 
 .coordinate-item {
     display: flex;
+
     flex-direction: column;
+
     gap: 0.2rem;
+
+    min-width: 0;
 }
 
 .coordinate-item:first-child {
@@ -475,9 +938,11 @@
     color: var(--text-muted);
 
     font-size: 0.68rem;
+
     font-weight: 700;
 
     text-transform: uppercase;
+
     letter-spacing: 0.07em;
 }
 
@@ -487,11 +952,15 @@
     font-family: var(--font-heading);
 
     font-size: 0.8rem;
+
     font-weight: 650;
+
+    overflow-wrap: anywhere;
 }
 
 .coordinate-divider {
     width: 1px;
+
     height: 30px;
 
     background: var(--border-glass);
@@ -503,18 +972,27 @@
    ========================================================= */
 
 .map-actions-row {
+    width: 100%;
+
     margin-top: 1rem;
 }
 
 .facility-navigation-btn {
     width: 100%;
 
-    justify-content: center;
-    text-align: center;
+    min-height: 44px;
 
     display: inline-flex;
+
     align-items: center;
+
+    justify-content: center;
+
     gap: 0.55rem;
+
+    box-sizing: border-box;
+
+    text-align: center;
 }
 
 .facility-navigation-btn i {
@@ -528,54 +1006,42 @@
 
 .facility-detail-card .status-badge {
     display: inline-flex;
+
     align-items: center;
 
     min-height: 28px;
 
     padding: 0.3rem 0.7rem;
 
+    box-sizing: border-box;
+
     border-radius: 6px;
 
     font-size: 0.73rem;
+
     font-weight: 700;
+
+    line-height: 1.3;
 }
 
 
 /* =========================================================
-   MAP LEAFLET OVERRIDES
-   ========================================================= */
-
-.facility-detail-map .leaflet-control-zoom a {
-    background: rgba(10, 18, 30, 0.9);
-    color: var(--text-primary);
-
-    border-color: rgba(255, 255, 255, 0.08);
-}
-
-.facility-detail-map .leaflet-control-zoom a:hover {
-    background: rgba(0, 242, 254, 0.12);
-    color: var(--primary);
-}
-
-.facility-detail-map .leaflet-control-attribution {
-    background: rgba(5, 10, 18, 0.8);
-
-    color: rgba(255, 255, 255, 0.5);
-}
-
-.facility-detail-map .leaflet-control-attribution a {
-    color: var(--primary);
-}
-
-
-/* =========================================================
-   RESPONSIVE — TABLET
+   TABLET
    ========================================================= */
 
 @media (max-width: 950px) {
 
+    .facility-detail-container {
+        width: min(1200px, calc(100% - 2.5rem));
+
+        margin-top: 2.5rem;
+
+        margin-bottom: 2.5rem;
+    }
+
     .facility-details-grid {
         grid-template-columns: 1fr;
+
         gap: 2rem;
     }
 
@@ -587,17 +1053,24 @@
         font-size: 2.15rem;
     }
 
+    .facility-detail-map,
+    .facility-detail-map.leaflet-container {
+        height: 380px !important;
+
+        min-height: 380px !important;
+    }
 }
 
 
 /* =========================================================
-   RESPONSIVE — MOBILE
+   MOBILE
    ========================================================= */
 
 @media (max-width: 600px) {
 
     .facility-detail-container {
-        width: min(100% - 1.5rem, 1200px);
+        width: calc(100% - 1.5rem);
+
         margin: 1.75rem auto;
     }
 
@@ -611,6 +1084,7 @@
 
     .facility-detail-name {
         font-size: 1.75rem;
+
         line-height: 1.2;
 
         margin-bottom: 1.5rem;
@@ -618,10 +1092,31 @@
 
     .facility-map-panel {
         padding: 0.8rem;
+
+        border-radius: 11px;
     }
 
-    .facility-detail-map {
+    .map-panel-header {
+        margin-bottom: 0.8rem;
+    }
+
+    .map-panel-header h2 {
+        font-size: 1rem;
+    }
+
+    .map-panel-header p {
+        font-size: 0.72rem;
+    }
+
+    .facility-detail-map,
+    .facility-detail-map.leaflet-container {
+        width: 100% !important;
+
         height: 300px !important;
+
+        min-height: 300px !important;
+
+        border-radius: 9px;
     }
 
     .contact-item {
@@ -643,6 +1138,17 @@
         font-size: 0.88rem;
     }
 
+    .section-heading-row {
+        gap: 0.7rem;
+    }
+
+    .section-heading-icon {
+        flex-basis: 36px;
+
+        width: 36px;
+        height: 36px;
+    }
+
     .section-heading-row h2 {
         font-size: 1.05rem;
     }
@@ -653,6 +1159,7 @@
 
     .coordinates-info {
         grid-template-columns: 1fr;
+
         gap: 0.7rem;
     }
 
@@ -663,13 +1170,15 @@
 
     .coordinate-divider {
         width: 100%;
+
         height: 1px;
     }
 
-    .map-panel-header h2 {
-        font-size: 1rem;
-    }
+    .facility-navigation-btn {
+        min-height: 46px;
 
+        font-size: 0.85rem;
+    }
 }
 
 
@@ -700,4 +1209,36 @@
         font-size: 0.68rem;
     }
 
+    .facility-map-panel {
+        padding: 0.65rem;
+    }
+
+    .facility-detail-map,
+    .facility-detail-map.leaflet-container {
+        height: 270px !important;
+
+        min-height: 270px !important;
+    }
+
+    .coordinates-info {
+        padding: 0.7rem;
+    }
+
+    .facility-navigation-btn {
+        font-size: 0.78rem;
+    }
+}
+
+
+/* =========================================================
+   REDUCED MOTION
+   ========================================================= */
+
+@media (prefers-reduced-motion: reduce) {
+
+    .facility-back-link,
+    .facility-back-link i,
+    .facility-specialty-tag {
+        transition: none;
+    }
 }
