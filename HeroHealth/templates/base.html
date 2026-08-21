@@ -259,7 +259,7 @@
 
     <!-- Floating Chatbot Widget -->
     {% if user.is_authenticated %}
-    <div class="hero-chat-widget hero-chat-page" id="chatWidget"
+    <div class="hero-chat-widget" id="chatWidget"
          data-message-url="{% url 'chatbot_message' %}"
          data-history-url="{% url 'chatbot_history' %}"
          data-reset-url="{% url 'chatbot_reset' %}">

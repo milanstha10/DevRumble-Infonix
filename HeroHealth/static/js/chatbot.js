@@ -1,7 +1,7 @@
 (() => {
   'use strict';
 
-  const root = document.querySelector('.hero-chat-page');
+  const root = document.querySelector('.hero-chat-widget') || document.querySelector('.hero-chat-page');
   if (!root) return;
 
   const $ = (s) => root.querySelector(s);
@@ -201,7 +201,24 @@
       return announce('Reading stopped.');
     }
     const utterance = new SpeechSynthesisUtterance(text);
-    utterance.lang = state.language === 'ne' ? 'ne-NP' : 'en-US';
+    if (state.language === 'ne') {
+      const voices = speechSynthesis.getVoices();
+      // Try to find a native Nepali voice
+      let voice = voices.find(v => v.lang.startsWith('ne'));
+      if (!voice) {
+        // Fallback to Hindi voice which sounds very close and is widely pre-installed
+        voice = voices.find(v => v.lang.startsWith('hi'));
+      }
+      if (voice) {
+        utterance.voice = voice;
+        utterance.lang = voice.lang;
+      } else {
+        utterance.lang = 'ne-NP';
+      }
+    } else {
+      utterance.lang = 'en-US';
+    }
+
     utterance.onend = () => {
       state.utterance = null;
       announce('Reading finished.');
