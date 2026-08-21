@@ -1,0 +1,703 @@
+/* =========================================================
+   HEROHEALTH — FACILITY DETAIL PAGE
+   ========================================================= */
+
+
+/* =========================================================
+   PAGE CONTAINER
+   ========================================================= */
+
+.facility-detail-container {
+    width: min(1200px, calc(100% - 3rem));
+    margin: 3rem auto;
+}
+
+
+/* =========================================================
+   BACK LINK
+   ========================================================= */
+
+.facility-back-link {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.55rem;
+
+    margin-bottom: 1.5rem;
+
+    color: var(--primary);
+    text-decoration: none;
+
+    font-size: 0.95rem;
+    font-weight: 650;
+
+    transition:
+        color 0.25s ease,
+        transform 0.25s ease;
+}
+
+.facility-back-link i {
+    font-size: 0.85rem;
+    transition: transform 0.25s ease;
+}
+
+.facility-back-link:hover {
+    color: var(--accent);
+    transform: translateX(-2px);
+}
+
+.facility-back-link:hover i {
+    transform: translateX(-3px);
+}
+
+
+/* =========================================================
+   MAIN CARD
+   ========================================================= */
+
+.facility-detail-card {
+    padding: 2rem;
+    overflow: hidden;
+}
+
+
+/* =========================================================
+   MAIN TWO-COLUMN GRID
+   ========================================================= */
+
+.facility-details-grid {
+    display: grid;
+    grid-template-columns: minmax(0, 1.15fr) minmax(350px, 0.85fr);
+    gap: 3rem;
+
+    align-items: start;
+}
+
+
+/* =========================================================
+   LEFT INFORMATION PANEL
+   ========================================================= */
+
+.facility-info-panel {
+    min-width: 0;
+}
+
+
+/* =========================================================
+   META / TYPE / STATUS
+   ========================================================= */
+
+.facility-meta-row {
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 0.7rem;
+
+    margin-bottom: 1.25rem;
+}
+
+.facility-type-badge {
+    display: inline-flex;
+    align-items: center;
+
+    padding: 0.35rem 0.85rem;
+
+    border-radius: 6px;
+
+    background: rgba(0, 242, 254, 0.07);
+    border: 1px solid rgba(0, 242, 254, 0.16);
+
+    color: var(--primary);
+
+    font-size: 0.82rem;
+    font-weight: 650;
+}
+
+
+/* =========================================================
+   FACILITY NAME
+   ========================================================= */
+
+.facility-detail-name {
+    margin: 0 0 2rem;
+
+    max-width: 850px;
+
+    font-family: var(--font-heading);
+    font-size: 2.45rem;
+    font-weight: 800;
+    line-height: 1.15;
+
+    color: var(--text-primary);
+
+    letter-spacing: -0.025em;
+}
+
+
+/* =========================================================
+   CONTACT DETAILS
+   ========================================================= */
+
+.facility-contact-details {
+    display: flex;
+    flex-direction: column;
+    gap: 1.15rem;
+
+    margin-bottom: 2rem;
+}
+
+.contact-item {
+    display: flex;
+    align-items: flex-start;
+    gap: 0.9rem;
+}
+
+.contact-icon {
+    flex: 0 0 38px;
+
+    width: 38px;
+    height: 38px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    border-radius: 10px;
+
+    background: rgba(0, 242, 254, 0.07);
+    border: 1px solid rgba(0, 242, 254, 0.12);
+
+    color: var(--primary);
+
+    font-size: 0.95rem;
+}
+
+.contact-item>div {
+    min-width: 0;
+}
+
+.contact-label {
+    display: block;
+
+    margin-bottom: 0.15rem;
+
+    color: var(--text-muted);
+
+    font-size: 0.72rem;
+    font-weight: 700;
+
+    text-transform: uppercase;
+    letter-spacing: 0.07em;
+}
+
+.contact-item p {
+    margin: 0;
+
+    color: var(--text-primary);
+
+    font-size: 0.98rem;
+    line-height: 1.55;
+
+    word-break: break-word;
+}
+
+
+/* =========================================================
+   WEBSITE LINK
+   ========================================================= */
+
+.facility-website {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.45rem;
+
+    max-width: 100%;
+
+    color: var(--primary);
+    text-decoration: none;
+
+    transition:
+        color 0.25s ease,
+        opacity 0.25s ease;
+}
+
+.facility-website:hover {
+    color: var(--accent);
+    text-decoration: underline;
+}
+
+.facility-website i {
+    font-size: 0.7rem;
+    opacity: 0.8;
+}
+
+
+/* =========================================================
+   DIVIDER
+   ========================================================= */
+
+.facility-divider {
+    height: 1px;
+
+    margin: 2rem 0;
+
+    background: var(--border-glass);
+}
+
+
+/* =========================================================
+   SERVICES SECTION
+   ========================================================= */
+
+.facility-services {
+    padding-top: 0.25rem;
+}
+
+.section-heading-row {
+    display: flex;
+    align-items: flex-start;
+    gap: 0.85rem;
+
+    margin-bottom: 1.25rem;
+}
+
+.section-heading-icon {
+    flex: 0 0 40px;
+
+    width: 40px;
+    height: 40px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    border-radius: 10px;
+
+    background: rgba(0, 242, 254, 0.07);
+    border: 1px solid rgba(0, 242, 254, 0.13);
+
+    color: var(--primary);
+
+    font-size: 1rem;
+}
+
+.section-heading-row h2 {
+    margin: 0 0 0.2rem;
+
+    font-family: var(--font-heading);
+
+    color: var(--text-primary);
+
+    font-size: 1.25rem;
+    font-weight: 750;
+}
+
+.section-heading-row p {
+    margin: 0;
+
+    color: var(--text-muted);
+
+    font-size: 0.8rem;
+}
+
+
+/* =========================================================
+   SPECIALIZATION TAGS
+   ========================================================= */
+
+.detail-specialties-list {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.55rem;
+}
+
+.facility-specialty-tag {
+    padding: 0.45rem 0.9rem !important;
+
+    margin: 0 !important;
+
+    font-size: 0.82rem !important;
+
+    transition:
+        background 0.25s ease,
+        border-color 0.25s ease,
+        color 0.25s ease,
+        transform 0.25s ease;
+}
+
+.facility-specialty-tag:hover {
+    transform: translateY(-2px);
+
+    background: rgba(0, 242, 254, 0.1);
+    border-color: rgba(0, 242, 254, 0.25);
+
+    color: var(--primary);
+}
+
+
+/* =========================================================
+   NO SPECIALTIES
+   ========================================================= */
+
+.no-specialties {
+    display: flex;
+    align-items: center;
+    gap: 0.65rem;
+
+    padding: 1rem;
+
+    border-radius: 10px;
+
+    background: rgba(255, 255, 255, 0.025);
+    border: 1px solid var(--border-glass);
+
+    color: var(--text-muted);
+
+    font-size: 0.85rem;
+}
+
+.no-specialties i {
+    color: var(--accent);
+}
+
+
+/* =========================================================
+   RIGHT MAP PANEL
+   ========================================================= */
+
+.facility-map-panel {
+    min-width: 0;
+
+    padding: 1.25rem;
+
+    border-radius: 14px;
+
+    background:
+        linear-gradient(145deg,
+            rgba(255, 255, 255, 0.035),
+            rgba(255, 255, 255, 0.015));
+
+    border: 1px solid var(--border-glass);
+
+    box-shadow:
+        inset 0 1px 0 rgba(255, 255, 255, 0.025);
+}
+
+
+/* =========================================================
+   MAP HEADER
+   ========================================================= */
+
+.map-panel-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+
+    margin-bottom: 1rem;
+}
+
+.map-panel-header h2 {
+    margin: 0 0 0.2rem;
+
+    font-family: var(--font-heading);
+
+    color: var(--text-primary);
+
+    font-size: 1.15rem;
+    font-weight: 750;
+}
+
+.map-panel-header h2 i {
+    margin-right: 0.45rem;
+
+    color: var(--primary);
+}
+
+.map-panel-header p {
+    margin: 0;
+
+    color: var(--text-muted);
+
+    font-size: 0.78rem;
+}
+
+
+/* =========================================================
+   MAP
+   ========================================================= */
+
+.facility-detail-map {
+    width: 100%;
+    height: 350px !important;
+
+    overflow: hidden;
+
+    border-radius: 10px;
+
+    border: 1px solid rgba(255, 255, 255, 0.07);
+
+    background: rgba(0, 0, 0, 0.15);
+}
+
+
+/* =========================================================
+   COORDINATES
+   ========================================================= */
+
+.coordinates-info {
+    display: grid;
+    grid-template-columns: 1fr auto 1fr;
+    align-items: center;
+
+    margin-top: 1rem;
+    padding: 0.85rem;
+
+    border-radius: 9px;
+
+    background: rgba(255, 255, 255, 0.025);
+    border: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+.coordinate-item {
+    display: flex;
+    flex-direction: column;
+    gap: 0.2rem;
+}
+
+.coordinate-item:first-child {
+    padding-right: 0.75rem;
+}
+
+.coordinate-item:last-child {
+    padding-left: 0.75rem;
+}
+
+.coordinate-label {
+    color: var(--text-muted);
+
+    font-size: 0.68rem;
+    font-weight: 700;
+
+    text-transform: uppercase;
+    letter-spacing: 0.07em;
+}
+
+.coordinate-item strong {
+    color: var(--text-primary);
+
+    font-family: var(--font-heading);
+
+    font-size: 0.8rem;
+    font-weight: 650;
+}
+
+.coordinate-divider {
+    width: 1px;
+    height: 30px;
+
+    background: var(--border-glass);
+}
+
+
+/* =========================================================
+   NAVIGATION BUTTON
+   ========================================================= */
+
+.map-actions-row {
+    margin-top: 1rem;
+}
+
+.facility-navigation-btn {
+    width: 100%;
+
+    justify-content: center;
+    text-align: center;
+
+    display: inline-flex;
+    align-items: center;
+    gap: 0.55rem;
+}
+
+.facility-navigation-btn i {
+    font-size: 0.9rem;
+}
+
+
+/* =========================================================
+   STATUS BADGES
+   ========================================================= */
+
+.facility-detail-card .status-badge {
+    display: inline-flex;
+    align-items: center;
+
+    min-height: 28px;
+
+    padding: 0.3rem 0.7rem;
+
+    border-radius: 6px;
+
+    font-size: 0.73rem;
+    font-weight: 700;
+}
+
+
+/* =========================================================
+   MAP LEAFLET OVERRIDES
+   ========================================================= */
+
+.facility-detail-map .leaflet-control-zoom a {
+    background: rgba(10, 18, 30, 0.9);
+    color: var(--text-primary);
+
+    border-color: rgba(255, 255, 255, 0.08);
+}
+
+.facility-detail-map .leaflet-control-zoom a:hover {
+    background: rgba(0, 242, 254, 0.12);
+    color: var(--primary);
+}
+
+.facility-detail-map .leaflet-control-attribution {
+    background: rgba(5, 10, 18, 0.8);
+
+    color: rgba(255, 255, 255, 0.5);
+}
+
+.facility-detail-map .leaflet-control-attribution a {
+    color: var(--primary);
+}
+
+
+/* =========================================================
+   RESPONSIVE — TABLET
+   ========================================================= */
+
+@media (max-width: 950px) {
+
+    .facility-details-grid {
+        grid-template-columns: 1fr;
+        gap: 2rem;
+    }
+
+    .facility-map-panel {
+        order: 2;
+    }
+
+    .facility-detail-name {
+        font-size: 2.15rem;
+    }
+
+}
+
+
+/* =========================================================
+   RESPONSIVE — MOBILE
+   ========================================================= */
+
+@media (max-width: 600px) {
+
+    .facility-detail-container {
+        width: min(100% - 1.5rem, 1200px);
+        margin: 1.75rem auto;
+    }
+
+    .facility-detail-card {
+        padding: 1.1rem;
+    }
+
+    .facility-details-grid {
+        gap: 1.5rem;
+    }
+
+    .facility-detail-name {
+        font-size: 1.75rem;
+        line-height: 1.2;
+
+        margin-bottom: 1.5rem;
+    }
+
+    .facility-map-panel {
+        padding: 0.8rem;
+    }
+
+    .facility-detail-map {
+        height: 300px !important;
+    }
+
+    .contact-item {
+        gap: 0.7rem;
+    }
+
+    .contact-icon {
+        flex-basis: 34px;
+
+        width: 34px;
+        height: 34px;
+
+        border-radius: 8px;
+
+        font-size: 0.8rem;
+    }
+
+    .contact-item p {
+        font-size: 0.88rem;
+    }
+
+    .section-heading-row h2 {
+        font-size: 1.05rem;
+    }
+
+    .section-heading-row p {
+        font-size: 0.75rem;
+    }
+
+    .coordinates-info {
+        grid-template-columns: 1fr;
+        gap: 0.7rem;
+    }
+
+    .coordinate-item:first-child,
+    .coordinate-item:last-child {
+        padding: 0;
+    }
+
+    .coordinate-divider {
+        width: 100%;
+        height: 1px;
+    }
+
+    .map-panel-header h2 {
+        font-size: 1rem;
+    }
+
+}
+
+
+/* =========================================================
+   VERY SMALL SCREENS
+   ========================================================= */
+
+@media (max-width: 380px) {
+
+    .facility-detail-container {
+        width: calc(100% - 1rem);
+    }
+
+    .facility-detail-card {
+        padding: 0.85rem;
+    }
+
+    .facility-detail-name {
+        font-size: 1.5rem;
+    }
+
+    .facility-meta-row {
+        gap: 0.45rem;
+    }
+
+    .facility-type-badge,
+    .facility-detail-card .status-badge {
+        font-size: 0.68rem;
+    }
+
+}

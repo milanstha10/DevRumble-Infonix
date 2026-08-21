@@ -1,0 +1,616 @@
+/* =========================================================
+   HEROHEALTH — CONSULTATION PAGE
+   ========================================================= */
+
+
+/* =========================================================
+   PAGE CONTAINER
+   ========================================================= */
+
+.consultation-page {
+    max-width: 800px;
+    margin: 3rem auto;
+}
+
+.consultation-card {
+    width: 100%;
+}
+
+
+/* =========================================================
+   CONSULTATION HEADER
+   ========================================================= */
+
+.consultation-header {
+    margin-bottom: 2rem;
+    text-align: center;
+}
+
+.consultation-title {
+    margin-bottom: 0.5rem;
+
+    color: var(--text-primary);
+
+    font-family: var(--font-heading);
+    font-size: 2rem;
+    font-weight: 700;
+
+    line-height: 1.3;
+}
+
+.consultation-title-icon {
+    color: var(--primary);
+
+    margin-right: 0.35rem;
+}
+
+.consultation-desc {
+    max-width: 650px;
+    margin: 0 auto;
+
+    color: var(--text-muted);
+
+    font-size: 0.95rem;
+    line-height: 1.6;
+}
+
+
+/* =========================================================
+   FORM HELP TEXT
+   ========================================================= */
+
+.form-help {
+    display: block;
+
+    margin-top: 0.5rem;
+
+    color: var(--text-muted);
+
+    font-size: 0.8rem;
+    line-height: 1.5;
+}
+
+.optional-label {
+    color: var(--text-muted);
+
+    font-family: var(--font-body);
+
+    font-size: 0.8rem;
+    font-weight: 400;
+}
+
+
+/* =========================================================
+   SYMPTOM SUGGESTION CHIPS
+   ========================================================= */
+
+.symptom-chips-section {
+    margin-bottom: 1.5rem;
+}
+
+.symptom-chips-label {
+    color: var(--text-muted);
+
+    font-size: 0.85rem;
+}
+
+.chips-container {
+    display: flex;
+    align-items: center;
+
+    flex-wrap: wrap;
+
+    gap: 0.5rem;
+}
+
+
+/*
+   Override the generic specialty-tag behavior because
+   these are actual buttons rather than display-only tags.
+*/
+
+.symptom-chip {
+    appearance: none;
+    -webkit-appearance: none;
+
+    margin: 0;
+
+    border: 1px solid rgba(0, 242, 254, 0.12);
+
+    background: rgba(0, 242, 254, 0.08);
+
+    color: var(--primary);
+
+    font-family: var(--font-body);
+
+    cursor: pointer;
+
+    transition: var(--transition-smooth);
+}
+
+.symptom-chip:hover {
+    background: rgba(0, 242, 254, 0.16);
+
+    border-color: rgba(0, 242, 254, 0.4);
+
+    color: #c7fbff;
+
+    transform: translateY(-1px);
+
+    box-shadow:
+        0 4px 12px rgba(0, 242, 254, 0.12);
+}
+
+.symptom-chip:active {
+    transform: translateY(0);
+}
+
+.symptom-chip:focus-visible {
+    outline: 2px solid var(--primary);
+
+    outline-offset: 2px;
+}
+
+
+/* =========================================================
+   UPLOAD ZONE
+   ========================================================= */
+
+.upload-zone {
+    position: relative;
+
+    display: flex;
+
+    flex-direction: column;
+
+    align-items: center;
+    justify-content: center;
+
+    min-height: 190px;
+
+    padding: 2rem;
+
+    background: rgba(255, 255, 255, 0.02);
+
+    border: 2px dashed rgba(255, 255, 255, 0.15);
+
+    border-radius: var(--radius-lg);
+
+    text-align: center;
+
+    cursor: pointer;
+
+    transition: var(--transition-smooth);
+}
+
+.upload-zone:hover {
+    background: rgba(0, 242, 254, 0.03);
+
+    border-color: var(--primary);
+
+    box-shadow:
+        0 0 20px rgba(0, 242, 254, 0.05);
+}
+
+.upload-zone:focus-visible {
+    background: rgba(0, 242, 254, 0.04);
+
+    border-color: var(--primary);
+
+    outline: 2px solid var(--primary);
+
+    outline-offset: 3px;
+}
+
+.upload-zone.dragover {
+    background: rgba(0, 242, 254, 0.07);
+
+    border-color: var(--primary);
+
+    transform: scale(1.01);
+
+    box-shadow:
+        0 0 30px rgba(0, 242, 254, 0.12);
+}
+
+
+/* =========================================================
+   UPLOAD ICON
+   ========================================================= */
+
+.upload-icon {
+    margin-bottom: 1rem;
+
+    color: var(--primary);
+
+    font-size: 2.5rem;
+
+    transition: var(--transition-smooth);
+}
+
+.upload-zone:hover .upload-icon {
+    transform: translateY(-3px);
+}
+
+
+/* =========================================================
+   UPLOAD TEXT
+   ========================================================= */
+
+.upload-text {
+    color: var(--text-primary);
+
+    font-family: var(--font-heading);
+
+    font-size: 1rem;
+    font-weight: 600;
+}
+
+.upload-help {
+    margin-top: 0.25rem;
+
+    color: var(--text-muted);
+
+    font-size: 0.8rem;
+}
+
+.upload-file-name {
+    display: none;
+
+    margin-top: 0.75rem;
+
+    max-width: 100%;
+
+    padding: 0.4rem 0.75rem;
+
+    background: rgba(0, 255, 135, 0.08);
+
+    border: 1px solid rgba(0, 255, 135, 0.2);
+
+    border-radius: var(--radius-pill);
+
+    color: var(--accent);
+
+    font-size: 0.8rem;
+    font-weight: 600;
+
+    overflow-wrap: anywhere;
+}
+
+.upload-file-name.visible {
+    display: inline-block;
+}
+
+
+/* =========================================================
+   HIDDEN DJANGO FILE INPUT
+   ========================================================= */
+
+.hidden-file-input {
+    display: none;
+}
+
+.hidden-file-input input[type="file"] {
+    display: none;
+}
+
+
+/* =========================================================
+   SUBMIT BUTTON
+   ========================================================= */
+
+.consultation-submit {
+    width: 100%;
+
+    margin-top: 1.5rem;
+
+    min-height: 50px;
+
+    font-size: 1rem;
+}
+
+.consultation-submit i {
+    transition: var(--transition-smooth);
+}
+
+.consultation-submit:hover i {
+    transform: rotate(15deg);
+}
+
+
+/* =========================================================
+   LOADING OVERLAY
+   ========================================================= */
+
+.loading-overlay {
+    position: fixed;
+
+    inset: 0;
+
+    z-index: 9999;
+
+    display: none;
+
+    flex-direction: column;
+
+    align-items: center;
+    justify-content: center;
+
+    padding: 2rem;
+
+    background: rgba(7, 11, 19, 0.9);
+
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+}
+
+.loading-overlay.active {
+    display: flex;
+}
+
+
+/* =========================================================
+   LOADING SPINNER
+   ========================================================= */
+
+.spinner {
+    width: 60px;
+    height: 60px;
+
+    margin-bottom: 2rem;
+
+    border: 4px solid var(--border-glass);
+
+    border-top-color: var(--primary);
+
+    border-radius: 50%;
+
+    animation: consultationSpin 1s linear infinite;
+}
+
+@keyframes consultationSpin {
+    from {
+        transform: rotate(0deg);
+    }
+
+    to {
+        transform: rotate(360deg);
+    }
+}
+
+
+/* =========================================================
+   LOADING TEXT
+   ========================================================= */
+
+.loading-text {
+    margin-bottom: 0.5rem;
+
+    color: transparent;
+
+    background: var(--primary-grad);
+
+    background-clip: text;
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+
+    font-family: var(--font-heading);
+
+    font-size: 1.5rem;
+    font-weight: 600;
+
+    text-align: center;
+}
+
+.loading-subtext {
+    max-width: 500px;
+
+    color: var(--text-muted);
+
+    font-size: 0.95rem;
+
+    text-align: center;
+}
+
+
+/* =========================================================
+   FORM VALIDATION
+   ========================================================= */
+
+.consultation-card .form-control.is-invalid,
+.consultation-card textarea.is-invalid {
+    border-color: var(--danger);
+}
+
+.consultation-card .form-control.is-invalid:focus,
+.consultation-card textarea.is-invalid:focus {
+    box-shadow:
+        0 0 0 3px rgba(239, 68, 68, 0.1);
+}
+
+
+/* =========================================================
+   MOBILE — 768px
+   ========================================================= */
+
+@media (max-width: 768px) {
+
+    .consultation-page {
+        width: 100%;
+
+        margin-top: 2rem;
+        margin-bottom: 2rem;
+
+        padding-left: 1rem;
+        padding-right: 1rem;
+    }
+
+    .consultation-title {
+        font-size: 1.75rem;
+    }
+
+    .consultation-desc {
+        font-size: 0.9rem;
+    }
+
+    .upload-zone {
+        min-height: 175px;
+
+        padding: 1.5rem 1rem;
+    }
+
+    .loading-text {
+        font-size: 1.35rem;
+    }
+}
+
+
+/* =========================================================
+   MOBILE — 576px
+   ========================================================= */
+
+@media (max-width: 576px) {
+
+    .consultation-page {
+        margin-top: 1.5rem;
+        margin-bottom: 1.5rem;
+
+        padding-left: 0.75rem;
+        padding-right: 0.75rem;
+    }
+
+    .consultation-header {
+        margin-bottom: 1.5rem;
+    }
+
+    .consultation-title {
+        font-size: 1.6rem;
+    }
+
+    .consultation-desc {
+        font-size: 0.9rem;
+    }
+
+    .symptom-chips-section {
+        margin-bottom: 1.25rem;
+    }
+
+    .chips-container {
+        gap: 0.4rem;
+    }
+
+    .symptom-chip {
+        font-size: 0.78rem;
+    }
+
+    .upload-zone {
+        min-height: 165px;
+
+        padding: 1.25rem 0.75rem;
+    }
+
+    .upload-icon {
+        margin-bottom: 0.75rem;
+
+        font-size: 2.2rem;
+    }
+
+    .upload-text {
+        font-size: 0.9rem;
+    }
+
+    .upload-help {
+        font-size: 0.75rem;
+    }
+
+    .consultation-submit {
+        min-height: 48px;
+
+        font-size: 0.9rem;
+    }
+
+    .loading-overlay {
+        padding: 1.5rem;
+    }
+
+    .spinner {
+        width: 50px;
+        height: 50px;
+
+        margin-bottom: 1.5rem;
+    }
+
+    .loading-text {
+        font-size: 1.2rem;
+    }
+
+    .loading-subtext {
+        font-size: 0.85rem;
+    }
+}
+
+
+/* =========================================================
+   MOBILE — 400px
+   ========================================================= */
+
+@media (max-width: 400px) {
+
+    .consultation-page {
+        padding-left: 0.6rem;
+        padding-right: 0.6rem;
+    }
+
+    .consultation-title {
+        font-size: 1.45rem;
+    }
+
+    .consultation-desc {
+        font-size: 0.85rem;
+    }
+
+    .symptom-chip {
+        padding: 0.3rem 0.6rem;
+
+        font-size: 0.72rem;
+    }
+
+    .upload-zone {
+        min-height: 150px;
+
+        padding: 1rem 0.75rem;
+    }
+
+    .upload-icon {
+        font-size: 2rem;
+    }
+
+    .upload-text {
+        font-size: 0.85rem;
+    }
+
+    .consultation-submit {
+        min-height: 44px;
+
+        padding: 0.7rem 1rem;
+
+        font-size: 0.85rem;
+    }
+}
+
+
+/* =========================================================
+   REDUCED MOTION
+   ========================================================= */
+
+@media (prefers-reduced-motion: reduce) {
+
+    .spinner {
+        animation: none;
+    }
+
+    .upload-zone:hover,
+    .upload-zone.dragover {
+        transform: none;
+    }
+}

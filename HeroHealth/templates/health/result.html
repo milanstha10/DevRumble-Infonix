@@ -1,48 +1,73 @@
 {% extends 'base.html' %}
+{% load static %}
 
 {% block title %}HeroHealth | Consultation Report{% endblock %}
 
+{% block extra_head %}
+<link rel="stylesheet" href="{% static 'css/result.css' %}">
+{% endblock %}
+
 {% block content %}
-<div class="consultation-container" style="max-width: 900px;" id="resultPageContainer">
-    
-    <!-- Medical Disclaimer Banner -->
+<div class="result-page-container" id="resultPageContainer">
+
     {% if disclaimer %}
-    <div class="disclaimer-box" id="resultDisclaimer">
-        <h4 style="font-family: var(--font-heading); margin-bottom: 0.5rem; font-weight:700;"><i class="fa-solid fa-triangle-exclamation"></i> AI Triage Disclaimer</h4>
+    <div class="disclaimer-box result-disclaimer" id="resultDisclaimer">
+        <h4><i class="fa-solid fa-triangle-exclamation"></i> AI Triage Disclaimer</h4>
         <p>{{ disclaimer }}</p>
     </div>
     {% endif %}
 
-    <div class="glass-card" id="resultCard">
-        
-        <!-- Header panel -->
+    <div class="glass-card result-card" id="resultCard">
+
         <div class="result-header-panel" id="resultHeader">
             <div>
-                <h2 style="font-family: var(--font-heading); font-size: 1.75rem; font-weight: 700; margin-bottom:0.25rem;">Triage Summary Report</h2>
-                <p style="color: var(--text-muted); font-size: 0.9rem;"><i class="fa-regular fa-calendar-check"></i> Processed on {{ consultation.created_at|date:"M d, Y h:i A" }}</p>
+                <h2 class="result-header-title">Triage Summary Report</h2>
+                <p class="result-header-date">
+                    <i class="fa-regular fa-calendar-check"></i>
+                    Processed on {{ consultation.created_at|date:"M d, Y h:i A" }}
+                </p>
             </div>
+
             <div>
-                <!-- Severity badge -->
                 {% if severity == 'Urgent' %}
-                    <span class="severity-indicator urgent" id="triageSeverity"><i class="fa-solid fa-triangle-exclamation"></i> Urgent Care Needed</span>
+                    <span class="severity-indicator urgent" id="triageSeverity">
+                        <i class="fa-solid fa-triangle-exclamation"></i>
+                        Urgent Care Needed
+                    </span>
                 {% elif severity == 'Medium' %}
-                    <span class="severity-indicator medium" id="triageSeverity"><i class="fa-solid fa-circle-exclamation"></i> Moderate Severity</span>
+                    <span class="severity-indicator medium" id="triageSeverity">
+                        <i class="fa-solid fa-circle-exclamation"></i>
+                        Moderate Severity
+                    </span>
                 {% else %}
-                    <span class="severity-indicator low" id="triageSeverity"><i class="fa-solid fa-circle-check"></i> Low / Home Care</span>
+                    <span class="severity-indicator low" id="triageSeverity">
+                        <i class="fa-solid fa-circle-check"></i>
+                        Low / Home Care
+                    </span>
                 {% endif %}
             </div>
         </div>
 
-        <!-- Symptoms Reported -->
         <div class="result-section" id="reportedSymptoms">
-            <h3 class="result-section-title"><i class="fa-solid fa-comment-medical"></i> Symptoms Reported</h3>
-            <div style="background: rgba(255,255,255,0.02); border: 1px solid var(--border-glass); border-radius: 8px; padding: 1.25rem;">
-                <p style="font-size: 1rem; line-height: 1.6;">"{{ consultation.symptoms }}"</p>
+            <h3 class="result-section-title">
+                <i class="fa-solid fa-comment-medical"></i>
+                Symptoms Reported
+            </h3>
+
+            <div class="result-symptoms-box">
+                <p class="result-symptoms-text">
+                    "{{ consultation.symptoms }}"
+                </p>
+
                 {% if consultation.image %}
-                    <div style="margin-top: 1rem;" id="symptomAttachment">
-                        <span style="font-size: 0.85rem; color: var(--accent); font-weight:600;"><i class="fa-regular fa-image"></i> Attached image analyzed:</span>
-                        <div style="margin-top:0.5rem; max-width: 300px; border-radius: 8px; overflow:hidden; border:1px solid var(--border-glass);">
-                            <img src="{{ consultation.image.url }}" alt="Symptom Photo" style="width: 100%; display:block;">
+                    <div class="symptom-attachment" id="symptomAttachment">
+                        <span class="symptom-attachment-label">
+                            <i class="fa-regular fa-image"></i>
+                            Attached image analyzed:
+                        </span>
+
+                        <div class="symptom-attachment-image">
+                            <img src="{{ consultation.image.url }}" alt="Symptom Photo">
                         </div>
                     </div>
                 {% endif %}
@@ -50,25 +75,34 @@
         </div>
 
         {% if alert %}
-        <div style="background: rgba(0, 242, 254, 0.04); border-left: 4px solid var(--primary); padding:1rem; border-radius:0 8px 8px 0; margin-bottom: 2rem;" id="urgencyAlertText">
-            <p style="font-weight: 600; font-size: 0.95rem; color: var(--primary);">Urgency Warning: {{ alert }}</p>
-        </div>
-        {% endif %}
-
-        <!-- Suggested Specialty -->
-        {% if specialty %}
-        <div class="result-section" id="suggestedSpecialtySection">
-            <h3 class="result-section-title"><i class="fa-solid fa-user-doctor"></i> Suggested Specialty</h3>
-            <p style="font-size: 1.15rem; font-weight: 600;">
-                You are advised to consult a specialist in <span style="color:var(--primary); background: rgba(0,242,254,0.08); padding: 4px 12px; border-radius: 4px; border:1px solid rgba(0,242,254,0.15);">{{ specialty }}</span>
+        <div class="urgency-alert" id="urgencyAlertText">
+            <p>
+                Urgency Warning: {{ alert }}
             </p>
         </div>
         {% endif %}
 
-        <!-- Possible conditions -->
+        {% if specialty %}
+        <div class="result-section" id="suggestedSpecialtySection">
+            <h3 class="result-section-title">
+                <i class="fa-solid fa-user-doctor"></i>
+                Suggested Specialty
+            </h3>
+
+            <p class="specialty-text">
+                You are advised to consult a specialist in
+                <span class="specialty-name">{{ specialty }}</span>
+            </p>
+        </div>
+        {% endif %}
+
         {% if causes %}
         <div class="result-section" id="probableCausesSection">
-            <h3 class="result-section-title"><i class="fa-solid fa-list-check"></i> Possible Conditions</h3>
+            <h3 class="result-section-title">
+                <i class="fa-solid fa-list-check"></i>
+                Possible Conditions
+            </h3>
+
             <div class="result-card-list">
                 {% for cause in causes %}
                 <div class="diagnosis-item">
@@ -76,13 +110,20 @@
                         <p class="diagnosis-name">{{ cause.cause }}</p>
                         <p class="diagnosis-desc">{{ cause.description }}</p>
                     </div>
+
                     <div>
                         {% if cause.likelihood == 'High' %}
-                            <span class="likelihood-badge high">High Likelihood</span>
+                            <span class="likelihood-badge high">
+                                High Likelihood
+                            </span>
                         {% elif cause.likelihood == 'Medium' %}
-                            <span class="likelihood-badge medium">Medium Likelihood</span>
+                            <span class="likelihood-badge medium">
+                                Medium Likelihood
+                            </span>
                         {% else %}
-                            <span class="likelihood-badge low">Low Likelihood</span>
+                            <span class="likelihood-badge low">
+                                Low Likelihood
+                            </span>
                         {% endif %}
                     </div>
                 </div>
@@ -91,33 +132,38 @@
         </div>
         {% endif %}
 
-        <!-- Recommended Actions -->
         {% if actions %}
         <div class="result-section" id="recommendedActionsSection">
-            <h3 class="result-section-title"><i class="fa-solid fa-clipboard-list"></i> Recommended Actions</h3>
-            <ul style="padding-left: 1.25rem;" id="actionsList">
+            <h3 class="result-section-title">
+                <i class="fa-solid fa-clipboard-list"></i>
+                Recommended Actions
+            </h3>
+
+            <ul class="result-actions-list" id="actionsList">
                 {% for action in actions %}
-                <li style="margin-bottom: 0.5rem; font-size: 0.95rem; line-height: 1.6;">{{ action }}</li>
+                <li>{{ action }}</li>
                 {% endfor %}
             </ul>
         </div>
         {% endif %}
-        
-        <!-- Redirect CTAs -->
-        <hr style="border: 0; border-top: 1px solid var(--border-glass); margin: 2rem 0;">
-        
-        <div style="display: flex; gap: 1rem; flex-wrap: wrap; justify-content: center;" id="resultActionButtons">
+
+        <hr class="result-action-divider">
+
+        <div class="result-action-buttons" id="resultActionButtons">
             <a href="{% url 'facility_list' %}?specialty={{ specialty|urlencode }}" class="btn-premium" id="btnFindDoctor">
-                <i class="fa-solid fa-magnifying-glass"></i> Find {{ specialty }} in Directory
+                <i class="fa-solid fa-magnifying-glass"></i>
+                Find {{ specialty }} in Directory
             </a>
-            
+
             <a href="{% url 'map_view' %}?specialty={{ specialty|urlencode }}" class="btn-premium btn-premium-accent" id="btnFindDoctorMap">
-                <i class="fa-solid fa-map-location-dot"></i> View Proximity Map
+                <i class="fa-solid fa-map-location-dot"></i>
+                View Proximity Map
             </a>
-            
+
             {% if severity == 'Urgent' %}
-                <a href="{% url 'emergency' %}" class="nav-btn" style="background: rgba(239,68,68,0.15); border: 1px solid var(--danger); color: #fca5a5; display:inline-flex; align-items:center; gap:0.5rem; border-radius:8px; font-weight:700;" id="btnGoEmergency">
-                    <i class="fa-solid fa-phone"></i> Emergency Helplines
+                <a href="{% url 'emergency' %}" class="result-emergency-button" id="btnGoEmergency">
+                    <i class="fa-solid fa-phone"></i>
+                    Emergency Helplines
                 </a>
             {% endif %}
         </div>

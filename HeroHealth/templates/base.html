@@ -1,256 +1,281 @@
 {% load static %}
-<!doctype html>
+<!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-    <title>
-      {% block title %}HeroHealth | Nepal Triage & Mapping{% endblock %}
-    </title>
+    <title>{% block title %}HeroHealth | Nepal Triage & Mapping{% endblock %}</title>
 
     <meta
-      name="description"
-      content="HeroHealth is Nepal's healthcare consultation, AI triage engine, and facility finder. Connect symptoms with local clinics and hospitals."
-    />
+        name="description"
+        content="HeroHealth is Nepal's healthcare consultation, AI triage engine, emergency resource directory, and healthcare facility finder."
+    >
+
+    <meta name="theme-color" content="#070b13">
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 
     <link
-      rel="stylesheet"
-      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
-    />
+        href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Outfit:wght@400;500;600;700;800&display=swap"
+        rel="stylesheet"
+    >
 
-    <link rel="stylesheet" href="{% static 'css/style.css' %}" />
+    <link
+        rel="stylesheet"
+        href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
+    >
 
-    <link rel="stylesheet" href="{% static 'css/responsive.css' %}" />
+    <link
+        rel="stylesheet"
+        href="{% static 'css/style.css' %}"
+    >
+
+    <link
+        rel="stylesheet"
+        href="{% static 'css/responsive.css' %}"
+    >
+
+    <link
+        rel="stylesheet"
+        href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
+        integrity="sha256-p4NxAoJBhIINfhmNHrzRCf9tD/miZyoHS5obTRR9BMY="
+        crossorigin=""
+    >
 
     {% block extra_head %}{% endblock %}
-  </head>
+</head>
 
-  <body>
+<body>
+
     <nav class="navbar" id="mainNavbar">
-      <a
-        href="{% url 'home' %}"
-        class="nav-brand"
-        id="brandLogo"
-        aria-label="HeroHealth home"
-      >
-        <i class="fa-solid fa-hand-holding-heart" aria-hidden="true"></i>
-        Hero<span>Health</span>
-      </a>
 
-      <ul class="nav-links">
-        <li>
-          <a
+        <a
             href="{% url 'home' %}"
-            class="nav-link {% if request.resolver_match.view_name == 'home' %}active{% endif %}"
-            id="navHome"
-            {%
-            if
-            request.resolver_match.view_name=""
-            ="home"
-            %}aria-current="page"
-            {%
-            endif
-            %}
-          >
-            Home
-          </a>
-        </li>
+            class="nav-brand"
+            id="brandLogo"
+            aria-label="HeroHealth Home"
+        >
+            <i class="fa-solid fa-hand-holding-heart"></i>
+            <span>HeroHealth</span>
+        </a>
 
-        <li>
-          <a
-            href="{% url 'consultation' %}"
-            class="nav-link {% if request.resolver_match.view_name == 'consultation' or request.resolver_match.view_name == 'consultation_result' %}active{% endif %}"
-            id="navTriage"
-            {%
-            if
-            request.resolver_match.view_name=""
-            ="consultation"
-            or
-            request.resolver_match.view_name=""
-            ="consultation_result"
-            %}aria-current="page"
-            {%
-            endif
-            %}
-          >
-            AI Triage
-          </a>
-        </li>
+        <ul class="nav-links">
 
-        <li>
-          <a
-            href="{% url 'facility_list' %}"
-            class="nav-link {% if request.resolver_match.view_name == 'facility_list' or request.resolver_match.view_name == 'facility_detail' %}active{% endif %}"
-            id="navFacilities"
-            {%
-            if
-            request.resolver_match.view_name=""
-            ="facility_list"
-            or
-            request.resolver_match.view_name=""
-            ="facility_detail"
-            %}aria-current="page"
-            {%
-            endif
-            %}
-          >
-            Find Facilities
-          </a>
-        </li>
+            <li>
+                <a
+                    href="{% url 'home' %}"
+                    class="nav-link {% if request.resolver_match.view_name == 'home' %}active{% endif %}"
+                    id="navHome"
+                >
+                    <i class="fa-solid fa-house"></i>
+                    <span>Home</span>
+                </a>
+            </li>
 
-        <li>
-          <a
-            href="{% url 'map_view' %}"
-            class="nav-link {% if request.resolver_match.view_name == 'map_view' %}active{% endif %}"
-            id="navMap"
-            {%
-            if
-            request.resolver_match.view_name=""
-            ="map_view"
-            %}aria-current="page"
-            {%
-            endif
-            %}
-          >
-            Proximity Map
-          </a>
-        </li>
+            <li>
+                <a
+                    href="{% url 'consultation' %}"
+                    class="nav-link {% if request.resolver_match.view_name == 'consultation' or request.resolver_match.view_name == 'consultation_result' %}active{% endif %}"
+                    id="navTriage"
+                >
+                    <i class="fa-solid fa-robot"></i>
+                    <span>AI Triage</span>
+                </a>
+            </li>
 
-        <li>
-          <a
-            href="{% url 'emergency' %}"
-            class="nav-link {% if request.resolver_match.view_name == 'emergency' %}active{% endif %}"
-            id="navEmergency"
-            {%
-            if
-            request.resolver_match.view_name=""
-            ="emergency"
-            %}aria-current="page"
-            {%
-            endif
-            %}
-          >
-            Emergency
-          </a>
-        </li>
+            <li>
+                <a
+                    href="{% url 'facility_list' %}"
+                    class="nav-link {% if request.resolver_match.view_name == 'facility_list' or request.resolver_match.view_name == 'facility_detail' %}active{% endif %}"
+                    id="navFacilities"
+                >
+                    <i class="fa-solid fa-hospital"></i>
+                    <span>Facilities</span>
+                </a>
+            </li>
 
-        {% if user.is_authenticated %}
-        <li>
-          <a
-            href="{% url 'profile' %}"
-            class="nav-link {% if request.resolver_match.view_name == 'profile' %}active{% endif %}"
-            id="navProfile"
-            {%
-            if
-            request.resolver_match.view_name=""
-            ="profile"
-            %}aria-current="page"
-            {%
-            endif
-            %}
-          >
-            Profile
-          </a>
-        </li>
+            <li>
+                <a
+                    href="{% url 'map_view' %}"
+                    class="nav-link {% if request.resolver_match.view_name == 'map_view' %}active{% endif %}"
+                    id="navMap"
+                >
+                    <i class="fa-solid fa-map-location-dot"></i>
+                    <span>Map</span>
+                </a>
+            </li>
 
-        <li>
-          <a
-            href="{% url 'logout' %}"
-            class="nav-btn nav-btn-outline"
-            id="navLogout"
-          >
-            Logout
-          </a>
-        </li>
-        {% else %}
-        <li>
-          <a
-            href="{% url 'login' %}"
-            class="nav-btn nav-btn-outline"
-            id="navLogin"
-          >
-            Login
-          </a>
-        </li>
+            <li>
+                <a
+                    href="{% url 'emergency' %}"
+                    class="nav-link {% if request.resolver_match.view_name == 'emergency' %}active{% endif %}"
+                    id="navEmergency"
+                >
+                    <i class="fa-solid fa-truck-medical"></i>
+                    <span>Emergency</span>
+                </a>
+            </li>
 
-        <li>
-          <a
-            href="{% url 'register' %}"
-            class="nav-btn nav-btn-primary"
-            id="navRegister"
-          >
-            Sign Up
-          </a>
-        </li>
-        {% endif %}
-      </ul>
+            {% if user.is_authenticated %}
+
+                <li>
+                    <a
+                        href="{% url 'profile' %}"
+                        class="nav-link {% if request.resolver_match.view_name == 'profile' %}active{% endif %}"
+                        id="navProfile"
+                    >
+                        <i class="fa-solid fa-user"></i>
+                        <span>Profile</span>
+                    </a>
+                </li>
+
+                <li>
+                    <a
+                        href="{% url 'logout' %}"
+                        class="nav-btn nav-btn-outline"
+                        id="navLogout"
+                    >
+                        <i class="fa-solid fa-right-from-bracket"></i>
+                        <span>Logout</span>
+                    </a>
+                </li>
+
+            {% else %}
+
+                <li>
+                    <a
+                        href="{% url 'login' %}"
+                        class="nav-btn nav-btn-outline"
+                        id="navLogin"
+                    >
+                        <i class="fa-solid fa-right-to-bracket"></i>
+                        <span>Login</span>
+                    </a>
+                </li>
+
+                <li>
+                    <a
+                        href="{% url 'register' %}"
+                        class="nav-btn nav-btn-primary"
+                        id="navRegister"
+                    >
+                        <i class="fa-solid fa-user-plus"></i>
+                        <span>Sign Up</span>
+                    </a>
+                </li>
+
+            {% endif %}
+
+        </ul>
     </nav>
 
     {% if messages %}
-    <div class="messages-container" id="alertsBox" aria-live="polite">
-      {% for message in messages %}
-      <div
-        class="alert-message {{ message.tags }}"
-        role="alert"
-        id="alert-{{ forloop.counter }}"
-      >
-        <span>
-          <i
-            class="fa-solid {% if message.tags == 'success' %}fa-circle-check{% elif message.tags == 'error' %}fa-circle-xmark{% else %}fa-circle-info{% endif %}"
-            aria-hidden="true"
-          ></i>
-          {{ message }}
-        </span>
-
-        <button
-          type="button"
-          class="alert-close"
-          id="closeAlert-{{ forloop.counter }}"
-          aria-label="Close notification"
+        <div
+            class="messages-container"
+            id="alertsBox"
+            aria-live="polite"
+            aria-atomic="true"
         >
-          <i class="fa-solid fa-xmark" aria-hidden="true"></i>
-        </button>
-      </div>
-      {% endfor %}
-    </div>
+            {% for message in messages %}
+                <div
+                    class="alert-message {{ message.tags }}"
+                    role="alert"
+                    id="alert-{{ forloop.counter }}"
+                >
+                    <span>
+                        {% if message.tags == 'success' %}
+                            <i class="fa-solid fa-circle-check"></i>
+                        {% elif message.tags == 'error' or message.tags == 'danger' %}
+                            <i class="fa-solid fa-circle-xmark"></i>
+                        {% elif message.tags == 'warning' %}
+                            <i class="fa-solid fa-triangle-exclamation"></i>
+                        {% else %}
+                            <i class="fa-solid fa-circle-info"></i>
+                        {% endif %}
+
+                        <span>{{ message }}</span>
+                    </span>
+
+                    <button
+                        type="button"
+                        class="alert-close"
+                        id="closeAlert-{{ forloop.counter }}"
+                        aria-label="Close notification"
+                    >
+                        <i class="fa-solid fa-xmark"></i>
+                    </button>
+                </div>
+            {% endfor %}
+        </div>
     {% endif %}
 
-    <main id="mainContent">{% block content %}{% endblock %}</main>
+    <main id="mainContent">
+        {% block content %}{% endblock %}
+    </main>
 
     <footer class="footer" id="siteFooter">
-      <ul class="footer-links">
-        <li>
-          <a href="{% url 'home' %}" class="footer-link"> Home </a>
-        </li>
 
-        <li>
-          <a href="{% url 'consultation' %}" class="footer-link">
-            AI Consultation
-          </a>
-        </li>
+        <ul class="footer-links">
 
-        <li>
-          <a href="{% url 'facility_list' %}" class="footer-link">
-            Healthcare Finder
-          </a>
-        </li>
+            <li>
+                <a href="{% url 'home' %}" class="footer-link">
+                    Home
+                </a>
+            </li>
 
-        <li>
-          <a href="{% url 'emergency' %}" class="footer-link">
-            Emergency Help
-          </a>
-        </li>
-      </ul>
+            <li>
+                <a href="{% url 'consultation' %}" class="footer-link">
+                    AI Consultation
+                </a>
+            </li>
 
-      <p id="copyrightText">
-        &copy; 2026 HeroHealth Nepal. Empowering public health through smart
-        diagnostics. Developed by Infonix.
-      </p>
+            <li>
+                <a href="{% url 'facility_list' %}" class="footer-link">
+                    Healthcare Finder
+                </a>
+            </li>
+
+            <li>
+                <a href="{% url 'map_view' %}" class="footer-link">
+                    Proximity Map
+                </a>
+            </li>
+
+            <li>
+                <a href="{% url 'emergency' %}" class="footer-link">
+                    Emergency Help
+                </a>
+            </li>
+
+            {% if user.is_authenticated %}
+                <li>
+                    <a href="{% url 'profile' %}" class="footer-link">
+                        My Profile
+                    </a>
+                </li>
+            {% endif %}
+
+        </ul>
+
+        <p id="copyrightText">
+            &copy; 2026 HeroHealth Nepal.
+            Empowering public health through smart healthcare technology.
+            Developed by Infonix.
+        </p>
+
     </footer>
 
-    <script src="{% static 'js/main.js' %}" defer></script>
+    <script
+        src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"
+        integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo="
+        crossorigin=""
+    ></script>
+
+    <script src="{% static 'js/main.js' %}"></script>
 
     {% block extra_js %}{% endblock %}
-  </body>
+
+</body>
 </html>

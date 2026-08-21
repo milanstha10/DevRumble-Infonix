@@ -1,36 +1,152 @@
 {% extends 'base.html' %}
+{% load static %}
 
 {% block title %}HeroHealth | Login{% endblock %}
 
+{% block extra_head %}
+<link rel="stylesheet" href="{% static 'css/login.css' %}">
+{% endblock %}
+
 {% block content %}
-<div class="consultation-container" id="loginContainer">
-    <div class="glass-card" id="loginCard">
-        <div class="consultation-header">
-            <h2 class="consultation-title">Welcome Back</h2>
-            <p class="consultation-desc">Log in to view your consultation history and manage your profile</p>
-        </div>
-        
-        <form method="POST" id="loginForm">
-            {% csrf_token %}
-            {% for field in form %}
-            <div class="form-group">
-                <label class="form-label" for="{{ field.id_for_label }}">{{ field.label }}</label>
-                {{ field }}
-                {% if field.errors %}
-                <small style="color: var(--danger); display:block; margin-top:0.25rem;">{{ field.errors.0 }}</small>
-                {% endif %}
+
+<div class="login-page" id="loginContainer">
+
+    <div class="login-card glass-card" id="loginCard">
+
+        <!-- Header -->
+        <div class="login-header">
+
+            <div class="login-icon" aria-hidden="true">
+                <i class="fa-solid fa-shield-heart"></i>
             </div>
-            {% endfor %}
-            
-            <button type="submit" class="btn-premium" style="width: 100%; margin-top: 1rem;" id="submitLogin">
-                Log In <i class="fa-solid fa-arrow-right-to-bracket"></i>
-            </button>
-        </form>
-        
-        <div style="text-align: center; margin-top: 1.5rem;" id="loginFooter">
-            <span style="color: var(--text-muted);">Don't have an account? </span>
-            <a href="{% url 'register' %}" style="color: var(--primary); text-decoration: none; font-weight:600;">Sign Up</a>
+
+            <h1 class="login-title">
+                Welcome Back
+            </h1>
+
+            <p class="login-description">
+                Log in to view your consultation history and manage your profile.
+            </p>
+
         </div>
+
+
+        <!-- Login Form -->
+        <form method="POST" class="login-form" id="loginForm">
+
+            {% csrf_token %}
+
+            {% if form.non_field_errors %}
+                <div class="login-error-box" role="alert">
+
+                    <i class="fa-solid fa-circle-exclamation"></i>
+
+                    <div>
+                        {% for error in form.non_field_errors %}
+                            <p>{{ error }}</p>
+                        {% endfor %}
+                    </div>
+
+                </div>
+            {% endif %}
+
+
+            {% for field in form %}
+
+                <div class="login-form-group">
+
+                    <label
+                        class="login-label"
+                        for="{{ field.id_for_label }}"
+                    >
+                        {{ field.label }}
+                    </label>
+
+                    <div class="login-input-wrapper">
+
+                        {% if field.name == 'username' %}
+                            <i class="fa-solid fa-user login-input-icon"></i>
+
+                        {% elif field.name == 'password' %}
+                            <i class="fa-solid fa-lock login-input-icon"></i>
+
+                        {% else %}
+                            <i class="fa-solid fa-key login-input-icon"></i>
+                        {% endif %}
+
+                        {{ field }}
+
+                    </div>
+
+                    {% if field.help_text %}
+                        <small class="login-help">
+                            {{ field.help_text }}
+                        </small>
+                    {% endif %}
+
+                    {% if field.errors %}
+                        <div class="login-field-error">
+
+                            <i class="fa-solid fa-circle-exclamation"></i>
+
+                            <div>
+                                {% for error in field.errors %}
+                                    <span>{{ error }}</span>
+                                {% endfor %}
+                            </div>
+
+                        </div>
+                    {% endif %}
+
+                </div>
+
+            {% endfor %}
+
+
+            <!-- Submit Button -->
+            <button
+                type="submit"
+                class="login-submit btn-premium"
+                id="submitLogin"
+            >
+                <span>Log In</span>
+                <i class="fa-solid fa-arrow-right-to-bracket"></i>
+            </button>
+
+        </form>
+
+
+        <!-- Register Link -->
+        <div class="login-footer" id="loginFooter">
+
+            <span>
+                Don't have an account?
+            </span>
+
+            <a
+                href="{% url 'register' %}"
+                class="login-link"
+            >
+                Create Account
+                <i class="fa-solid fa-arrow-right"></i>
+            </a>
+
+        </div>
+
+
+        <!-- Security Message -->
+        <div class="login-security">
+
+            <i class="fa-solid fa-lock"></i>
+
+            <span>
+                Your account information is securely handled by HeroHealth.
+            </span>
+
+        </div>
+
     </div>
+
 </div>
+
 {% endblock %}

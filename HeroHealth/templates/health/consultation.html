@@ -3,75 +3,229 @@
 
 {% block title %}HeroHealth | Start AI Triage Consultation{% endblock %}
 
+{% block extra_head %}
+<link rel="stylesheet" href="{% static 'css/consultation.css' %}">
+{% endblock %}
+
 {% block content %}
+
 <!-- Loading Screen Overlay -->
 <div class="loading-overlay" id="loadingOverlay">
     <div class="spinner"></div>
-    <p class="loading-text">Analyzing Symptoms</p>
-    <p class="loading-subtext">Consulting our medical knowledge engine, please wait...</p>
+
+    <p class="loading-text">
+        Analyzing Symptoms
+    </p>
+
+    <p class="loading-subtext">
+        Consulting our medical knowledge engine, please wait...
+    </p>
 </div>
 
-<div class="consultation-container" id="consultationFormContainer">
-    <div class="glass-card" id="consultationCard">
+
+<div class="consultation-container consultation-page" id="consultationFormContainer">
+
+    <div class="glass-card consultation-card" id="consultationCard">
+
+        <!-- Header -->
         <div class="consultation-header">
-            <h2 class="consultation-title"><i class="fa-solid fa-robot" style="color:var(--primary);"></i> AI Consultation</h2>
-            <p class="consultation-desc">Explain your symptoms in detail and upload any relevant photos of the affected area for triage analysis</p>
+
+            <h2 class="consultation-title">
+                <i class="fa-solid fa-robot consultation-title-icon"
+                   aria-hidden="true"></i>
+
+                AI Consultation
+            </h2>
+
+            <p class="consultation-desc">
+                Explain your symptoms in detail and upload any relevant photos
+                of the affected area for triage analysis.
+            </p>
+
         </div>
-        
-        <form method="POST" enctype="multipart/form-data" id="consultationForm">
+
+
+        <!-- Consultation Form -->
+        <form
+            method="POST"
+            enctype="multipart/form-data"
+            id="consultationForm"
+        >
+
             {% csrf_token %}
-            
+
+
+            <!-- Symptoms -->
             <div class="form-group">
-                <label class="form-label" for="id_symptoms">Describe Symptoms</label>
+
+                <label
+                    class="form-label"
+                    for="id_symptoms"
+                >
+                    Describe Symptoms
+                </label>
+
                 {{ form.symptoms }}
-                <small style="color: var(--text-muted); display:block; margin-top:0.5rem;">
-                    Be specific about duration, intensity, and any compounding factors (e.g. fever, headache, location of pain).
+
+                <small class="form-help">
+                    Be specific about duration, intensity, and any compounding
+                    factors such as fever, headache, or location of pain.
                 </small>
+
             </div>
-            
-            <!-- Quick Chips selection helper -->
-            <div style="margin-bottom: 1.5rem;" id="symptomChips">
-                <label class="form-label" style="font-size: 0.85rem; color: var(--text-muted);">Common Suggestions:</label>
-                <div style="display: flex; gap: 0.5rem; flex-wrap: wrap;" id="chipsContainer">
-                    <span class="specialty-tag" style="cursor:pointer;" onclick="appendSymptom('I have a sharp pain in my chest that radiates to my left arm, and I am feeling short of breath.')">Chest Pain & Breathing</span>
-                    <span class="specialty-tag" style="cursor:pointer;" onclick="appendSymptom('I have had a high fever of 101°F since yesterday, a scratchy throat, and a dry cough.')">Fever & Dry Cough</span>
-                    <span class="specialty-tag" style="cursor:pointer;" onclick="appendSymptom('I feel severe cramps in my stomach, nausea, and have vomited twice after eating street food.')">Stomach Cramps & Vomiting</span>
-                    <span class="specialty-tag" style="cursor:pointer;" onclick="appendSymptom('There is an itchy red rash with small bumps spreading on my right arm after walking in the woods.')">Itchy Skin Rash</span>
-                    <span class="specialty-tag" style="cursor:pointer;" onclick="appendSymptom('I fell down and twisted my ankle. It is swollen, bruised, and hurts severely when putting weight on it.')">Ankle Sprain & Swelling</span>
+
+
+            <!-- Quick Symptom Suggestions -->
+            <div class="symptom-chips-section" id="symptomChips">
+
+                <label class="form-label symptom-chips-label">
+                    Common Suggestions:
+                </label>
+
+                <div
+                    class="chips-container"
+                    id="chipsContainer"
+                >
+
+                    <button
+                        type="button"
+                        class="specialty-tag symptom-chip"
+                        onclick="appendSymptom('I have a sharp pain in my chest that radiates to my left arm, and I am feeling short of breath.')"
+                    >
+                        Chest Pain &amp; Breathing
+                    </button>
+
+
+                    <button
+                        type="button"
+                        class="specialty-tag symptom-chip"
+                        onclick="appendSymptom('I have had a high fever of 101°F since yesterday, a scratchy throat, and a dry cough.')"
+                    >
+                        Fever &amp; Dry Cough
+                    </button>
+
+
+                    <button
+                        type="button"
+                        class="specialty-tag symptom-chip"
+                        onclick="appendSymptom('I feel severe cramps in my stomach, nausea, and have vomited twice after eating street food.')"
+                    >
+                        Stomach Cramps &amp; Vomiting
+                    </button>
+
+
+                    <button
+                        type="button"
+                        class="specialty-tag symptom-chip"
+                        onclick="appendSymptom('There is an itchy red rash with small bumps spreading on my right arm after walking in the woods.')"
+                    >
+                        Itchy Skin Rash
+                    </button>
+
+
+                    <button
+                        type="button"
+                        class="specialty-tag symptom-chip"
+                        onclick="appendSymptom('I fell down and twisted my ankle. It is swollen, bruised, and hurts severely when putting weight on it.')"
+                    >
+                        Ankle Sprain &amp; Swelling
+                    </button>
+
                 </div>
+
             </div>
-            
+
+
+            <!-- Image Upload -->
             <div class="form-group">
-                <label class="form-label">Symptom Image (Optional)</label>
-                <!-- Custom drag & drop upload container -->
-                <div class="upload-zone" id="uploadZone">
-                    <div class="upload-icon"><i class="fa-solid fa-cloud-arrow-up"></i></div>
-                    <p class="upload-text">Drag and drop or click here to upload photo</p>
-                    <p style="font-size: 0.8rem; color: var(--text-muted); margin-top:0.25rem;">PNG, JPG or JPEG up to 5MB</p>
+
+                <label class="form-label">
+                    Symptom Image
+                    <span class="optional-label">(Optional)</span>
+                </label>
+
+
+                <div
+                    class="upload-zone"
+                    id="uploadZone"
+                    tabindex="0"
+                    role="button"
+                    aria-label="Upload symptom image"
+                >
+
+                    <div class="upload-icon">
+                        <i
+                            class="fa-solid fa-cloud-arrow-up"
+                            aria-hidden="true"
+                        ></i>
+                    </div>
+
+                    <p class="upload-text">
+                        Drag and drop or click here to upload photo
+                    </p>
+
+                    <p class="upload-help">
+                        PNG, JPG or JPEG up to 5MB
+                    </p>
+
+                    <p
+                        class="upload-file-name"
+                        id="uploadFileName"
+                    ></p>
+
                 </div>
-                <!-- Hide django's default file input and trigger click via JS -->
-                <div style="display: none;">
+
+
+                <!-- Django file input -->
+                <div class="hidden-file-input">
                     {{ form.image }}
                 </div>
+
             </div>
-            
-            <button type="submit" class="btn-premium" style="width: 100%; margin-top: 1.5rem;" id="submitSymptomForm">
-                Run AI Symptom Analysis <i class="fa-solid fa-gears"></i>
+
+
+            <!-- Submit -->
+            <button
+                type="submit"
+                class="btn-premium consultation-submit"
+                id="submitSymptomForm"
+            >
+                <span>
+                    Run AI Symptom Analysis
+                </span>
+
+                <i
+                    class="fa-solid fa-gears"
+                    aria-hidden="true"
+                ></i>
             </button>
+
         </form>
+
     </div>
+
 </div>
+
 {% endblock %}
 
+
 {% block extra_js %}
+
 <script src="{% static 'js/consultation.js' %}"></script>
+
 <script>
     function appendSymptom(text) {
         const textarea = document.getElementById('id_symptoms');
+
         if (textarea) {
             textarea.value = text;
             textarea.focus();
+
+            textarea.dispatchEvent(new Event('input', {
+                bubbles: true
+            }));
         }
     }
 </script>
+
 {% endblock %}
