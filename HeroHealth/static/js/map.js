@@ -1,375 +1,890 @@
 document.addEventListener('DOMContentLoaded', function () {
-    const detailMapElement = document.getElementById('facilityDetailMap');
 
-    if (detailMapElement && typeof L !== 'undefined') {
-        const lat = parseFloat(detailMapElement.dataset.lat);
-        const lon = parseFloat(detailMapElement.dataset.lon);
-        const name = detailMapElement.dataset.name || 'Healthcare Facility';
-        const address = detailMapElement.dataset.address || '';
+    const mapElement = document.getElementById('searchMap');
 
-        if (Number.isFinite(lat) && Number.isFinite(lon)) {
-            const detailMap = L.map('facilityDetailMap').setView([lat, lon], 15);
-
-            L.tileLayer(
-                'https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png',
-                {
-                    attribution:
-                        '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors &copy; <a href="https://carto.com/attributions">CARTO</a>',
-                    subdomains: 'abcd',
-                    maxZoom: 20
-                }
-            ).addTo(detailMap);
-
-            const marker = L.marker([lat, lon]).addTo(detailMap);
-
-            marker.bindPopup(
-                `<strong>${escapeHtml(name)}</strong><br><small>${escapeHtml(address)}</small>`
-            ).openPopup();
-
-            setTimeout(function () {
-                detailMap.invalidateSize();
-            }, 200);
-        }
-    }
-
-    const fullMapElement = document.getElementById('searchMap');
-
-    if (!fullMapElement) {
+    if (!mapElement) {
         return;
     }
+
+    const loadingElement = document.getElementById('mapLoading');
+    const errorElement = document.getElementById('mapError');
+    const locateButton = document.getElementById('locateMeButton');
 
     if (typeof L === 'undefined') {
         console.error('Leaflet is not loaded.');
+        showError('Map library failed to load. Please refresh the page.');
         return;
     }
 
-    const specialty = fullMapElement.dataset.specialty || '';
-    const loadingElement = document.getElementById('mapLoading');
+    const specialty = mapElement.dataset.specialty || '';
 
-    const defaultLat = 27.700769;
-    const defaultLon = 85.300140;
+    const defaultLocation = {
+        lat: 27.7172,
+        lon: 85.3240,
+        zoom: 12
+    };
 
-    let map;
-
-    try {
-        map = L.map('searchMap', {
-            center: [defaultLat, defaultLon],
-            zoom: 12,
-            zoomControl: true
-        });
-    } catch (error) {
-        console.error('Unable to initialize Leaflet map:', error);
-
-        if (loadingElement) {
-            loadingElement.innerHTML =
-                '<i class="fa-solid fa-circle-exclamation"></i> Unable to initialize map.';
-        }
-
-        return;
-    }
-
-    L.tileLayer(
-        'https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png',
-        {
-            attribution:
-                '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors &copy; <a href="https://carto.com/attributions">CARTO</a>',
-            subdomains: 'abcd',
-            maxZoom: 20
-        }
-    ).addTo(map);
-
+    let map = null;
     let userLocationMarker = null;
+    let userAccuracyCircle = null;
     let userCoords = null;
     let facilitiesLayer = null;
+    let locationRequested = false;
+    let facilitiesLoaded = false;
 
-    const userIcon = L.divIcon({
-        className: 'user-location-pulsing-icon',
-        html: '<div class="pulse-ring"></div><div class="pulse-dot"></div>',
-        iconSize: [20, 20],
-        iconAnchor: [10, 10]
-    });
+    function setLoading(isLoading) {
 
-    function showLoading() {
-        if (loadingElement) {
-            loadingElement.classList.remove('hidden');
+        if (!loadingElement) {
+            return;
         }
-    }
 
-    function hideLoading() {
-        if (loadingElement) {
-            loadingElement.classList.add('hidden');
-        }
+        loadingElement.classList.toggle('hidden', !isLoading);
     }
 
     function showError(message) {
-        if (loadingElement) {
-            loadingElement.classList.remove('hidden');
-            loadingElement.innerHTML =
-                `<i class="fa-solid fa-circle-exclamation"></i> ${escapeHtml(message)}`;
+
+        if (!errorElement) {
+            console.error(message);
+            return;
+        }
+
+        errorElement.textContent = message;
+        errorElement.hidden = false;
+    }
+
+    function hideError() {
+
+        if (!errorElement) {
+            return;
+        }
+
+        errorElement.textContent = '';
+        errorElement.hidden = true;
+    }
+
+    function setLocateButtonLoading(isLoading) {
+
+        if (!locateButton) {
+            return;
+        }
+
+        locateButton.classList.toggle('loading', isLoading);
+
+        locateButton.innerHTML = isLoading
+            ? '<i class="fa-solid fa-spinner fa-spin"></i>'
+            : '<i class="fa-solid fa-location-crosshairs"></i>';
+    }
+
+    function initializeMap() {
+
+        map = L.map('searchMap', {
+            center: [
+                defaultLocation.lat,
+                defaultLocation.lon
+            ],
+            zoom: defaultLocation.zoom,
+            zoomControl: true,
+            scrollWheelZoom: true,
+            dragging: true,
+            touchZoom: true,
+            doubleClickZoom: true,
+            boxZoom: true,
+            keyboard: true,
+            attributionControl: true
+        });
+
+        L.tileLayer(
+            'https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',
+            {
+                minZoom: 3,
+                maxZoom: 19,
+                crossOrigin: true,
+                attribution:
+                    '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+            }
+        ).addTo(map);
+
+        setTimeout(function () {
+
+            if (map) {
+                map.invalidateSize(true);
+            }
+
+        }, 100);
+
+        setTimeout(function () {
+
+            if (map) {
+                map.invalidateSize(true);
+            }
+
+        }, 500);
+
+        window.addEventListener('resize', function () {
+
+            if (map) {
+                map.invalidateSize(true);
+            }
+
+        });
+    }
+
+    function createUserIcon() {
+
+        return L.divIcon({
+            className: 'user-location-pulsing-icon',
+            html: '<div class="user-location-marker"></div>',
+            iconSize: [22, 22],
+            iconAnchor: [11, 11],
+            popupAnchor: [0, -12]
+        });
+    }
+
+    function updateUserLocation(lat, lon, accuracy) {
+
+        if (
+            !Number.isFinite(lat) ||
+            !Number.isFinite(lon)
+        ) {
+            return;
+        }
+
+        userCoords = {
+            lat: lat,
+            lon: lon,
+            accuracy: Number.isFinite(accuracy)
+                ? accuracy
+                : null
+        };
+
+        if (userLocationMarker) {
+            map.removeLayer(userLocationMarker);
+        }
+
+        if (userAccuracyCircle) {
+            map.removeLayer(userAccuracyCircle);
+        }
+
+        userLocationMarker = L.marker(
+            [lat, lon],
+            {
+                icon: createUserIcon(),
+                zIndexOffset: 1000
+            }
+        ).addTo(map);
+
+        let accuracyText = '';
+
+        if (
+            Number.isFinite(accuracy) &&
+            accuracy > 0
+        ) {
+
+            accuracyText =
+                '<br>Accuracy: ' +
+                (
+                    accuracy >= 1000
+                        ? (accuracy / 1000).toFixed(2) + ' km'
+                        : Math.round(accuracy) + ' m'
+                );
+        }
+
+        userLocationMarker.bindPopup(
+            '<strong>Your Current Location</strong>' +
+            '<br>Latitude: ' +
+            lat.toFixed(6) +
+            '<br>Longitude: ' +
+            lon.toFixed(6) +
+            accuracyText
+        );
+
+        if (
+            Number.isFinite(accuracy) &&
+            accuracy > 0 &&
+            accuracy <= 10000
+        ) {
+
+            userAccuracyCircle = L.circle(
+                [lat, lon],
+                {
+                    radius: accuracy,
+                    color: '#00ff87',
+                    fillColor: '#00ff87',
+                    fillOpacity: 0.08,
+                    weight: 1,
+                    className: 'user-accuracy-circle'
+                }
+            ).addTo(map);
+        }
+
+        map.setView(
+            [lat, lon],
+            15,
+            {
+                animate: true
+            }
+        );
+
+        if (facilitiesLoaded) {
+            refreshFacilityPopups();
         }
     }
 
-    function getApiUrl() {
-        const baseUrl = '/facilities/api/geojson/';
+    function requestLocation() {
 
-        if (!specialty) {
-            return baseUrl;
+        if (locationRequested) {
+            return;
         }
 
-        return `${baseUrl}?specialty=${encodeURIComponent(specialty)}`;
-    }
+        locationRequested = true;
 
-    async function fetchAndPlotMarkers() {
-        showLoading();
-
-        try {
-            const response = await fetch(getApiUrl(), {
-                method: 'GET',
-                headers: {
-                    'Accept': 'application/json'
-                },
-                credentials: 'same-origin'
-            });
-
-            if (!response.ok) {
-                throw new Error(`API returned HTTP ${response.status}`);
-            }
-
-            const data = await response.json();
-
-            if (!data || data.type !== 'FeatureCollection') {
-                throw new Error('Invalid GeoJSON response from the server.');
-            }
-
-            if (facilitiesLayer) {
-                map.removeLayer(facilitiesLayer);
-                facilitiesLayer = null;
-            }
-
-            const markers = [];
-
-            facilitiesLayer = L.geoJSON(data, {
-                pointToLayer: function (feature, latlng) {
-                    return L.marker(latlng);
-                },
-
-                onEachFeature: function (feature, layer) {
-                    const props = feature.properties || {};
-                    const geometry = feature.geometry || {};
-                    const coords = geometry.coordinates || [];
-
-                    const lon = parseFloat(coords[0]);
-                    const lat = parseFloat(coords[1]);
-
-                    let distanceText = '';
-
-                    if (
-                        userCoords &&
-                        Number.isFinite(lat) &&
-                        Number.isFinite(lon)
-                    ) {
-                        const distance = getDistanceKm(
-                            userCoords[0],
-                            userCoords[1],
-                            lat,
-                            lon
-                        );
-
-                        distanceText = `
-                            <div class="map-popup-distance">
-                                <i class="fa-solid fa-location-arrow"></i>
-                                ${distance.toFixed(2)} km away
-                            </div>
-                        `;
-                    }
-
-                    let statusColor = '#10b981';
-
-                    if (props.status === 'Busy') {
-                        statusColor = '#f59e0b';
-                    } else if (props.status === 'Emergency Only') {
-                        statusColor = '#ef4444';
-                    }
-
-                    const name = props.name || 'Healthcare Facility';
-                    const type = props.type || 'Healthcare Facility';
-                    const status = props.status || 'Unknown';
-                    const address = props.address || 'Address unavailable';
-                    const phone = props.phone || 'Phone unavailable';
-                    const detailUrl = props.detail_url || '#';
-
-                    const popupHtml = `
-                        <div style="min-width:220px;">
-                            <h4 class="map-popup-title">
-                                ${escapeHtml(name)}
-                            </h4>
-
-                            <span class="map-popup-type">
-                                ${escapeHtml(type)}
-                            </span>
-
-                            <span
-                                class="map-popup-status"
-                                style="color:${statusColor};"
-                            >
-                                ● ${escapeHtml(status)}
-                            </span>
-
-                            <p class="map-popup-address">
-                                <i class="fa-solid fa-location-dot"></i>
-                                ${escapeHtml(address)}
-                            </p>
-
-                            <p class="map-popup-phone">
-                                <i class="fa-solid fa-phone"></i>
-                                ${escapeHtml(phone)}
-                            </p>
-
-                            ${distanceText}
-
-                            <a
-                                href="${escapeAttribute(detailUrl)}"
-                                class="map-popup-link"
-                            >
-                                View Full Details
-                            </a>
-                        </div>
-                    `;
-
-                    layer.bindPopup(popupHtml);
-                    markers.push(layer);
-                }
-            }).addTo(map);
-
-            if (markers.length > 0) {
-                const group = L.featureGroup(markers);
-
-                if (userLocationMarker) {
-                    group.addLayer(userLocationMarker);
-                }
-
-                const bounds = group.getBounds();
-
-                if (bounds.isValid()) {
-                    map.fitBounds(bounds.pad(0.15));
-                }
-            } else if (userCoords) {
-                map.setView(userCoords, 13);
-            } else {
-                map.setView([defaultLat, defaultLon], 12);
-            }
-
-            hideLoading();
-
-            setTimeout(function () {
-                map.invalidateSize();
-            }, 200);
-
-        } catch (error) {
-            console.error('Error loading facilities GeoJSON:', error);
+        if (!navigator.geolocation) {
 
             showError(
-                'Unable to load healthcare facilities. Please check your API endpoint.'
+                'Geolocation is not supported by this browser. Showing Kathmandu instead.'
             );
-        }
-    }
 
-    if (navigator.geolocation) {
+            return;
+        }
+
+        hideError();
+
+        setLocateButtonLoading(true);
+
         navigator.geolocation.getCurrentPosition(
             function (position) {
-                const lat = position.coords.latitude;
-                const lon = position.coords.longitude;
+
+                const latitude =
+                    Number(position.coords.latitude);
+
+                const longitude =
+                    Number(position.coords.longitude);
+
+                const accuracy =
+                    Number(position.coords.accuracy);
+
+                updateUserLocation(
+                    latitude,
+                    longitude,
+                    accuracy
+                );
+
+                setLocateButtonLoading(false);
+            },
+            function (error) {
+
+                setLocateButtonLoading(false);
+
+                let message =
+                    'Unable to access your location. Showing Kathmandu instead.';
 
                 if (
-                    !Number.isFinite(lat) ||
-                    !Number.isFinite(lon)
+                    error.code ===
+                    error.PERMISSION_DENIED
                 ) {
-                    fetchAndPlotMarkers();
-                    return;
+
+                    message =
+                        'Location permission was denied. You can enable it and press the location button again.';
                 }
 
-                userCoords = [lat, lon];
+                if (
+                    error.code ===
+                    error.POSITION_UNAVAILABLE
+                ) {
 
-                if (userLocationMarker) {
-                    map.removeLayer(userLocationMarker);
+                    message =
+                        'Your location is currently unavailable. Showing Kathmandu instead.';
                 }
 
-                userLocationMarker = L.marker(
-                    [lat, lon],
-                    {
-                        icon: userIcon,
-                        zIndexOffset: 1000
-                    }
-                ).addTo(map);
+                if (
+                    error.code ===
+                    error.TIMEOUT
+                ) {
 
-                userLocationMarker
-                    .bindPopup('<strong>Your Current Location</strong>');
+                    message =
+                        'Location request timed out. Showing Kathmandu instead.';
+                }
 
-                fetchAndPlotMarkers();
-            },
-            function () {
-                fetchAndPlotMarkers();
+                showError(message);
             },
             {
                 enableHighAccuracy: true,
-                timeout: 10000,
-                maximumAge: 60000
+                timeout: 20000,
+                maximumAge: 0
             }
         );
-    } else {
-        fetchAndPlotMarkers();
     }
 
-    window.addEventListener('resize', function () {
-        setTimeout(function () {
-            map.invalidateSize();
-        }, 100);
-    });
+    function requestLocationAgain() {
 
-    setTimeout(function () {
-        map.invalidateSize();
-    }, 300);
+        locationRequested = false;
 
-    function getDistanceKm(lat1, lon1, lat2, lon2) {
-        const radius = 6371;
+        requestLocation();
+    }
 
-        const dLat = toRadians(lat2 - lat1);
-        const dLon = toRadians(lon2 - lon1);
+    function fetchAndPlotFacilities() {
+
+        if (!map) {
+            return;
+        }
+
+        setLoading(true);
+        hideError();
+
+        let apiUrl =
+            '/facilities/api/geojson/';
+
+        if (specialty) {
+
+            apiUrl +=
+                '?specialty=' +
+                encodeURIComponent(specialty);
+        }
+
+        fetch(
+            apiUrl,
+            {
+                method: 'GET',
+                headers: {
+                    Accept: 'application/json'
+                },
+                credentials: 'same-origin',
+                cache: 'no-store'
+            }
+        )
+            .then(function (response) {
+
+                if (!response.ok) {
+
+                    throw new Error(
+                        'API returned HTTP ' +
+                        response.status
+                    );
+                }
+
+                return response.json();
+            })
+            .then(function (data) {
+
+                if (
+                    !data ||
+                    data.type !==
+                    'FeatureCollection' ||
+                    !Array.isArray(data.features)
+                ) {
+
+                    throw new Error(
+                        'Invalid GeoJSON response.'
+                    );
+                }
+
+                if (facilitiesLayer) {
+
+                    map.removeLayer(
+                        facilitiesLayer
+                    );
+
+                    facilitiesLayer = null;
+                }
+
+                const validFeatures =
+                    data.features.filter(
+                        function (feature) {
+
+                            if (
+                                !feature ||
+                                !feature.geometry ||
+                                feature.geometry.type !==
+                                'Point' ||
+                                !Array.isArray(
+                                    feature.geometry.coordinates
+                                )
+                            ) {
+                                return false;
+                            }
+
+                            const lon =
+                                Number(
+                                    feature.geometry.coordinates[0]
+                                );
+
+                            const lat =
+                                Number(
+                                    feature.geometry.coordinates[1]
+                                );
+
+                            return (
+                                Number.isFinite(lat) &&
+                                Number.isFinite(lon) &&
+                                lat >= -90 &&
+                                lat <= 90 &&
+                                lon >= -180 &&
+                                lon <= 180
+                            );
+                        }
+                    );
+
+                if (
+                    validFeatures.length === 0
+                ) {
+
+                    facilitiesLayer =
+                        L.layerGroup().addTo(map);
+
+                    setLoading(false);
+
+                    showError(
+                        'No healthcare facilities with valid map coordinates were found.'
+                    );
+
+                    map.setView(
+                        [
+                            defaultLocation.lat,
+                            defaultLocation.lon
+                        ],
+                        defaultLocation.zoom
+                    );
+
+                    return;
+                }
+
+                facilitiesLayer =
+                    L.geoJSON(
+                        {
+                            type: 'FeatureCollection',
+                            features: validFeatures
+                        },
+                        {
+                            pointToLayer:
+                                function (
+                                    feature,
+                                    latlng
+                                ) {
+
+                                    const color =
+                                        getFacilityColor(
+                                            feature.properties
+                                        );
+
+                                    return L.marker(
+                                        latlng,
+                                        {
+                                            icon:
+                                                createFacilityIcon(
+                                                    color
+                                                )
+                                        }
+                                    );
+                                },
+
+                            onEachFeature:
+                                function (
+                                    feature,
+                                    layer
+                                ) {
+
+                                    layer.bindPopup(
+                                        buildFacilityPopup(
+                                            feature.properties ||
+                                            {},
+                                            Number(
+                                                feature.geometry.coordinates[1]
+                                            ),
+                                            Number(
+                                                feature.geometry.coordinates[0]
+                                            )
+                                        )
+                                    );
+                                }
+                        }
+                    ).addTo(map);
+
+                facilitiesLoaded = true;
+
+                fitMapToFacilities(
+                    validFeatures
+                );
+
+                setLoading(false);
+            })
+            .catch(function (error) {
+
+                console.error(
+                    'Healthcare facility API error:',
+                    error
+                );
+
+                facilitiesLoaded = false;
+
+                setLoading(false);
+
+                showError(
+                    'Unable to load healthcare facilities. Please check that /facilities/api/geojson/ is available.'
+                );
+            });
+    }
+
+    function createFacilityIcon(color) {
+
+        return L.divIcon({
+            className: 'facility-marker',
+            html:
+                '<div class="facility-marker-inner" ' +
+                'style="background:' +
+                escapeHtml(color) +
+                ';"></div>',
+            iconSize: [18, 18],
+            iconAnchor: [9, 9],
+            popupAnchor: [0, -9]
+        });
+    }
+
+    function getFacilityColor(properties) {
+
+        const status =
+            String(
+                properties?.status || ''
+            ).toLowerCase();
+
+        if (
+            status.includes('emergency')
+        ) {
+            return '#ef4444';
+        }
+
+        if (
+            status.includes('busy')
+        ) {
+            return '#f59e0b';
+        }
+
+        return '#00f2fe';
+    }
+
+    function escapeHtml(value) {
+
+        if (
+            value === null ||
+            value === undefined
+        ) {
+            return '';
+        }
+
+        return String(value)
+            .replace(
+                /&/g,
+                '&amp;'
+            )
+            .replace(
+                /</g,
+                '&lt;'
+            )
+            .replace(
+                />/g,
+                '&gt;'
+            )
+            .replace(
+                /"/g,
+                '&quot;'
+            )
+            .replace(
+                /'/g,
+                '&#039;'
+            );
+    }
+
+    function buildFacilityPopup(
+        properties,
+        facilityLat,
+        facilityLon
+    ) {
+
+        const name =
+            escapeHtml(
+                properties.name ||
+                'Healthcare Facility'
+            );
+
+        const type =
+            escapeHtml(
+                properties.type ||
+                'Healthcare Facility'
+            );
+
+        const status =
+            escapeHtml(
+                properties.status ||
+                'Available'
+            );
+
+        const address =
+            escapeHtml(
+                properties.address ||
+                'Address unavailable'
+            );
+
+        const phone =
+            escapeHtml(
+                properties.phone ||
+                'Not available'
+            );
+
+        const detailUrl =
+            escapeHtml(
+                properties.detail_url ||
+                '#'
+            );
+
+        let distanceHtml = '';
+
+        if (userCoords) {
+
+            const distance =
+                getDistanceKm(
+                    userCoords.lat,
+                    userCoords.lon,
+                    facilityLat,
+                    facilityLon
+                );
+
+            distanceHtml =
+                '<div class="facility-popup-distance">' +
+                '<i class="fa-solid fa-route"></i> ' +
+                distance.toFixed(2) +
+                ' km away' +
+                '</div>';
+        }
+
+        const statusColor =
+            getFacilityColor(
+                properties
+            );
+
+        return `
+            <div class="facility-popup">
+
+                <h4 class="facility-popup-title">
+                    ${name}
+                </h4>
+
+                <span class="facility-popup-type">
+                    ${type}
+                </span>
+
+                <span
+                    class="facility-popup-status"
+                    style="color:${statusColor};"
+                >
+                    ● ${status}
+                </span>
+
+                <p class="facility-popup-address">
+                    <i class="fa-solid fa-location-dot"></i>
+                    ${address}
+                </p>
+
+                <p class="facility-popup-phone">
+                    <i class="fa-solid fa-phone"></i>
+                    ${phone}
+                </p>
+
+                ${distanceHtml}
+
+                <a
+                    href="${detailUrl}"
+                    class="facility-popup-link"
+                >
+                    View Full Details
+                </a>
+
+            </div>
+        `;
+    }
+
+    function refreshFacilityPopups() {
+
+        if (!facilitiesLayer) {
+            return;
+        }
+
+        facilitiesLayer.eachLayer(
+            function (layer) {
+
+                const feature =
+                    layer.feature;
+
+                if (
+                    !feature ||
+                    !feature.geometry ||
+                    !feature.geometry.coordinates
+                ) {
+                    return;
+                }
+
+                const properties =
+                    feature.properties || {};
+
+                const lat =
+                    Number(
+                        feature.geometry.coordinates[1]
+                    );
+
+                const lon =
+                    Number(
+                        feature.geometry.coordinates[0]
+                    );
+
+                layer.setPopupContent(
+                    buildFacilityPopup(
+                        properties,
+                        lat,
+                        lon
+                    )
+                );
+            }
+        );
+    }
+
+    function fitMapToFacilities(
+        features
+    ) {
+
+        const bounds = [];
+
+        features.forEach(
+            function (feature) {
+
+                const coordinates =
+                    feature.geometry.coordinates;
+
+                const lon =
+                    Number(
+                        coordinates[0]
+                    );
+
+                const lat =
+                    Number(
+                        coordinates[1]
+                    );
+
+                bounds.push([
+                    lat,
+                    lon
+                ]);
+            }
+        );
+
+        if (userCoords) {
+
+            bounds.push([
+                userCoords.lat,
+                userCoords.lon
+            ]);
+        }
+
+        if (!bounds.length) {
+            return;
+        }
+
+        if (bounds.length === 1) {
+
+            map.setView(
+                bounds[0],
+                15
+            );
+
+            return;
+        }
+
+        const leafletBounds =
+            L.latLngBounds(bounds);
+
+        map.fitBounds(
+            leafletBounds,
+            {
+                paddingTopLeft: [40, 40],
+                paddingBottomRight: [40, 40],
+                maxZoom: 15,
+                animate: true
+            }
+        );
+    }
+
+    function getDistanceKm(
+        lat1,
+        lon1,
+        lat2,
+        lon2
+    ) {
+
+        const earthRadius = 6371;
+
+        const latitudeDifference =
+            toRadians(
+                lat2 - lat1
+            );
+
+        const longitudeDifference =
+            toRadians(
+                lon2 - lon1
+            );
 
         const a =
-            Math.sin(dLat / 2) * Math.sin(dLat / 2) +
-            Math.cos(toRadians(lat1)) *
-                Math.cos(toRadians(lat2)) *
-                Math.sin(dLon / 2) *
-                Math.sin(dLon / 2);
+            Math.sin(
+                latitudeDifference / 2
+            ) ** 2 +
+
+            Math.cos(
+                toRadians(lat1)
+            ) *
+
+            Math.cos(
+                toRadians(lat2)
+            ) *
+
+            Math.sin(
+                longitudeDifference / 2
+            ) ** 2;
 
         const c =
-            2 * Math.atan2(
+            2 *
+            Math.atan2(
                 Math.sqrt(a),
                 Math.sqrt(1 - a)
             );
 
-        return radius * c;
+        return earthRadius * c;
     }
 
-    function toRadians(degrees) {
-        return degrees * (Math.PI / 180);
+    function toRadians(value) {
+
+        return value *
+            Math.PI /
+            180;
     }
 
-    function escapeHtml(value) {
-        return String(value)
-            .replace(/&/g, '&amp;')
-            .replace(/</g, '&lt;')
-            .replace(/>/g, '&gt;')
-            .replace(/"/g, '&quot;')
-            .replace(/'/g, '&#039;');
+    if (locateButton) {
+
+        locateButton.addEventListener(
+            'click',
+            function () {
+
+                requestLocationAgain();
+            }
+        );
     }
 
-    function escapeAttribute(value) {
-        return String(value)
-            .replace(/&/g, '&amp;')
-            .replace(/"/g, '&quot;')
-            .replace(/</g, '&lt;')
-            .replace(/>/g, '&gt;');
-    }
+    initializeMap();
+
+    fetchAndPlotFacilities();
+
+    setTimeout(
+        function () {
+
+            requestLocation();
+
+        },
+        500
+    );
+
 });

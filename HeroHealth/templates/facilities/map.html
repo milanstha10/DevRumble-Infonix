@@ -1,62 +1,127 @@
 {% extends 'base.html' %}
 {% load static %}
 
-{% block title %}HeroHealth | Proximity Map Search{% endblock %}
+{% block title %}
+    HeroHealth | Proximity Map Search
+{% endblock %}
 
 {% block extra_head %}
-<link rel="stylesheet" href="{% static 'css/map.css' %}">
+
+<link
+    rel="stylesheet"
+    href="{% static 'css/map.css' %}"
+>
+
 {% endblock %}
+
 
 {% block content %}
 
-<div class="map-search-container" id="mapSearchContainer">
+<div
+    class="map-search-container"
+    id="mapSearchContainer"
+>
+
+    <!-- =====================================================
+         PAGE HEADER
+         ===================================================== -->
 
     <div class="consultation-header">
+
         <h2 class="consultation-title map-page-title">
-            <i class="fa-solid fa-map-location-dot" aria-hidden="true"></i>
+
+            <i
+                class="fa-solid fa-map-location-dot"
+                aria-hidden="true"
+            ></i>
+
             Proximity Map Finder
+
         </h2>
 
         <p class="consultation-desc">
-            Find closest hospitals and specialist clinics using your current
-            location coordinates
+            Find nearby hospitals and specialist clinics
+            using your current location.
         </p>
+
     </div>
 
-    <div class="glass-card map-filter-card" id="mapFilterCard">
 
-        <form method="GET" class="map-filter-form" id="mapFilterForm">
+    <!-- =====================================================
+         SPECIALTY FILTER
+         ===================================================== -->
+
+    <div
+        class="glass-card map-filter-card"
+        id="mapFilterCard"
+    >
+
+        <form
+            method="GET"
+            action="{% url 'map_view' %}"
+            class="map-filter-form"
+            id="mapFilterForm"
+        >
 
             <div class="map-filter-label">
-                <i class="fa-solid fa-filter" aria-hidden="true"></i>
-                <span>Filter hospitals by Specialty:</span>
+
+                <i
+                    class="fa-solid fa-filter"
+                    aria-hidden="true"
+                ></i>
+
+                <span>
+                    Filter healthcare facilities by Specialty
+                </span>
+
             </div>
 
-            <div class="map-filter-controls" id="mapFilterControls">
+
+            <div
+                class="map-filter-controls"
+                id="mapFilterControls"
+            >
 
                 <select
                     name="specialty"
                     class="form-select map-specialty-select"
                     id="mapSpecialtySelect"
+                    aria-label="Filter healthcare facilities by specialty"
                 >
-                    <option value="">All Specialties</option>
 
-                    {% for s in specialties %}
+                    <option value="">
+                        All Specialties
+                    </option>
+
+                    {% for specialty in specialties %}
+
                         <option
-                            value="{{ s }}"
-                            {% if selected_specialty == s %}selected{% endif %}
+                            value="{{ specialty }}"
+                            {% if selected_specialty|lower == specialty|lower %}
+                                selected
+                            {% endif %}
                         >
-                            {{ s }}
+                            {{ specialty }}
                         </option>
+
                     {% endfor %}
+
                 </select>
+
 
                 <button
                     type="submit"
                     class="btn-premium map-filter-submit"
                     id="mapFilterSubmit"
                 >
+
+                    <i
+                        class="fa-solid fa-filter"
+                        aria-hidden="true"
+                    ></i>
+
                     Filter Map
+
                 </button>
 
             </div>
@@ -65,37 +130,225 @@
 
     </div>
 
-    <div class="glass-card map-wrapper" id="mapWrapper">
+
+    <!-- =====================================================
+         MAP
+         ===================================================== -->
+
+    <div
+        class="glass-card map-wrapper"
+        id="mapWrapper"
+    >
 
         <div
             id="searchMap"
             class="map-container map-search"
-            data-specialty="{{ selected_specialty|default:'' }}"
+            data-specialty="{{ selected_specialty|default:''|escape }}"
+            data-api-url="{% url 'facility_geojson_api' %}"
+            data-map-url="{% url 'map_view' %}"
+            aria-label="Interactive healthcare facility map"
+            role="application"
         ></div>
+
+
+        <!-- =================================================
+             MAP LOADING
+             ================================================= -->
 
         <div
             id="mapLoading"
             class="map-loading"
             aria-live="polite"
+            aria-atomic="true"
         >
-            <i class="fa-solid fa-spinner fa-spin"></i>
-            Loading healthcare facilities...
+
+            <div class="map-loading-content">
+
+                <i
+                    class="fa-solid fa-spinner fa-spin"
+                    aria-hidden="true"
+                ></i>
+
+                <span>
+                    Loading healthcare facilities...
+                </span>
+
+            </div>
+
+        </div>
+
+
+        <!-- =================================================
+             MAP ERROR
+             ================================================= -->
+
+        <div
+            id="mapError"
+            class="map-error"
+            role="alert"
+            aria-live="assertive"
+            hidden
+        ></div>
+
+
+        <!-- =================================================
+             FACILITY RESULT STATUS
+             ================================================= -->
+
+        <div
+            id="mapResultStatus"
+            class="map-result-status"
+            aria-live="polite"
+            aria-atomic="true"
+        ></div>
+
+
+        <!-- =================================================
+             LOCATE USER
+             ================================================= -->
+
+        <button
+            type="button"
+            id="locateMeButton"
+            class="map-location-button"
+            title="Find my current location"
+            aria-label="Find my current location"
+        >
+
+            <i
+                class="fa-solid fa-location-crosshairs"
+                aria-hidden="true"
+            ></i>
+
+        </button>
+
+    </div>
+
+
+    <!-- =====================================================
+         MAP LEGEND
+         ===================================================== -->
+
+    <div
+        class="glass-card map-legend"
+        id="mapLegend"
+        aria-label="Map legend"
+    >
+
+        <div class="map-legend-title">
+
+            <i
+                class="fa-solid fa-circle-info"
+                aria-hidden="true"
+            ></i>
+
+            <span>
+                Map Legend
+            </span>
+
+        </div>
+
+
+        <div class="map-legend-items">
+
+            <div class="map-legend-item">
+
+                <span
+                    class="map-legend-dot map-legend-available"
+                    aria-hidden="true"
+                ></span>
+
+                <span>
+                    Available
+                </span>
+
+            </div>
+
+
+            <div class="map-legend-item">
+
+                <span
+                    class="map-legend-dot map-legend-busy"
+                    aria-hidden="true"
+                ></span>
+
+                <span>
+                    Busy
+                </span>
+
+            </div>
+
+
+            <div class="map-legend-item">
+
+                <span
+                    class="map-legend-dot map-legend-emergency"
+                    aria-hidden="true"
+                ></span>
+
+                <span>
+                    Emergency Only
+                </span>
+
+            </div>
+
+
+            <div class="map-legend-item">
+
+                <span
+                    class="map-legend-user"
+                    aria-hidden="true"
+                ></span>
+
+                <span>
+                    Your Location
+                </span>
+
+            </div>
+
         </div>
 
     </div>
 
-    <div class="glass-card map-instruction-box" id="mapInstructionBox">
 
-        <div class="map-instruction-icon" aria-hidden="true">
-            <i class="fa-solid fa-circle-info"></i>
+    <!-- =====================================================
+         MAP INSTRUCTIONS
+         ===================================================== -->
+
+    <div
+        class="glass-card map-instruction-box"
+        id="mapInstructionBox"
+    >
+
+        <div
+            class="map-instruction-icon"
+            aria-hidden="true"
+        >
+
+            <i
+                class="fa-solid fa-circle-info"
+            ></i>
+
         </div>
 
-        <p>
-            Allow location permissions when prompted to automatically pinpoint
-            your device on the map. HeroHealth will calculate and display your
-            straight-line distance in kilometers to each nearby healthcare
-            provider.
-        </p>
+
+        <div class="map-instruction-content">
+
+            <strong>
+                How the proximity map works
+            </strong>
+
+            <p>
+                Allow location access to show your current
+                position. Select a specialty to display only
+                facilities that provide that service.
+
+                The distance shown for each facility is the
+                straight-line distance from your current
+                location.
+            </p>
+
+        </div>
 
     </div>
 
@@ -103,6 +356,12 @@
 
 {% endblock %}
 
+
 {% block extra_js %}
-<script src="{% static 'js/map.js' %}"></script>
+
+<script
+    src="{% static 'js/map.js' %}"
+    defer
+></script>
+
 {% endblock %}
