@@ -4,6 +4,10 @@ from django.contrib.auth.decorators import login_required
 from django.contrib import messages
 from django.contrib.auth.forms import AuthenticationForm
 from .forms import RegistrationForm, UserUpdateForm, UserProfileForm
+from django.core.mail import send_mail
+from django.utils.http import urlsafe_base64_encode, urlsafe_base64_decode
+from django.utils.encoding import force_bytes, force_str
+from django.contrib.auth.tokens import default_token_generator
 
 def register_view(request):
     if request.user.is_authenticated:
@@ -25,11 +29,39 @@ def register_view(request):
             profile.blood_group = form.cleaned_data['blood_group']
             profile.address = form.cleaned_data['address']
             profile.emergency_contact = form.cleaned_data['emergency_contact']
+            profile.email_verified = False
             profile.save()
             
-            messages.success(request, "Account created successfully! You are now logged in.")
-            login(request, user)
-            return redirect('home')
+            # Create verification token & link
+            token = default_token_generator.make_token(user)
+            uid = urlsafe_base64_encode(force_bytes(user.pk))
+            
+            # Build absolute verification URI
+            domain = request.get_host()
+            protocol = 'https' if request.is_secure() else 'http'
+            verification_link = f"{protocol}://{domain}{reverse('verify_email', kwargs={'uidb64': uid, 'token': token})}"
+            
+            # Send verification email
+            subject = "Verify your HeroHealth Email"
+            message = (
+                f"Hi {user.username},\n\n"
+                f"Thank you for registering at HeroHealth! Please click the link below to verify your email:\n"
+                f"{verification_link}\n\n"
+                f"If you did not create this account, please ignore this email."
+            )
+            try:
+                send_mail(
+                    subject,
+                    message,
+                    settings.DEFAULT_FROM_EMAIL,
+                    [user.email],
+                    fail_silently=False
+                )
+                messages.success(request, "Registration successful! A verification email has been sent. Please verify your email before logging in.")
+            except Exception as e:
+                messages.warning(request, f"Account created, but we failed to send a verification email: {str(e)}")
+            
+            return redirect('login')
         else:
             messages.error(request, "Registration failed. Please correct the errors.")
     else:
@@ -48,6 +80,16 @@ def login_view(request):
             password = form.cleaned_data.get('password')
             user = authenticate(username=username, password=password)
             if user is not None:
+                # Check email verification (bypass for admin/staff)
+                try:
+                    is_verified = user.profile.email_verified
+                except AttributeError:
+                    is_verified = False
+                    
+                if not is_verified and not user.is_superuser and not user.is_staff:
+                    messages.error(request, "Please verify your email first. A verification link was sent to your email.")
+                    return redirect('login')
+                    
                 login(request, user)
                 messages.success(request, f"Welcome back, {username}!")
                 return redirect('home')
@@ -167,6 +209,11 @@ def google_callback(request):
         user = User.objects.filter(email=email).first()
         
         if user:
+            # Google log ins are auto-verified
+            profile = user.profile
+            if not profile.email_verified:
+                profile.email_verified = True
+                profile.save()
             # Existing user - log them in
             login(request, user, backend='django.contrib.auth.backends.ModelBackend')
             messages.success(request, f"Welcome back, {user.username} (via Google)!")
@@ -191,6 +238,10 @@ def google_callback(request):
                 first_name=first_name,
                 last_name=last_name
             )
+            # Auto-verify Google user profile
+            profile = user.profile
+            profile.email_verified = True
+            profile.save()
             
             login(request, user, backend='django.contrib.auth.backends.ModelBackend')
             messages.success(request, f"Successfully registered and logged in as {username} (via Google)!")
@@ -199,5 +250,23 @@ def google_callback(request):
         
     except requests.RequestException as e:
         messages.error(request, f"Google OAuth communication failed: {str(e)}")
+        return redirect('login')
+
+
+def verify_email(request, uidb64, token):
+    try:
+        uid = force_str(urlsafe_base64_decode(uidb64))
+        user = User.objects.get(pk=uid)
+    except (TypeError, ValueError, OverflowError, User.DoesNotExist):
+        user = None
+        
+    if user is not None and default_token_generator.check_token(user, token):
+        profile = user.profile
+        profile.email_verified = True
+        profile.save()
+        messages.success(request, "Your email has been verified! You can now log in.")
+        return redirect('login')
+    else:
+        messages.error(request, "The verification link is invalid or has expired.")
         return redirect('login')
 

@@ -28,6 +28,7 @@ class UserProfile(models.Model):
     blood_group = models.CharField(max_length=3, choices=BLOOD_GROUPS, blank=True, null=True)
     address = models.CharField(max_length=255, blank=True, null=True)
     emergency_contact = models.CharField(max_length=100, blank=True, null=True)
+    email_verified = models.BooleanField(default=False)
 
     def __str__(self):
         return f"{self.user.username}'s Profile"

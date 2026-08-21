@@ -14,7 +14,12 @@
             {% csrf_token %}
             {% for field in form %}
             <div class="form-group">
-                <label class="form-label" for="{{ field.id_for_label }}">{{ field.label }}</label>
+                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.5rem;">
+                    <label class="form-label" for="{{ field.id_for_label }}" style="margin-bottom: 0;">{{ field.label }}</label>
+                    {% if field.name == 'password' %}
+                    <a href="{% url 'password_reset' %}" style="color: var(--primary); text-decoration: none; font-size: 0.85rem; font-weight: 500;">Forgot Password?</a>
+                    {% endif %}
+                </div>
                 {{ field }}
                 {% if field.errors %}
                 <small style="color: var(--danger); display:block; margin-top:0.25rem;">{{ field.errors.0 }}</small>
