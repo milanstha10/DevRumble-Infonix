@@ -23,7 +23,7 @@ document.addEventListener('DOMContentLoaded', () => {
   function spawnParticle(forceAge){
     return {
       x: Math.random() * W, y: Math.random() * H,
-      vx: rand(-0.15, 0.15), vy: rand(-0.15, 0.15),
+      vx: rand(-0.45, 0.45), vy: rand(-0.45, 0.45),
       r: rand(1.1, 2.4), baseR: 0, glow: 0,
       age: forceAge !== undefined ? forceAge : 0,
       life: rand(9000, 18000),
@@ -35,7 +35,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
   function buildParticles(){
     particles = [];
-    targetCount = Math.round((W * H) / 3000);
+    targetCount = Math.round((W * H) / 1000);
     for (let i = 0; i < targetCount; i++){
       const p = spawnParticle(rand(0, 12000));
       p.baseR = p.r;
@@ -82,7 +82,7 @@ document.addEventListener('DOMContentLoaded', () => {
   }, { passive: true });
   document.addEventListener('touchend', () => { mouse.active = false; });
 
-  const HOVER_RADIUS = 170, LINK_DIST = 110, ATTRACT = 0.55, FRICTION = 0.965;
+  const HOVER_RADIUS = 170, LINK_DIST = 45, ATTRACT = 0.25, FRICTION = 0.975;
   let lastTime = performance.now();
 
   function step(now){
