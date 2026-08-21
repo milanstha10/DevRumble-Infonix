@@ -101,6 +101,47 @@
             <p class="stat-label">
                 Healthcare Facilities Indexed
             </p>
+<div style="position: relative; padding: 4rem 0;" id="featuresSectionWrapper">
+    <canvas class="dot-bg-canvas" id="features-dot-bg"></canvas>
+    <div class="feature-grid" id="featuresSection" style="position: relative; z-index: 2;">
+        <!-- Feature 1 -->
+        <div class="glass-card feature-card" id="featTriage">
+            <div class="feature-icon"><i class="fa-solid fa-robot"></i></div>
+            <h3 class="feature-title">AI Symptom Triage</h3>
+            <p class="feature-desc">
+                Submit your symptoms and upload symptom images. Our smart engine analyzes the inputs and suggests the severity, potential causes, and next steps.
+            </p>
+            <a href="{% url 'consultation' %}" class="nav-btn nav-btn-primary" style="text-align:center;" id="btnGoTriage">Consult Now</a>
+        </div>
+
+        <!-- Feature 2 -->
+        <div class="glass-card feature-card" id="featDirectory">
+            <div class="feature-icon"><i class="fa-solid fa-hospital"></i></div>
+            <h3 class="feature-title">Nepal Clinic Finder</h3>
+            <p class="feature-desc">
+                Browse verified listings of hospitals, clinics, and health centers in Kathmandu, Lalitpur, Pokhara, Dharan, and more. Filter by specializations.
+            </p>
+            <a href="{% url 'facility_list' %}" class="nav-btn nav-btn-primary" style="text-align:center;" id="btnGoDirectory">Search Directory</a>
+        </div>
+
+        <!-- Feature 3 -->
+        <div class="glass-card feature-card" id="featMap">
+            <div class="feature-icon"><i class="fa-solid fa-compass"></i></div>
+            <h3 class="feature-title">Proximity Mapping</h3>
+            <p class="feature-desc">
+                Find the nearest healthcare services based on your current physical coordinates. Get exact distances and directions on an interactive map.
+            </p>
+            <a href="{% url 'map_view' %}" class="nav-btn nav-btn-primary" style="text-align:center;" id="btnGoMap">View Nearby Maps</a>
+        </div>
+    </div>
+</div>
+
+<!-- Stats Counter Section -->
+<div style="max-width: 1200px; margin: 3rem auto; padding: 2rem;" id="statsBlock">
+    <div class="glass-card" style="display: flex; justify-content: space-around; flex-wrap: wrap; text-align: center; gap: 2rem;">
+        <div id="statHospitals">
+            <h2 style="font-family: var(--font-heading); font-size: 2.5rem; background: var(--primary-grad); -webkit-background-clip: text; -webkit-text-fill-color: transparent;">18+</h2>
+            <p style="color: var(--text-muted); font-size: 0.95rem; font-weight: 500;">Hospitals Indexed</p>
         </div>
 
         <div class="stat-item" id="statConsultations">
@@ -139,4 +180,8 @@
     </div>
 </section>
 
+{% endblock %}
+
+{% block extra_js %}
+<script src="{% static 'js/dot-bg.js' %}"></script>
 {% endblock %}
