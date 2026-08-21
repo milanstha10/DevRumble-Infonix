@@ -1,93 +1,68 @@
-# DevRumble-Infonix
-
-HeroHealth/
+herohealth/
 │
 ├── manage.py
-├── requirements.txt
-├── .env
-├── .gitignore
-├── README.md
 │
-├── config/                         # Main Django project
+├── herohealth/
 │   ├── __init__.py
 │   ├── settings.py
 │   ├── urls.py
-│   ├── wsgi.py
-│   └── asgi.py
+│   ├── asgi.py
+│   └── wsgi.py
 │
-├── accounts/                       # 👤 Member 1
-│   ├── migrations/
-│   ├── __init__.py
-│   ├── admin.py
-│   ├── apps.py
+├── accounts/
 │   ├── models.py
-│   ├── urls.py
 │   ├── views.py
-│   └── forms.py
+│   ├── urls.py
+│   ├── forms.py
+│   └── serializers.py
 │
-├── health/                         # 🩺 Core health functionality
-│   ├── migrations/
-│   ├── __init__.py
-│   ├── admin.py
-│   ├── apps.py
+├── health/
 │   ├── models.py
-│   ├── urls.py
 │   ├── views.py
+│   ├── urls.py
 │   ├── forms.py
 │   └── services.py
 │
-├── ai_engine/                      # 🤖 Member 3
-│   ├── __init__.py
+├── ai_assistant/
 │   ├── services.py
 │   ├── prompts.py
 │   ├── safety.py
-│   └── utils.py
-│
-├── facilities/                     # 🏥 Member 4
-│   ├── migrations/
-│   ├── __init__.py
-│   ├── admin.py
-│   ├── apps.py
-│   ├── models.py
-│   ├── urls.py
 │   ├── views.py
+│   └── urls.py
+│
+├── dashboard/
+│   ├── views.py
+│   ├── urls.py
 │   └── services.py
 │
-├── templates/                      # 🎨 Member 2
+├── reminders/
+│   ├── models.py
+│   ├── views.py
+│   └── urls.py
+│
+├── templates/
 │   ├── base.html
-│   │
-│   ├── home/
-│   │   └── home.html
-│   │
-│   ├── health/
-│   │   ├── consultation.html
-│   │   ├── result.html
-│   │   └── emergency.html
-│   │
-│   ├── facilities/
-│   │   ├── facility_list.html
-│   │   ├── facility_detail.html
-│   │   └── map.html
-│   │
-│   └── accounts/
-│       ├── login.html
-│       └── register.html
+│   ├── home.html
+│   ├── dashboard.html
+│   ├── assessment.html
+│   ├── result.html
+│   ├── history.html
+│   ├── reminders.html
+│   └── emergency.html
 │
 ├── static/
 │   ├── css/
 │   │   ├── style.css
+│   │   ├── dashboard.css
 │   │   └── responsive.css
 │   │
 │   ├── js/
 │   │   ├── main.js
-│   │   ├── consultation.js
-│   │   └── map.js
+│   │   ├── assessment.js
+│   │   ├── dashboard.js
+│   │   └── chatbot.js
 │   │
 │   └── images/
-│       └── logo.png
 │
-├── media/                          # User uploads
-│   └── health_queries/
-│
-└── data/
-    └── facilities.json             # Initial Nepal healthcare data
+├── requirements.txt
+└── README.md
