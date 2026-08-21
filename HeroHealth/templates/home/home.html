@@ -9,6 +9,7 @@
 
 {% block content %}
 
+<!-- Hero Section -->
 <section class="hero-section" id="heroBlock">
     <h1 class="hero-title" id="mainHeroTitle">
         Your Intelligent Healthcare Companion in Nepal
@@ -32,78 +33,29 @@
     </div>
 </section>
 
-<section class="feature-grid" id="featuresSection">
-    <article class="glass-card feature-card" id="featTriage">
-        <div class="feature-icon" aria-hidden="true">
-            <i class="fa-solid fa-robot"></i>
+<!-- Stats Counter Section (18+ / 500+ / 24/7) -->
+<section style="max-width: 1200px; margin: 3rem auto; padding: 2rem;" id="statsBlock">
+    <div class="glass-card" style="display: flex; justify-content: space-around; flex-wrap: wrap; text-align: center; gap: 2rem; padding: 2rem;">
+        <div id="statHospitals">
+            <h2 style="font-family: var(--font-heading); font-size: 2.5rem; background: var(--primary-grad); -webkit-background-clip: text; -webkit-text-fill-color: transparent; margin: 0 0 0.5rem 0;">18+</h2>
+            <p style="color: var(--text-muted); font-size: 0.95rem; font-weight: 500; margin: 0;">Hospitals Indexed</p>
         </div>
 
-        <h2 class="feature-title">
-            AI Symptom Triage
-        </h2>
-
-        <p class="feature-desc">
-            Describe your symptoms and provide relevant information to receive
-            AI-assisted triage guidance, potential causes, severity indicators,
-            and recommended next steps.
-        </p>
-
-        <a href="{% url 'consultation' %}" class="nav-btn nav-btn-primary" id="btnGoTriage">
-            Consult Now
-        </a>
-    </article>
-
-    <article class="glass-card feature-card" id="featDirectory">
-        <div class="feature-icon" aria-hidden="true">
-            <i class="fa-solid fa-hospital"></i>
+        <div id="statConsultations">
+            <h2 style="font-family: var(--font-heading); font-size: 2.5rem; background: var(--primary-grad); -webkit-background-clip: text; -webkit-text-fill-color: transparent; margin: 0 0 0.5rem 0;">500+</h2>
+            <p style="color: var(--text-muted); font-size: 0.95rem; font-weight: 500; margin: 0;">Triage Reports Processed</p>
         </div>
 
-        <h2 class="feature-title">
-            Nepal Healthcare Finder
-        </h2>
-
-        <p class="feature-desc">
-            Browse healthcare facilities and find hospitals, clinics, and health
-            centers by location, services, and specialization.
-        </p>
-
-        <a href="{% url 'facility_list' %}" class="nav-btn nav-btn-primary" id="btnGoDirectory">
-            Search Directory
-        </a>
-    </article>
-
-    <article class="glass-card feature-card" id="featMap">
-        <div class="feature-icon" aria-hidden="true">
-            <i class="fa-solid fa-compass"></i>
+        <div id="statSLA">
+            <h2 style="font-family: var(--font-heading); font-size: 2.5rem; background: var(--primary-grad); -webkit-background-clip: text; -webkit-text-fill-color: transparent; margin: 0 0 0.5rem 0;">24/7</h2>
+            <p style="color: var(--text-muted); font-size: 0.95rem; font-weight: 500; margin: 0;">Emergency Information</p>
         </div>
-
-        <h2 class="feature-title">
-            Proximity Mapping
-        </h2>
-
-        <p class="feature-desc">
-            Explore healthcare facilities on an interactive map and identify
-            nearby services using available location information.
-        </p>
-
-        <a href="{% url 'map_view' %}" class="nav-btn nav-btn-primary" id="btnGoMap">
-            View Nearby Maps
-        </a>
-    </article>
+    </div>
 </section>
 
-<section class="stats-section" id="statsBlock">
-    <div class="glass-card stats-card">
-        <div class="stat-item" id="statHospitals">
-            <h2 class="stat-value stat-primary">
-                18+
-            </h2>
-
-            <p class="stat-label">
-                Healthcare Facilities Indexed
-            </p>
-<div style="position: relative; padding: 4rem 0;" id="featuresSectionWrapper">
-    <canvas class="dot-bg-canvas" id="features-dot-bg"></canvas>
+<!-- Features Section with dot-bg background canvas behind cards grid -->
+<div style="position: relative; padding: 10rem 0;" id="featuresSectionWrapper">
+    <canvas class="dot-bg-canvas" id="features-dot-bg" style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; z-index: 1; pointer-events: none;"></canvas>
     <div class="feature-grid" id="featuresSection" style="position: relative; z-index: 2;">
         <!-- Feature 1 -->
         <div class="glass-card feature-card" id="featTriage">
@@ -137,41 +89,11 @@
     </div>
 </div>
 
-<!-- Stats Counter Section -->
-<div style="max-width: 1200px; margin: 3rem auto; padding: 2rem;" id="statsBlock">
-    <div class="glass-card" style="display: flex; justify-content: space-around; flex-wrap: wrap; text-align: center; gap: 2rem;">
-        <div id="statHospitals">
-            <h2 style="font-family: var(--font-heading); font-size: 2.5rem; background: var(--primary-grad); -webkit-background-clip: text; -webkit-text-fill-color: transparent;">18+</h2>
-            <p style="color: var(--text-muted); font-size: 0.95rem; font-weight: 500;">Hospitals Indexed</p>
-        </div>
-
-        <div class="stat-item" id="statConsultations">
-            <h2 class="stat-value stat-accent">
-                500+
-            </h2>
-
-            <p class="stat-label">
-                Triage Reports Processed
-            </p>
-        </div>
-
-        <div class="stat-item" id="statSLA">
-            <h2 class="stat-value stat-primary">
-                24/7
-            </h2>
-
-            <p class="stat-label">
-                Emergency Information
-            </p>
-        </div>
-    </div>
-</section>
-
+<!-- Important Message / Disclaimer -->
 <section class="home-disclaimer" id="homeDisclaimer">
     <div class="glass-card">
         <p>
             <i class="fa-solid fa-circle-info" aria-hidden="true"></i>
-
             <strong>Important:</strong>
             HeroHealth provides informational triage guidance and healthcare
             facility information. It is not a replacement for a qualified
@@ -180,4 +102,8 @@
     </div>
 </section>
 
+{% endblock %}
+
+{% block extra_js %}
+<script src="{% static 'js/dot-bg.js' %}" defer></script>
 {% endblock %}

@@ -6,6 +6,7 @@ from django.core.cache import cache
 from django.http import JsonResponse
 from django.shortcuts import render, redirect, get_object_or_404
 from django.views.decorators.http import require_GET, require_POST
+from django.views.decorators.csrf import csrf_exempt
 from django.contrib import messages
 from .models import Consultation
 from .forms import ConsultationForm
@@ -103,6 +104,7 @@ def chatbot_view(request):
     return render(request, 'health/chatbot.html')
 
 
+@csrf_exempt
 @login_required
 @require_POST
 def chatbot_message_view(request):
@@ -124,7 +126,10 @@ def chatbot_message_view(request):
 
     language = resolve_language(message, data.get('language', 'en'))
     history = _get_chat_history(request)
-    result = generate_health_guidance(message, language, history)
+    interaction_id = request.session.get('hero_ai_interaction_id')
+    result = generate_health_guidance(message, language, history, interaction_id=interaction_id)
+    if 'interaction_id' in result:
+        request.session['hero_ai_interaction_id'] = result['interaction_id']
     _save_chat_history(request, history + [
         {'role': 'user', 'content': message},
         {'role': 'assistant', 'content': result['reply']},
@@ -137,16 +142,19 @@ def chatbot_message_view(request):
     })
 
 
+@csrf_exempt
 @login_required
 @require_GET
 def chatbot_history_view(request):
     return JsonResponse({'success': True, 'messages': _get_chat_history(request)})
 
 
+@csrf_exempt
 @login_required
 @require_POST
 def chatbot_reset_view(request):
     request.session.pop(CHAT_HISTORY_KEY, None)
+    request.session.pop('hero_ai_interaction_id', None)
     request.session[CHAT_HISTORY_USER_KEY] = request.user.pk
     request.session.modified = True
     return JsonResponse({'success': True})

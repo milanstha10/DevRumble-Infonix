@@ -107,5 +107,58 @@
         </div>
     </div>
 
+    <!-- =====================================================
+         EMERGENCY RIDE-HAILING BOOKING WIDGET (PATHAO, INDRIVE, YANGO)
+         ===================================================== -->
+    <div class="glass-card pathao-booking-card" id="pathaoBookingCard" style="margin-top: 2rem; display: flex; flex-direction: column; gap: 1.25rem; padding: 1.5rem; border: 1px solid rgba(255, 71, 87, 0.25); background: rgba(255, 71, 87, 0.03); border-radius: 12px; margin-bottom: 2rem;">
+        <div style="display: flex; align-items: center; gap: 1rem;">
+            <div style="background: var(--danger); color: #fff; width: 3rem; height: 3rem; border-radius: 10px; display: flex; align-items: center; justify-content: center; font-size: 1.5rem; flex-shrink: 0; box-shadow: 0 4px 12px rgba(255, 71, 87, 0.3);">
+                <i class="fa-solid fa-truck-medical"></i>
+            </div>
+            <div>
+                <h3 style="margin: 0 0 0.2rem 0; font-family: var(--font-heading); font-size: 1.1rem; color: var(--text-primary); text-align: left;">Need urgent transport?</h3>
+                <p style="margin: 0; font-size: 0.8rem; color: var(--text-muted); text-align: left;">Launch a ride-sharing app on your mobile device to request a quick ride to the nearest hospital.</p>
+            </div>
+        </div>
+        
+        <div style="display: flex; gap: 0.75rem; flex-wrap: wrap; width: 100%;">
+            <!-- PATHAO -->
+            <div style="flex: 1; min-width: 150px; display: flex; flex-direction: column; gap: 0.25rem;">
+                <a href="pathao://" class="btn-premium" style="background: #e82c2a; border-color: #e82c2a; text-decoration: none; color: white; display: flex; align-items: center; justify-content: center; gap: 0.4rem; font-size: 0.8rem; padding: 0.6rem 1rem; border-radius: 6px; font-weight: 600; text-align: center;">
+                    <i class="fa-solid fa-motorcycle"></i> Open Pathao
+                </a>
+                <div style="display: flex; gap: 0.25rem; justify-content: center; font-size: 0.65rem; color: var(--text-muted);">
+                    <a href="https://play.google.com/store/apps/details?id=com.pathao.user" target="_blank" rel="noopener noreferrer" style="color: var(--primary); text-decoration: none;">Play Store</a>
+                    <span>&bull;</span>
+                    <a href="https://apps.apple.com/app/pathao/id1190623910" target="_blank" rel="noopener noreferrer" style="color: var(--primary); text-decoration: none;">App Store</a>
+                </div>
+            </div>
+            
+            <!-- INDRIVE -->
+            <div style="flex: 1; min-width: 150px; display: flex; flex-direction: column; gap: 0.25rem;">
+                <a href="indriver://" class="btn-premium" style="background: #00b894; border-color: #00b894; text-decoration: none; color: white; display: flex; align-items: center; justify-content: center; gap: 0.4rem; font-size: 0.8rem; padding: 0.6rem 1rem; border-radius: 6px; font-weight: 600; text-align: center;">
+                    <i class="fa-solid fa-car"></i> Open InDrive
+                </a>
+                <div style="display: flex; gap: 0.25rem; justify-content: center; font-size: 0.65rem; color: var(--text-muted);">
+                    <a href="https://play.google.com/store/apps/details?id=gofree.ride.passenger" target="_blank" rel="noopener noreferrer" style="color: var(--primary); text-decoration: none;">Play Store</a>
+                    <span>&bull;</span>
+                    <a href="https://apps.apple.com/app/indrive-ride-share-more/id1455850931" target="_blank" rel="noopener noreferrer" style="color: var(--primary); text-decoration: none;">App Store</a>
+                </div>
+            </div>
+
+            <!-- YANGO -->
+            <div style="flex: 1; min-width: 150px; display: flex; flex-direction: column; gap: 0.25rem;">
+                <a href="yango://" class="btn-premium" style="background: #e17055; border-color: #e17055; text-decoration: none; color: white; display: flex; align-items: center; justify-content: center; gap: 0.4rem; font-size: 0.8rem; padding: 0.6rem 1rem; border-radius: 6px; font-weight: 600; text-align: center;">
+                    <i class="fa-solid fa-taxi"></i> Open Yango
+                </a>
+                <div style="display: flex; gap: 0.25rem; justify-content: center; font-size: 0.65rem; color: var(--text-muted);">
+                    <a href="https://play.google.com/store/apps/details?id=com.yandex.yango" target="_blank" rel="noopener noreferrer" style="color: var(--primary); text-decoration: none;">Play Store</a>
+                    <span>&bull;</span>
+                    <a href="https://apps.apple.com/app/yango-ride-sharing-app/id1437149340" target="_blank" rel="noopener noreferrer" style="color: var(--primary); text-decoration: none;">App Store</a>
+                </div>
+            </div>
+        </div>
+    </div>
+
 </div>
 {% endblock %}

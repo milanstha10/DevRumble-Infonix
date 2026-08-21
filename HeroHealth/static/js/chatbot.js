@@ -288,9 +288,16 @@
         voiceStatus.textContent = state.language === 'ne' ? 'रेकर्डिङ रोकियो।' : 'Recording stopped.';
       };
       r.onerror = (e) => {
-        voiceStatus.textContent = e.error === 'not-allowed' || e.error === 'service-not-allowed' 
-          ? 'Microphone permission denied.' 
-          : 'Voice recognition failed.';
+        console.error("Speech Recognition Error:", e);
+        if (e.error === 'not-allowed') {
+          voiceStatus.textContent = 'Microphone permission denied. Enable microphone access in browser settings.';
+        } else if (e.error === 'network') {
+          voiceStatus.textContent = 'Network error during speech recognition. Ensure internet access.';
+        } else if (e.error === 'no-speech') {
+          voiceStatus.textContent = 'No speech detected. Please try again.';
+        } else {
+          voiceStatus.textContent = `Voice recognition failed (Error: ${e.error}).`;
+        }
       };
       r.onend = () => {
         state.recognition = null;

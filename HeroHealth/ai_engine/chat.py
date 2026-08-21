@@ -87,7 +87,7 @@ def _context_for_model(history):
     return "\n".join(context)
 
 
-def generate_health_guidance(message, language, history):
+def generate_health_guidance(message, language, history, interaction_id=None):
     """Generate server-side guidance, falling back safely when Gemini is unavailable."""
     if is_emergency_message(message):
         return {"reply": emergency_reply(language), "is_emergency": True}
@@ -97,18 +97,84 @@ def generate_health_guidance(message, language, history):
         return {"reply": fallback_reply(language), "is_emergency": False}
 
     try:
-        genai.configure(api_key=api_key)
-        model = genai.GenerativeModel("gemini-2.5-flash")
-        prompt = (
-            f"{SYSTEM_PROMPT}\n\nRequested response language: {'Nepali' if language == 'ne' else 'English'}\n"
-            f"Recent conversation (may be empty):\n{_context_for_model(history)}\n\n"
-            f"Current user message: {message}"
+        from google import genai
+        client = genai.Client(api_key=api_key)
+
+        # Merge system prompts
+        unified_system_instruction = (
+            "A cautious medical information assistant that helps users understand health-related questions, "
+            "asks appropriate clarifying questions, communicates uncertainty, identifies potentially urgent symptoms, "
+            "provides evidence-based general information, protects privacy, and directs users to qualified healthcare professionals "
+            "when clinical evaluation is required.\n\n"
+            f"{SYSTEM_PROMPT}\n\n"
+            f"Requested response language: {'Nepali' if language == 'ne' else 'English'}."
         )
-        response = model.generate_content(prompt, request_options={"timeout": 15})
-        reply = str(getattr(response, "text", "")).strip()
+
+        kwargs = {
+            "model": "models/gemini-3-flash-preview",
+            "input": message,
+            "system_instruction": unified_system_instruction,
+            "tools": [{"type": "google_search"}],
+            "generation_config": {
+                "temperature": 1,
+                "max_output_tokens": 65536,
+                "top_p": 0.95,
+                "thinking_level": "high",
+            },
+        }
+
+        if interaction_id:
+            kwargs["previous_interaction_id"] = interaction_id
+
+        try:
+            interaction = client.interactions.create(**kwargs)
+        except Exception as exc:
+            logger.warning(
+                "Interactions API call failed with previous_interaction_id: %s. Retrying without it. Error: %s",
+                interaction_id, exc
+            )
+            # Fall back to creating a new interaction with historical context appended
+            if "previous_interaction_id" in kwargs:
+                del kwargs["previous_interaction_id"]
+            # Append context to input if starting a new interaction
+            if history:
+                kwargs["input"] = (
+                    f"Recent conversation context:\n{_context_for_model(history)}\n\n"
+                    f"Current user message: {message}"
+                )
+            try:
+                interaction = client.interactions.create(**kwargs)
+            except Exception as exc2:
+                logger.warning("Interactions API retry failed: %s. Falling back to gemini-2.5-flash.", exc2)
+                # Switch to stable gemini-3.6-flash which has higher rate limits and no thinking budget overhead
+                kwargs["model"] = "gemini-3.6-flash"
+                if "generation_config" in kwargs and "thinking_level" in kwargs["generation_config"]:
+                    kwargs["generation_config"] = kwargs["generation_config"].copy()
+                    kwargs["generation_config"].pop("thinking_level", None)
+                interaction = client.interactions.create(**kwargs)
+
+        # Extract reply safely
+        reply = ""
+        if hasattr(interaction, "output_text") and interaction.output_text:
+            reply = interaction.output_text
+        elif hasattr(interaction, "steps") and interaction.steps:
+            last_step = interaction.steps[-1]
+            if hasattr(last_step, "content") and last_step.content:
+                parts = []
+                for part in last_step.content:
+                    if hasattr(part, "text") and part.text:
+                        parts.append(part.text)
+                reply = "".join(parts)
+
+        reply = reply.strip()
         if not reply:
             raise ValueError("Empty Gemini response")
-        return {"reply": reply[:MAX_REPLY_LENGTH], "is_emergency": False}
+
+        return {
+            "reply": reply[:MAX_REPLY_LENGTH],
+            "is_emergency": False,
+            "interaction_id": getattr(interaction, "id", None)
+        }
     except Exception:
         logger.exception("Hero AI generation failed")
         return {"reply": fallback_reply(language), "is_emergency": False}

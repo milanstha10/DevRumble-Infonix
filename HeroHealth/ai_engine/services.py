@@ -5,9 +5,9 @@ from .prompts import SYSTEM_PROMPT
 
 logger = logging.getLogger(__name__)
 
-# Try to import google-generativeai. If not available, we handle it gracefully.
+# Try to import google-genai. If not available, we handle it gracefully.
 try:
-    import google.generativeai as genai
+    from google import genai
     HAS_GENAI = True
 except ImportError:
     HAS_GENAI = False
@@ -166,22 +166,26 @@ def analyze_symptoms_ai(symptoms_text, image_path=None):
         return run_local_triage(symptoms_text)
 
     try:
-        genai.configure(api_key=api_key)
-        model = genai.GenerativeModel('gemini-2.5-flash')
+        from google.genai import types
+        from PIL import Image
+
+        client = genai.Client(api_key=api_key)
         content_parts = [SYSTEM_PROMPT, f"User Symptoms:\n{symptoms_text}"]
         if image_path:
             try:
-                from PIL import Image
                 content_parts.append(Image.open(image_path))
             except Exception as img_err:
                 logger.error("Failed to load image for Gemini analysis: %s", img_err)
-        response = model.generate_content(content_parts)
+
+        response = client.models.generate_content(
+            model='gemini-3.6-flash',
+            contents=content_parts,
+            config=types.GenerateContentConfig(
+                response_mime_type="application/json"
+            )
+        )
         response_text = response.text.strip()
-        if response_text.startswith("```json"):
-            response_text = response_text[7:]
-        if response_text.endswith("```"):
-            response_text = response_text[:-3]
-        return json.loads(response_text.strip())
+        return json.loads(response_text)
     except Exception as exc:
         logger.error("Gemini API analysis failed: %s. Falling back to rule engine.", exc)
         return run_local_triage(symptoms_text)
@@ -244,13 +248,15 @@ def get_health_chat_reply(message, language='en'):
         return _local_chat_reply(message, language)
 
     try:
-        genai.configure(api_key=api_key)
-        model = genai.GenerativeModel('gemini-2.5-flash')
-        response = model.generate_content([
-            CHAT_SYSTEM_PROMPT,
-            f"Preferred response language: {'Nepali' if language == 'ne' else 'English'}.",
-            f"User message: {message}",
-        ])
+        client = genai.Client(api_key=api_key)
+        response = client.models.generate_content(
+            model='gemini-3.6-flash',
+            contents=[
+                CHAT_SYSTEM_PROMPT,
+                f"Preferred response language: {'Nepali' if language == 'ne' else 'English'}.",
+                f"User message: {message}",
+            ]
+        )
         reply = (response.text or '').strip()
         return reply or _local_chat_reply(message, language)
     except Exception as exc:
