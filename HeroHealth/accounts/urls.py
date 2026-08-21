@@ -8,4 +8,5 @@ urlpatterns = [
     path('profile/', views.profile_view, name='profile'),
     path('google/login/', views.google_login, name='google_login'),
     path('google/callback/', views.google_callback, name='google_callback'),
+    path('verify/<str:uidb64>/<str:token>/', views.verify_email, name='verify_email'),
 ]
