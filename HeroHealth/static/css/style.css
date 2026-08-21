@@ -386,16 +386,17 @@ main {
     -webkit-backdrop-filter: blur(12px);
 
     transition: var(--transition-smooth);
+    position: relative;
+    overflow: hidden;
 }
 
 .glass-card:hover {
     border-color: rgba(0, 242, 254, 0.2);
 }
 
-
-/* =========================================================
-   FORM CONTROLS
-   ========================================================= */
+/* =========================================
+   FORMS
+========================================= */
 
 .form-group {
     margin-bottom: 1.5rem;

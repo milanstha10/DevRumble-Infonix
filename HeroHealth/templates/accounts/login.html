@@ -52,54 +52,13 @@
 
 
             {% for field in form %}
-
-                <div class="login-form-group">
-
-                    <label
-                        class="login-label"
-                        for="{{ field.id_for_label }}"
-                    >
-                        {{ field.label }}
-                    </label>
-
-                    <div class="login-input-wrapper">
-
-                        {% if field.name == 'username' %}
-                            <i class="fa-solid fa-user login-input-icon"></i>
-
-                        {% elif field.name == 'password' %}
-                            <i class="fa-solid fa-lock login-input-icon"></i>
-
-                        {% else %}
-                            <i class="fa-solid fa-key login-input-icon"></i>
-                        {% endif %}
-
-                        {{ field }}
-
-                    </div>
-
-                    {% if field.help_text %}
-                        <small class="login-help">
-                            {{ field.help_text }}
-                        </small>
-                    {% endif %}
-
-                    {% if field.errors %}
-                        <div class="login-field-error">
-
-                            <i class="fa-solid fa-circle-exclamation"></i>
-
-                            <div>
-                                {% for error in field.errors %}
-                                    <span>{{ error }}</span>
-                                {% endfor %}
-                            </div>
-
-                        </div>
-                    {% endif %}
-
-                </div>
-
+            <div class="form-group">
+                <label class="form-label" for="{{ field.id_for_label }}">{{ field.label }}</label>
+                {{ field }}
+                {% if field.errors %}
+                <small style="color: var(--danger); display:block; margin-top:0.25rem;">{{ field.errors.0 }}</small>
+                {% endif %}
+            </div>
             {% endfor %}
 
 
@@ -114,35 +73,10 @@
             </button>
 
         </form>
-
-
-        <!-- Register Link -->
-        <div class="login-footer" id="loginFooter">
-
-            <span>
-                Don't have an account?
-            </span>
-
-            <a
-                href="{% url 'register' %}"
-                class="login-link"
-            >
-                Create Account
-                <i class="fa-solid fa-arrow-right"></i>
-            </a>
-
-        </div>
-
-
-        <!-- Security Message -->
-        <div class="login-security">
-
-            <i class="fa-solid fa-lock"></i>
-
-            <span>
-                Your account information is securely handled by HeroHealth.
-            </span>
-
+        
+        <div style="text-align: center; margin-top: 1.5rem;" id="loginFooter">
+            <span style="color: var(--text-muted);">Don't have an account? </span>
+            <a href="{% url 'register' %}" style="color: var(--primary); text-decoration: none; font-weight:600;">Sign Up</a>
         </div>
 
     </div>
